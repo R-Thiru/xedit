@@ -1,0 +1,5 @@
+<mat-paginator #paginator
+        class="sm:absolute sm:inset-x-0 sm:bottom-0 border-b sm:border-t sm:border-b-0 z-10 bg-gray-50 dark:bg-transparent"
+        [length]="length" [pageIndex]="pageIndex" [pageSize]="pageSize" [pageSizeOptions]="pageSizeOptions"
+        (page)="paginationChange($event)" [showFirstLastButtons]="true">
+</mat-paginator>

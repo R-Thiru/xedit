@@ -1,0 +1,20 @@
+// fuse-card{
+//     margin: 16px;
+// }
+
+
+.my-custom-tooltip {
+    max-width: unset !important;
+  }
+
+.flip {
+    transform: rotateY(180deg);
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}
+
+.flipped {
+    transform: rotateY(0deg);
+    transition: transform 0.8s;
+    transform-style: preserve-3d;
+}

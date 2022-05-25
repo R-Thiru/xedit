@@ -1,0 +1,113 @@
+<div class="flex flex-col flex-auto min-w-0">
+
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-4 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+
+            <!-- Title -->
+            <div class="mt-2">
+                <h2 *transloco="let t"
+                    class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                    {{t('projects')}}
+                </h2>
+            </div>
+        </div>
+    </div>
+
+    <!-- Main -->
+    <div class="flex-auto p-6 sm:p-10">
+        <div class="grid sm:grid-cols-2 xl:grid-cols-3 xxl:grid-cols-4 grid-cols-1 sm:gap-2 w-full">
+            
+            <fuse-card *ngFor="let card of obs | async |search:inputData"
+                class="flex flex-col md:flex-row justify-between md:max-w-md lg:max-w-lg max-w-80 w-full p-8 pb-4 filter-listing" (click)="toggleFlip(card.id)" [class.flip]="card.toggle" [class.flipped]="!card.toggle" >
+                <div class="flex flex-col flex-auto order-2 md:order-1">
+                    <div class="flex flex-row">
+                        <button mat-icon-button [matMenuTriggerFor]="listCard08Menu" class="-ml-3 -mt-2">
+                            <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:dots-vertical'"></mat-icon>
+                        </button>
+                        <mat-menu #listCard08Menu="matMenu">
+                            <button mat-menu-item>
+                                <span class="flex items-center">
+                                    <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:pencil'">
+                                    </mat-icon>
+                                    <span>Edit</span>
+                                </span>
+                            </button>
+                            <button mat-menu-item>
+                                <span class="flex items-center">
+                                    <mat-icon class="icon-size-5 mr-3" [svgIcon]="'heroicons_solid:trash'">
+                                    </mat-icon>
+                                    <span>Delete</span>
+                                </span>
+                            </button>
+
+                        </mat-menu>
+                        <div class="text-xl md:w-40  font-semibold truncate" matTooltipClass="my-custom-tooltip"
+                        matTooltipPosition="above"
+                        [matTooltip]="card.display_name">
+                        {{card.display_name}}</div>
+                    </div>
+
+                    <div class="flex items-center leading-none mt-2 -ml-1">
+                        <div class="text-secondary ml-2">{{card.id}}</div>
+                        <div class="text-secondary mx-2">&bull;</div>
+                        <div class="text-secondary">1098 Page produced</div>
+                    </div>
+                    <div class="mt-3">
+                        <div class="flex flex-wrap items-center text-secondary my-1">
+                            <span>Print ISBN : 87653268961267</span>
+                        </div>
+                        <div class="flex flex-wrap items-center text-secondary my-1">
+                            <span>Digital ISBN : 87653268961267</span>
+                        </div>
+                        <div class="flex items-center text-secondary my-1">
+                            <span>Last Edited :June 12th 2022</span>
+                        </div>
+                        <div class="flex items-center text-secondary my-1">
+                            <span>Project Status : Active</span>
+                        </div>
+
+                    </div>
+                    <div class="flex items-center mt-1 -mx-1">
+                        <button class="px-6 mt-2 items-center" mat-flat-button [color]="'primary'" (click)="viewChapters(card)">
+                            View Chapters
+                        </button>
+
+                    </div>
+                </div>
+                <div class="order-1 md:order-2 w-full  md:w-40 md:ml-6 mb-8 md:mb-4 rounded-lg overflow-hidden">
+                    <div *ngIf="!card.image" class="flex flex-col items-center h-full justify-center  rounded-lg cursor-pointer border-2 border-gray-300 border-dashed hover:bg-hover transition-colors duration-150 ease-in-out">
+                        <!-- (change)="uploadImages(imageFileInput.files , card)" -->
+                        <input id="image-file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" 
+                            type="file" [multiple]="false" [accept]="'image/jpeg, image/png'" (change)="openImages(imageFileInput.files)"
+                             #imageFileInput>
+                        <label
+                            class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                            for="image-file-input" matRipple>
+                            <mat-icon class="icon-size-12 text-hint" [svgIcon]="'heroicons_outline:plus'" (click)="uploadImages(card)"></mat-icon>
+                        </label>
+
+                    </div>
+                    <ng-container  *ngIf="card.image">
+                        <div class="absolute md:right-0  md:bottom-0 p-4 md:p-8">
+                            <button
+                                mat-icon-button class="rounded-full bg-slate-100"
+                                (click)="removeImage(card)">
+                                <mat-icon
+                                    class="text-black"
+                                    [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            </button>
+                        </div>
+                        <img class="w-full h-full object-cover" [src]="card.image"
+                        alt="Card cover image">
+                    </ng-container>
+                    
+                </div>
+
+            </fuse-card>
+          
+        </div>
+    </div>
+
+</div>

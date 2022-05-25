@@ -1,0 +1,15 @@
+{
+    "publisher": "Publisher",
+    "signed_in_as" : "Signed in as",
+    "profile" : "Profile",
+    "sign_out": "Sign out",
+    "add" : "Add",
+    "edit" : "Edit",
+    "delete" : "Delete",
+    "projects" : "Projects",
+    "roles" : "Roles",
+    "teams" : "Teams",
+    "stages" : "Stages",
+    "teammapping":"Team Mapping",
+    "stagemapping":"Stage Mapping"
+}

@@ -1,0 +1,92 @@
+<div class="w-full max-w-3xl">
+    <form [formGroup]="emailConfigForm">
+        <!-- Section -->
+        <div class="w-full">
+            <!-- <div class="text-xl">Email Config</div> -->
+            <div class="text-secondary">Update your email config to send automated emails.</div>
+        </div>
+        <div class="grid grid-cols-4 gap-6 w-full mt-8">
+            <div class="col-span-4 sm:col-span-2">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>SMTP Host</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:globe'"
+                        matPrefix></mat-icon>
+                        <div class="text-secondary" matPrefix>https://</div>
+                    <input
+                        [formControlName]="'hostname'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                <mat-form-field
+                    class="fuse-mat-no-subscript w-full"
+                    [floatLabel]="'always'">
+                    <mat-label>SMTP Port</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:globe-alt'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'port'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-span-2 sm:col-span-1">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>SMTP Timeout</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:clock'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'smtptimeout'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>SMTP User Name</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:user'"
+                        matPrefix></mat-icon>
+                    <input
+                        [formControlName]="'smtpusername'"
+                        matInput>
+                </mat-form-field>
+            </div>
+            <div class="col-span-4">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>SMTP Password</mat-label>
+                    <mat-icon
+                        class="icon-size-5"
+                        [svgIcon]="'heroicons_solid:key'"
+                        matPrefix></mat-icon>
+                    <input type="password"
+                        [formControlName]="'smtppassword'"
+                        matInput>
+                </mat-form-field>
+            </div>
+
+        </div>   
+        <!-- Divider -->
+        <div class="mt-11 mb-10 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+            <button
+                mat-stroked-button
+                type="button">
+                Cancel
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                [color]="'primary'">Save
+            </button>
+        </div>
+    </form>   
+</div>

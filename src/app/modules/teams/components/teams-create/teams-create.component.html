@@ -1,0 +1,99 @@
+<div class="relative w-full h-18 sm:h-20 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+    <!-- Background -->
+    
+    <!-- Close button -->
+    <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+        <button
+            mat-icon-button
+            [matTooltip]="'Close'"
+            (click)="close()">
+            <mat-icon
+                class="text-black"
+                [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+</div>
+<div class="relative flex flex-col flex-auto items-center ">
+    
+    <div class="w-full ">
+        
+        <form [formGroup]="teamForm">
+
+            <div class="flex flex-auto items-end -mt-16 px-6 sm:px-12">
+                <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                    <!-- Upload / Remove avatar -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-20">
+                        <div>
+                            <input
+                                id="avatar-file-input"
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                type="file"
+                                >
+                            <label
+                                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                for="avatar-file-input"
+                                matRipple>
+                                <mat-icon
+                                    class="text-white"
+                                    [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                            </label>
+                        </div>
+                        <div>
+                            <button
+                                mat-icon-button
+                                >
+                                <mat-icon
+                                    class="text-white"
+                                    [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Image/Letter -->
+                    <img
+                        class="object-cover w-full h-full"
+                       
+                       >
+                    <!-- <div
+                        class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
+                        *ngIf="!contact.avatar">
+                        {{contact.name.charAt(0)}}
+                    </div> -->
+                </div>
+            </div>
+
+            <!-- Name -->
+            <div class="mt-2 space-y-4 px-6 sm:px-12">
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>TeamName</mat-label>
+                    <mat-icon
+                        matPrefix
+                        class="hidden sm:flex icon-size-5"
+                        [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
+                    <input
+                        matInput
+                        [formControlName]="'name'"
+                        [placeholder]="'Name'"
+                        [spellcheck]="false">
+                </mat-form-field>
+               
+            </div>
+
+           
+
+            <!-- Actions -->
+            <div class="flex fixed bottom-0 items-center w-full border-t  mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700">
+                <!-- Cancel -->
+                <button mat-button [matTooltip]="'Cancel'" (click)="close()">
+                    Cancel
+                </button>
+                <!-- Save -->
+                <button class="ml-2" mat-flat-button [color]="'primary'" [disabled]="teamForm.invalid" [matTooltip]="'Save'">
+                    Save
+                </button>
+            </div>
+
+        </form>
+    </div>
+</div>
+

@@ -1,0 +1,85 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+
+    <!-- Header -->
+    <div
+        class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-4 sm:px-10 border-b bg-card dark:bg-transparent">
+        <div class="flex-1 min-w-0">
+            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+                Stage Mapping
+            </h2>
+        </div>
+    </div>
+    <!-- Stages Drag and Drop-->
+    <div class="flex flex-row  overflow-y-auto h-full" cdkScrollable>
+        <!-- Stages Drag -->
+        <div class="flex  h-full md:w-1/4 bg-card ">
+            <div class="flex overflow-hidden w-full">
+
+                <div class="flex-auto overflow-y-auto bg-card">
+                    <div cdkDropList #stageList="cdkDropList" [cdkDropListData]="stageData"
+                        [cdkDropListConnectedTo]="[mapDataList]">
+                        <div class="z-20 flex items-center py-3 px-4 cursor-move border"
+                            *ngFor="let stage of stageData;" cdkDrag [cdkDragData]="stage">
+                            <div class="min-w-0 ml-4">
+                                <div class="font-medium leading-5 truncate">{{stage.stage_name}}</div>
+                            </div>
+
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+        </div>
+        <!-- Stages Drop-->
+        <div class="flex md:flex-row flex-col w-full ">
+            <div class="flex flex-col items-center md:w-1/2 md:max-h-full max-h-96  overflow-y-auto  w-full"
+                cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="mapData" #mapDataList="cdkDropList"
+                (cdkDropListDropped)="drop($event)">
+                <div class="p-2 w-96  bg-default" *ngFor="let card of cards; let i=index">
+                    <div class="flex justify-center">
+                        <div class="flex w-8 h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
+                            {{i+1}}
+                        </div>
+                    </div>
+                    <div class="m-2 rounded-xl min-h-24 bg-gray-400 bg-opacity-12 hover:scale-105"
+                        (mouseover)="dropped(i)" (touchstart)="dropped(i)">
+                        <div class="p-3 ">
+                            <div class="z-20 flex items-center justify-between py-3 px-4 my-2 cursor-move rounded-lg  bg-card"
+                                *ngFor="let map of card.mapDatas;" cdkDrag  [cdkDragData]="map" (mousedown)="getData(map)" (touchstart)="getData(map)">
+                                <div class="min-w-0" >
+                                    <div class="font-medium leading-5 truncate">{{map.stage_name}}</div>
+                                </div>
+                                <button mat-icon-button (click)="cutStage(map)">
+                                    <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                    </div>
+                    
+                </div>
+                <div class="flex items-center mt-1 -mx-1">
+                    <button class="px-6 mt-2 items-center" mat-flat-button [color]="'primary'" (click)="nextStage()">
+                        Next
+                    </button>
+
+                </div>
+            </div>
+            <!-- <div class="flex md:flex-col flex-row md:w-1/2  w-full h-full md:border-l-2 border-t-2 p-4">
+                <div class="grid grid-cols-2  md:grid-cols-3  gap-4  w-full  min-w-0 md:max-h-full max-h-96 overflow-y-auto">
+                    <fuse-card class="flex flex-col  max-w-80 w-full  p-3 filter-info"
+                        *ngFor="let data of templateData">
+                        <div class="flex">
+                  
+                            <div class="flex flex-col">
+                                <div class="text-md font-semibold leading-tight">{{data.template_name}}
+                                </div>
+                                <div class="text-sm text-secondary">{{data.id}}</div>
+                            </div>
+                        </div>
+                    </fuse-card>
+                </div>
+            </div> -->
+
+        </div>
+
+    </div>

@@ -1,0 +1,36 @@
+<!-- Loading bar -->
+<!-- <fuse-loading-bar></fuse-loading-bar> -->
+
+<!-- Wrapper -->
+<div class="flex flex-col flex-auto w-full h-screen md:overflow-hidden">
+    <!-- Header -->
+    <!--*ngIf="isShow"-->
+    <div
+        class="relative flex flex-0 items-center w-full h-16 md:px-2 z-49 shadow dark:shadow-none dark:border-b bg-card dark:bg-transparent print:hidden">
+        <!-- logo -->
+        <div class="flex items-center justify-center h-20">
+            <img class="w-40" src="assets/images/logo/logo.svg" alt="XEditPro">
+        </div>
+        <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+            <!-- full screen -->
+            <fuse-fullscreen>
+                <!--(click)="showHide()"-->
+             </fuse-fullscreen>
+            <button class="lg:hidden md:block sm:block hidden" mat-icon-button (click)="quickMenu.toggle()">
+                <mat-icon [svgIcon]="'mat_outline:menu'"></mat-icon>
+            </button>
+
+        </div>
+    </div>
+    <!-- Content --> 
+    <div class="flex items-center flex-col flex-auto">
+        <!-- *ngIf="true" hack is required here for router-outlet to work correctly.
+             Otherwise, layout changes won't be registered and the view won't be updated! -->
+        <router-outlet *ngIf="true"></router-outlet>
+    </div>
+
+    <!-- footer -->
+
+</div>
+<!-- Quick Menu -->
+<quick-menu #quickMenu="quickMenu"></quick-menu>

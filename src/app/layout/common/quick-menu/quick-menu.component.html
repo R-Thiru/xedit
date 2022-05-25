@@ -1,0 +1,83 @@
+<div class="fixed lg:sticky top-0 bottom-0 sm:left-full w-full lg:w-16 sm:w-96  sm:h-screen sm:shadow">
+    <div
+        class="flex flex-col w-full sm:w-96 h-full transition-transform duration-400 ease-drawer bg-card"
+        [ngClass]="{'-translate-x-full sm:-translate-x-96 lg:-translate-x-80 shadow': opened, 'translate-x-0': !opened}">
+
+        <!-- Header -->
+        <div
+            class="quick-menu-header flex flex-0 items-center justify-start cursor-pointer"
+            (click)="toggle()">
+
+            <!-- Toggle -->
+            <ng-container *ngIf="!opened || (opened && !selectedMenu)">
+                <div class="flex flex-auto items-center justify-center">
+                    <div class="flex flex-0 items-center justify-center w-16">
+                        <mat-icon
+                            class="icon-size-6"
+                            [svgIcon]="'mat_outline:menu'"></mat-icon>
+                    </div>
+                    <div class="text-lg font-medium text-secondary">Quick Menu</div>
+                    <button
+                        class="ml-auto mr-4"
+                        mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+
+            <!-- Contact info -->
+            <ng-container *ngIf="opened && selectedMenu">
+                <div class="flex flex-auto items-center ml-3">
+                    <div class="relative flex flex-0 items-center justify-center w-10 h-10">
+                        
+                        <ng-container >
+                            <div class="flex items-center justify-center w-full h-full rounded-full text-lg uppercase bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                {{menu.name.charAt(0)}}
+                            </div>
+                        </ng-container>
+                    </div>
+                    <div class="ml-4 text-lg font-medium leading-5 truncate">{{menu.name}}</div>
+                    <button
+                        class="ml-auto mr-4"
+                        mat-icon-button>
+                        <mat-icon [svgIcon]="'heroicons_outline:x'"></mat-icon>
+                    </button>
+                </div>
+            </ng-container>
+        </div>
+
+        <!-- Content -->
+        <div class="flex flex-auto border-t overflow-hidden">
+
+            <!-- Menu list -->
+            <div
+                class="flex-0 w-16 h-full overflow-y-auto overscroll-y-contain sm:overflow-hidden sm:overscroll-auto"
+                fuseScrollbar
+                [fuseScrollbarOptions]="{wheelPropagation: false}">
+                <div class="flex-auto">
+                    <ng-container *ngFor="let menu of menus; trackBy: trackByFn">
+                        <div
+                            class="flex items-center py-3 px-4 cursor-pointer"
+                            [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedMenu || selectedMenu.id !== menu.id,
+                                        'bg-primary-50 dark:bg-hover': selectedMenu && selectedMenu.id === menu.id}"
+                            (click)="selectMenu(menu.id)">
+                            <div class="relative flex flex-0 items-center justify-center w-8 h-8">
+                                <ng-container >
+                                    <div class="flex items-center justify-center w-full h-full rounded-full text-lg bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200">
+                                        {{menu.shortname}}
+                                    </div>
+                                </ng-container>
+                            </div>    
+                        </div>    
+                    </ng-container>    
+                </div>
+            </div>
+
+            <!-- Conversation -->
+            <div class="flex flex-col flex-auto border-l overflow-hidden bg-gray-50 dark:bg-transparent">
+                
+            </div>
+        </div>
+    </div>
+</div>
+

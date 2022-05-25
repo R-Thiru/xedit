@@ -1,0 +1,168 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <mat-drawer-container class="flex-auto h-full">
+        <mat-drawer class="w-70 dark:bg-gray-900" [autoFocus]="false" [mode]="drawerMode" [opened]="drawerOpened"
+            #matDrawer>
+            <div class="flex flex-col items-start p-4 border-b">
+                <a class="inline-flex items-center leading-6 text-primary hover:underline" [routerLink]="['..']">
+                    <span class="inline-flex items-center">
+                        <mat-icon class="icon-size-5 text-current" [svgIcon]="'heroicons_solid:arrow-sm-left'">
+                        </mat-icon>
+                        <span class="ml-1.5 font-medium leading-5">Back to Stage Mapping</span>
+                    </span>
+                </a>
+                <div class="mt-1 text-2xl font-semibold">Process Mapping</div>
+            </div>
+            <div class="py-2 px-8">
+                <ol *ngFor="let map of mapData; let last = last;let i = index trackBy: trackByFn">
+                    <ng-container>
+                        <li class="relative group py-6" [class.current-step]="i === currentproject">
+                            <ng-container *ngIf="!last">
+                                <div class="absolute top-6 left-4 w-0.5 h-full -ml-px" [ngClass]="{'bg-primary': i < currentproject,
+                                                'bg-gray-300 dark:bg-gray-600': i >= currentproject}">
+                                </div>
+                            </ng-container>
+                            <div class="relative flex items-start cursor-pointer" (click)="goToStep(i)">
+                                <div class="flex flex-0 items-center justify-center w-8 h-8 rounded-full  ring-2 ring-inset  bg-card dark:bg-default"
+                                    [ngClass]="{'ring-primary ': i === currentproject,
+                                            'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': i > currentproject,
+                                            'bg-primary dark:bg-primary ring-transparent text-on-primary group-hover:bg-primary-800': i < currentproject}">
+                                    <!-- Check icon, show if the project is completed -->
+                                    <ng-container *ngIf="i < currentproject">
+                                        <div class="text-md font-semibold text-white dark:text-primary-500">
+                                            {{map.i + 1 }}
+                                        </div>
+                                    </ng-container>
+                                    <!-- project default_order, show if the project is the current project -->
+                                    <ng-container *ngIf="i === currentproject">
+                                        <div class="text-md font-semibold text-primary dark:text-primary-500">
+                                            {{map.i + 1 }}
+                                        </div>
+                                    </ng-container>
+                                    <!-- project default_order, show if the project is not completed -->
+                                    <ng-container *ngIf="i > currentproject">
+                                        <div class="text-md font-semibold text-hint group-hover:text-secondary">
+                                            {{map.i + 1 }}
+                                        </div>
+                                    </ng-container>
+
+                                </div>
+                                <div class="ml-4 mt-2">
+                                    <div class="font-medium leading-4">{{map.stage_name}}</div>
+                                    <!-- <div class="mt-1.5 text-md leading-4 text-secondary">{{map.count}}</div> -->
+                                </div>
+                            </div>
+
+                        </li>
+                    </ng-container>
+                </ol>
+            </div>
+        </mat-drawer>
+        <mat-drawer-content class="flex flex-col overflow-hidden">
+            <div
+                class="lg:hidden flex flex-0 items-center py-2 pl-4 pr-6 sm:py-4 md:pl-6 md:pr-8 border-b lg:border-b-0 bg-card dark:bg-transparent">
+                <button mat-icon-button [routerLink]="['..']">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-sm-left'"></mat-icon>
+                </button>
+                <h2 class="ml-2.5 text-md sm:text-xl font-medium tracking-tight truncate">
+                    Process Mapping
+                </h2>
+            </div>
+            <div class="flex-auto overflow-y-auto" cdkScrollable>
+                <mat-tab-group class="fuse-mat-no-header" [animationDuration]="'200'" #courseSteps>
+                    <ng-container *ngFor="let map of process;  trackBy: trackByFn">
+                        <mat-tab>
+                            <ng-template matTabContent>
+                                <div
+                                    class="prose flex  prose-sm max-w-full mx-4 sm:mx-8 sm:my-2 lg:mt-4 my-1 p-6 sm:p-10 sm:py-12 rounded-2xl shadow overflow-hidden bg-card">
+                                    <div class="flex h-full md:w-1/4 bg-card ">
+                                        <div class="flex overflow-hidden w-full">
+                                            <div class="flex-auto overflow-y-auto bg-card">
+                                                <div cdkDropList #processList="cdkDropList"
+                                                    [cdkDropListData]="map"
+                                                    [cdkDropListConnectedTo]="[mapDataList]">
+                                                    <div class="z-20 flex items-center py-3 px-4 cursor-move border"
+                                                        *ngFor="let p of map" cdkDrag [cdkDragData]="p">
+                                                        <div class="min-w-0 ml-4">
+                                                            <div class="font-medium leading-5 truncate">
+                                                                {{p.process_name}}</div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+                                    </div>
+                                    <div class="flex flex-col items-center md:w-1/2 md:max-h-full max-h-96  overflow-y-auto  w-full"
+                                        cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="mappedData"
+                                        #mapDataList="cdkDropList" (cdkDropListDropped)="drop($event)">
+                                        <div class="p-2 w-96 " *ngFor="let card of cards; let i=index">
+                                            <div class="flex justify-center">
+                                                <div
+                                                    class="flex w-8 h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
+                                                    {{i+1}}
+                                                </div>
+                                            </div>
+                                            <div class="m-2 rounded-xl min-h-24 bg-gray-400 bg-opacity-12 hover:scale-105"
+                                                (mouseover)="dropped(i)" (touchstart)="dropped(i)">
+                                                <div class="p-3 ">
+                                                    <div class="z-20 flex items-center justify-between py-3 px-4 my-2 cursor-move rounded-lg  bg-card"
+                                                        *ngFor="let map of card.mapDatas;" cdkDrag [cdkDragData]="map"
+                                                        (mousedown)="getData(map)" (touchstart)="getData(map)">
+                                                        <div class="min-w-0">
+                                                            <div class="font-medium leading-5 truncate">
+                                                                {{map.process_name}}
+                                                            </div>
+                                                        </div>
+                                                        <button mat-icon-button (click)="cutStage(map)">
+                                                            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
+                                                        </button>
+                                                    </div>
+                                                </div>
+                                            </div>
+                                        </div>
+
+                                    </div>
+                                </div>
+                            </ng-template>
+                        </mat-tab>
+                    </ng-container>
+                </mat-tab-group>
+                <div class="z-10 sticky hidden lg:flex bottom-4 p-4">
+                    <div class="flex items-center justify-center mx-auto p-2 rounded-full shadow-lg bg-primary">
+                        <button class="flex-0" mat-flat-button [color]="'primary'" (click)="goToPreviousStep()">
+                            <mat-icon class="mr-2" [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                            <span class="mr-1">Prev Stage</span>
+                        </button>
+                        <div class="flex items-center justify-center mx-2.5 font-medium leading-5 text-on-primary">
+                            <span>{{currentproject + 1}}</span>
+                            <span class="mx-0.5 text-hint">/</span>
+                            <span>{{mapData.length}}</span>
+                        </div>
+                        <button class="flex-0" mat-flat-button [color]="'primary'" (click)="goToNextStep()">
+                            <span class="ml-1">Next Stage</span>
+                            <mat-icon class="ml-2" [svgIcon]="'heroicons_outline:arrow-narrow-right'"></mat-icon>
+                        </button>
+                    </div>
+                </div>
+            </div>
+            <!-- Progress & Navigation - Mobile -->
+            <div class="lg:hidden flex items-center p-4 border-t bg-card">
+                <button mat-icon-button (click)="matDrawer.toggle()">
+                    <mat-icon [svgIcon]="'heroicons_outline:view-list'"></mat-icon>
+                </button>
+                <div class="flex items-center justify-center ml-1 lg:ml-2 font-medium leading-5">
+                    <span>{{currentproject + 1}}</span>
+                    <span class="mx-0.5 text-hint">/</span>
+                    <span>{{mapData.length}}</span>
+                </div>
+                <mat-progress-bar class="flex-auto ml-6 rounded-full"
+                    [value]="100 * (currentproject + 1) / mapData.length"></mat-progress-bar>
+                <button class="ml-4" mat-icon-button (click)="goToPreviousStep()">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-left'"></mat-icon>
+                </button>
+                <button class="ml-0.5" mat-icon-button (click)="goToNextStep()">
+                    <mat-icon [svgIcon]="'heroicons_outline:arrow-narrow-right'"></mat-icon>
+                </button>
+            </div>
+        </mat-drawer-content>
+    </mat-drawer-container>
+</div>
