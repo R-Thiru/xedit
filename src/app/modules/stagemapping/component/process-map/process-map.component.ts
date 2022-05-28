@@ -80,7 +80,7 @@ export class ProcessMapComponent implements OnInit {
     })
 
     console.log(this.mapData);
-    
+
   }
 
 
@@ -161,7 +161,7 @@ export class ProcessMapComponent implements OnInit {
   obj: any
   arr = []
   drop(event) {
-  
+
     if (event.previousContainer === event.container) {
       event.currentIndex = this.dropIndex
       event.container.data[0] = this.dragData
@@ -191,15 +191,15 @@ export class ProcessMapComponent implements OnInit {
       this.obj = this.mappedData[0]
       this.mapData.forEach((x, index) => {
         let item = this.mappedData.find(x => x.process_id)
-          if(index == this.currentproject){
-            x.selectedProcess.forEach((e,index) => {
-              if(index == event.currentIndex){
-                e.stages.splice(event.currentIndex, 0, item) 
-                e.stages.length > 1 ? null : this.cardPush() 
-              }  
-            })
+        if (index == this.currentproject) {
+          x.selectedProcess.forEach((e, index) => {
+            if (index == event.currentIndex) {
+              e.stages.splice(event.currentIndex, 0, item)
+              e.stages.length > 1 ? null : this.cardPush()
+            }
+          })
           this.mappedData = []
-          }
+        }
       });
     }
     console.log(this.mapData);
@@ -207,19 +207,24 @@ export class ProcessMapComponent implements OnInit {
 
 
   cutStage(temp) {
-    let i = this.cards.filter(x => x.stages)
-    let j = i.find(y => y.stages.find(z => z == temp))
-    let k = j.stages.findIndex(e => e == temp)
-    j.stages.splice(k, 1)
-    this.cards.forEach((x, index) => {
-      if (x.stages.length == 0) {
-        this.cards.splice(index, 1)
-        let val = this.cards.length - 1
-        this.cards[val].stages.length == 0 ? null : this.cardPush()
+    
+    this.mapData.forEach((element, index) => {
+      if (index == this.currentproject) {
+        let i = element.selectedProcess.filter(x => x.stages)
+        let j = i.find(y => y.stages.find(z => z == temp))
+        let k = j.stages.findIndex(e => e == temp)
+        j.stages.splice(k, 1)
+        element.process.unshift(temp)
+        if(j.stages.length == 0){
+          element.selectedProcess.splice(this.dropIndex,1)
+          let val = element.selectedProcess.length - 1
+          element.selectedProcess[val].stages.length == 0 ? null : this.cardPush()
+        }
+        
       }
-    })
 
-    this.process.unshift(temp)
+
+    });
     this._changeDetectorRef.detectChanges()
   }
 
@@ -233,13 +238,13 @@ export class ProcessMapComponent implements OnInit {
     let req = {
       stages: []
     }
-    this.mapData.forEach((element,index) => {
-      if(index == this.currentproject){
+    this.mapData.forEach((element, index) => {
+      if (index == this.currentproject) {
         element.selectedProcess.push(req)
       }
-      
+
     });
-    
+
   }
 
 
