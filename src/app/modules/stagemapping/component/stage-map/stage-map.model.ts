@@ -1,10 +1,10 @@
 export interface card {
-  uuid: any
-  mapDatas: stages[]
+ 
+  stages: stages[]
 }
 export interface processCard {
-  uuid: any
-  mapDatas:process[]
+  
+  stages:process[]
 }
 
 export interface process {
@@ -31,15 +31,14 @@ export interface stages {
 
 export const cardsData: card[] = [
   {
-    uuid: 1,
-    mapDatas: []
+   
+    stages: []
   }
 ]
 
 export const processCardsData: processCard[] = [
   {
-    uuid: 0,
-    mapDatas: []
+    stages: []
   }
 ]
 

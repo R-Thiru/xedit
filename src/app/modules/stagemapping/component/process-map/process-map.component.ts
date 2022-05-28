@@ -1,11 +1,11 @@
-import { moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { Subject, takeUntil } from 'rxjs';
+import { elementAt, Subject, takeUntil } from 'rxjs';
 import { StagemappingService } from '../../stagemapping.service';
-import { card, cardsData, processCard, processCardsData, processData } from '../stage-map/stage-map.model';
+import { cardsData, processCard, processCardsData, processData } from '../stage-map/stage-map.model';
 
 @Component({
   selector: 'process-map',
@@ -18,10 +18,10 @@ export class ProcessMapComponent implements OnInit {
   stagedData: any = []
   mapData: any = []
   process: any = []
-  mappedData : any = []
+  mappedData: any = []
   cards: processCard[] = processCardsData;
   dragData: any
-  dropIndex : any
+  dropIndex: any
   currentproject: number = 0;
   processData = processData
   @ViewChild('courseSteps', { static: true }) courseSteps: MatTabGroup;
@@ -29,38 +29,39 @@ export class ProcessMapComponent implements OnInit {
 
 
   constructor(private stageService: StagemappingService,
-              private _fuseMediaWatcherService: FuseMediaWatcherService,
-              @Inject(DOCUMENT) private _document: Document,
-              private _changeDetectorRef: ChangeDetectorRef) { }
+    private _fuseMediaWatcherService: FuseMediaWatcherService,
+    @Inject(DOCUMENT) private _document: Document,
+    private _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-     // Subscribe to media changes
-     this._fuseMediaWatcherService.onMediaChange$
-     .pipe(takeUntil(this._unsubscribeAll))
-     .subscribe(({ matchingAliases }) => {
+    // Subscribe to media changes
+    this._fuseMediaWatcherService.onMediaChange$
+      .pipe(takeUntil(this._unsubscribeAll))
+      .subscribe(({ matchingAliases }) => {
 
-       // Set the drawerMode and drawerOpened
-       if (matchingAliases.includes('lg')) {
-         this.drawerMode = 'side';
-         this.drawerOpened = true;
-       }
-       else {
-         this.drawerMode = 'over';
-         this.drawerOpened = false;
-       }
+        // Set the drawerMode and drawerOpened
+        if (matchingAliases.includes('lg')) {
+          this.drawerMode = 'side';
+          this.drawerOpened = true;
+        }
+        else {
+          this.drawerMode = 'over';
+          this.drawerOpened = false;
+        }
 
-       // Mark for check
-       this._changeDetectorRef.markForCheck();
-     });
+        // Mark for check
+        this._changeDetectorRef.markForCheck();
+      });
 
     this.stageService.projectSelected.subscribe(res => {
       this.stagedData = res
-      this.stagedData = this.stagedData.filter(x => x.mapDatas.length > 0)
+      this.stagedData = this.stagedData.filter(x => x.stages.length > 0)
     })
+    console.log('this.stagedData', this.stagedData);
 
     this.stagedData.forEach(x => {
-      if (x.mapDatas.length > 0) {
-        x.mapDatas.forEach(y => {
+      if (x.stages.length > 0) {
+        x.stages.forEach(y => {
           this.mapData.push(y)
         })
 
@@ -68,14 +69,20 @@ export class ProcessMapComponent implements OnInit {
     })
 
     this.mapData.forEach(x => {
-      let i = this.stagedData.findIndex(y => y.mapDatas.includes(x))
+      if (!x.selectedProcess) {
+        x.selectedProcess = [{
+          stages: []
+        }]
+      }
+      let i = this.stagedData.findIndex(y => y.stages.includes(x))
       x.i = i
       this.process.push(x.process)
     })
-    console.log(this.process);
-  
+
+    console.log(this.mapData);
+    
   }
-  
+
 
   trackByFn(index: number, item: any): any {
     return item.id || index;
@@ -108,6 +115,8 @@ export class ProcessMapComponent implements OnInit {
 
     // Scroll the current step selector from sidenav into view
     this._scrollCurrentStepElementIntoView();
+
+
   }
 
   /**
@@ -125,6 +134,8 @@ export class ProcessMapComponent implements OnInit {
 
     // Scroll the current step selector from sidenav into view
     this._scrollCurrentStepElementIntoView();
+    // this.cards = []
+    // this.cardPush()
   }
 
 
@@ -147,56 +158,64 @@ export class ProcessMapComponent implements OnInit {
     this.dragData = map
   }
 
-  drop(event){
-    debugger
+  obj: any
+  arr = []
+  drop(event) {
+  
     if (event.previousContainer === event.container) {
       event.currentIndex = this.dropIndex
       event.container.data[0] = this.dragData
-      let x = this.cards.find(x => x.mapDatas.find(y => y == this.dragData))
-      let i = x.mapDatas.findIndex(y => y == this.dragData)
-      x.mapDatas.splice(i, 1)
+      let x = this.cards.find(x => x.stages.find(y => y == this.dragData))
+      let i = x.stages.findIndex(y => y == this.dragData)
+      x.stages.splice(i, 1)
       let val = this.cards.length - 1
-      let y = this.cards.findIndex(x => x.mapDatas.length == 0)
+      let y = this.cards.findIndex(x => x.stages.length == 0)
       y == val ? null : this.cards.splice(y, 1)
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     }
-    else{
+    else {
       event.currentIndex = this.dropIndex
+
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
         event.previousIndex,
         event.currentIndex,
       );
+
     }
 
+
+    // dropMapping
     if (this.mappedData) {
-      this.cards.forEach((x, index) => {
-        debugger
-        let i = index
+      this.obj = this.mappedData[0]
+      this.mapData.forEach((x, index) => {
         let item = this.mappedData.find(x => x.process_id)
-        if (i == event.currentIndex) {
-          x.mapDatas.splice(event.currentIndex, 0, item)
-          x.mapDatas.length > 1 ? null : this.cardPush()
+          if(index == this.currentproject){
+            x.selectedProcess.forEach((e,index) => {
+              if(index == event.currentIndex){
+                e.stages.splice(event.currentIndex, 0, item) 
+                e.stages.length > 1 ? null : this.cardPush() 
+              }  
+            })
           this.mappedData = []
-        }
+          }
       });
     }
-
+    console.log(this.mapData);
   }
 
 
   cutStage(temp) {
-    debugger
-    let i = this.cards.filter(x => x.mapDatas)
-    let j = i.find(y => y.mapDatas.find(z => z == temp))
-    let k = j.mapDatas.findIndex(e => e == temp)
-    j.mapDatas.splice(k, 1)
+    let i = this.cards.filter(x => x.stages)
+    let j = i.find(y => y.stages.find(z => z == temp))
+    let k = j.stages.findIndex(e => e == temp)
+    j.stages.splice(k, 1)
     this.cards.forEach((x, index) => {
-      if (x.mapDatas.length == 0) {
+      if (x.stages.length == 0) {
         this.cards.splice(index, 1)
         let val = this.cards.length - 1
-        this.cards[val].mapDatas.length == 0 ? null : this.cardPush()
+        this.cards[val].stages.length == 0 ? null : this.cardPush()
       }
     })
 
@@ -204,20 +223,27 @@ export class ProcessMapComponent implements OnInit {
     this._changeDetectorRef.detectChanges()
   }
 
+
   dropped(i) {
     this.dropIndex = i
   }
 
   cardPush() {
+
     let req = {
-      uuid: 2,
-      mapDatas: []
+      stages: []
     }
-    this.cards.push(req)
+    this.mapData.forEach((element,index) => {
+      if(index == this.currentproject){
+        element.selectedProcess.push(req)
+      }
+      
+    });
+    
   }
 
-  
 
-  
-  
+
+
+
 }

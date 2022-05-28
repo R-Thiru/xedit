@@ -37,11 +37,11 @@ export class StageMapComponent implements OnInit {
     if (event.previousContainer === event.container) {
       event.currentIndex = this.dropIndex
       event.container.data[0] = this.dragData
-      let x = this.cards.find(x => x.mapDatas.find(y => y == this.dragData))
-      let i = x.mapDatas.findIndex(y => y == this.dragData)
-      x.mapDatas.splice(i, 1)
+      let x = this.cards.find(x => x.stages.find(y => y == this.dragData))
+      let i = x.stages.findIndex(y => y == this.dragData)
+      x.stages.splice(i, 1)
       let val = this.cards.length - 1
-      let y = this.cards.findIndex(x => x.mapDatas.length == 0)
+      let y = this.cards.findIndex(x => x.stages.length == 0)
       y == val ? null : this.cards.splice(y, 1)
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
@@ -55,15 +55,14 @@ export class StageMapComponent implements OnInit {
 
     }
     if (this.mapData) {
-      console.log('this.mapData',this.mapData);
       
       this.cards.forEach((x, index) => {
      
         let i = index
         let item = this.mapData.find(x => x.stage_id)
         if (i == event.currentIndex) {
-          x.mapDatas.splice(event.currentIndex, 0, item)
-          x.mapDatas.length > 1 ? null : this.cardPush()
+          x.stages.splice(event.currentIndex, 0, item)
+          x.stages.length > 1 ? null : this.cardPush()
           this.mapData = []
         }
       });
@@ -77,22 +76,21 @@ export class StageMapComponent implements OnInit {
 
   cardPush() {
     let req = {
-      uuid: 2,
-      mapDatas: []
+      stages: []
     }
     this.cards.push(req)
   }
 
   cutStage(temp) {
-    let i = this.cards.filter(x => x.mapDatas)
-    let j = i.find(y => y.mapDatas.find(z => z == temp))
-    let k = j.mapDatas.findIndex(e => e == temp)
-    j.mapDatas.splice(k, 1)
+    let i = this.cards.filter(x => x.stages)
+    let j = i.find(y => y.stages.find(z => z == temp))
+    let k = j.stages.findIndex(e => e == temp)
+    j.stages.splice(k, 1)
     this.cards.forEach((x, index) => {
-      if (x.mapDatas.length == 0) {
+      if (x.stages.length == 0) {
         this.cards.splice(index, 1)
         let val = this.cards.length - 1
-        this.cards[val].mapDatas.length == 0 ? null : this.cardPush()
+        this.cards[val].stages.length == 0 ? null : this.cardPush()
       }
     })
 

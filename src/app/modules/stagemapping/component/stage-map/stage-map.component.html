@@ -18,7 +18,7 @@
                 <div class="flex-auto overflow-y-auto bg-card">
                     <div cdkDropList #stageList="cdkDropList" [cdkDropListData]="stageData"
                         [cdkDropListConnectedTo]="[mapDataList]">
-                        <div class="z-20 flex items-center py-3 px-4 cursor-move border"
+                        <div class="z-20 flex items-center py-3 px-4 max-h-2 xxl:max-h-full cursor-move border"
                             *ngFor="let stage of stageData;" cdkDrag [cdkDragData]="stage">
                             <div class="min-w-0 ml-4">
                                 <div class="font-medium leading-5 truncate">{{stage.stage_name}}</div>
@@ -35,22 +35,22 @@
             <div class="flex flex-col items-center md:w-1/2 md:max-h-full max-h-96  overflow-y-auto  w-full"
                 cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="mapData" #mapDataList="cdkDropList"
                 (cdkDropListDropped)="drop($event)">
-                <div class="p-2 w-96  bg-default" *ngFor="let card of cards; let i=index">
+                <div class="xxl:p-2 p-1 w-96  bg-default" *ngFor="let card of cards; let i=index">
                     <div class="flex justify-center">
-                        <div class="flex w-8 h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
+                        <div class="flex w-6 h-6 xxl:w-8 xxl:h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
                             {{i+1}}
                         </div>
                     </div>
-                    <div class="m-2 rounded-xl min-h-24 bg-gray-400 bg-opacity-12 hover:scale-105"
+                    <div class="xxl:m-2 m-1 xxl:rounded-xl rounded-lg xxl:min-h-24 min-h-14 bg-gray-400 bg-opacity-12 hover:scale-105"
                         (mouseover)="dropped(i)" (touchstart)="dropped(i)">
-                        <div class="p-3 ">
-                            <div class="z-20 flex items-center justify-between py-3 px-4 my-2 cursor-move rounded-lg  bg-card"
-                                *ngFor="let map of card.mapDatas;" cdkDrag  [cdkDragData]="map" (mousedown)="getData(map)" (touchstart)="getData(map)">
+                        <div class="xxl:p-3 p-2">
+                            <div class="z-20 flex items-center justify-between xxl:py-3 py-1 xxl:px-4 px-2 xxl:my-2 my-1 cursor-move xxl:rounded-lg rounded-md  bg-card max-h-8 xxl:max-h-full"
+                                *ngFor="let map of card.stages;" cdkDrag  [cdkDragData]="map" (mousedown)="getData(map)" (touchstart)="getData(map)">
                                 <div class="min-w-0" >
                                     <div class="font-medium leading-5 truncate">{{map.stage_name}}</div>
                                 </div>
                                 <button mat-icon-button (click)="cutStage(map)">
-                                    <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
+                                    <mat-icon class="xxl:icon-size-6 icon-size-5 " svgIcon="heroicons_outline:x-circle"></mat-icon>
                                 </button>
                             </div>
                         </div>

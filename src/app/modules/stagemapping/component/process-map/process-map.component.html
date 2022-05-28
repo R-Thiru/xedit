@@ -69,19 +69,19 @@
             </div>
             <div class="flex-auto overflow-y-auto" cdkScrollable>
                 <mat-tab-group class="fuse-mat-no-header" [animationDuration]="'200'" #courseSteps>
-                    <ng-container *ngFor="let map of process;  trackBy: trackByFn">
+                    <ng-container *ngFor="let map of mapData;let i = index;  trackBy: trackByFn">
                         <mat-tab>
                             <ng-template matTabContent>
                                 <div
-                                    class="prose flex  prose-sm max-w-full mx-4 sm:mx-8 sm:my-2 lg:mt-4 my-1 p-6 sm:p-10 sm:py-12 rounded-2xl shadow overflow-hidden bg-card">
-                                    <div class="flex h-full md:w-1/4 bg-card ">
+                                    class="prose flex  prose-sm max-w-full mx-4 sm:mx-8 sm:my-2 lg:mt-4 my-1 p-6 sm:p-10 sm:py-12 rounded-2xl shadow overflow-hidden bg-card" >
+                                    <div class="flex h-full md:w-1/4 bg-card">
                                         <div class="flex overflow-hidden w-full">
                                             <div class="flex-auto overflow-y-auto bg-card">
                                                 <div cdkDropList #processList="cdkDropList"
-                                                    [cdkDropListData]="map"
+                                                    [cdkDropListData]="map.process"
                                                     [cdkDropListConnectedTo]="[mapDataList]">
                                                     <div class="z-20 flex items-center py-3 px-4 cursor-move border"
-                                                        *ngFor="let p of map" cdkDrag [cdkDragData]="p">
+                                                        *ngFor="let p of map.process" cdkDrag [cdkDragData]="p">
                                                         <div class="min-w-0 ml-4">
                                                             <div class="font-medium leading-5 truncate">
                                                                 {{p.process_name}}</div>
@@ -94,32 +94,34 @@
                                     <div class="flex flex-col items-center md:w-1/2 md:max-h-full max-h-96  overflow-y-auto  w-full"
                                         cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="mappedData"
                                         #mapDataList="cdkDropList" (cdkDropListDropped)="drop($event)">
-                                        <div class="p-2 w-96 " *ngFor="let card of cards; let i=index">
-                                            <div class="flex justify-center">
-                                                <div
-                                                    class="flex w-8 h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
-                                                    {{i+1}}
-                                                </div>
-                                            </div>
-                                            <div class="m-2 rounded-xl min-h-24 bg-gray-400 bg-opacity-12 hover:scale-105"
-                                                (mouseover)="dropped(i)" (touchstart)="dropped(i)">
-                                                <div class="p-3 ">
-                                                    <div class="z-20 flex items-center justify-between py-3 px-4 my-2 cursor-move rounded-lg  bg-card"
-                                                        *ngFor="let map of card.mapDatas;" cdkDrag [cdkDragData]="map"
-                                                        (mousedown)="getData(map)" (touchstart)="getData(map)">
-                                                        <div class="min-w-0">
-                                                            <div class="font-medium leading-5 truncate">
-                                                                {{map.process_name}}
-                                                            </div>
-                                                        </div>
-                                                        <button mat-icon-button (click)="cutStage(map)">
-                                                            <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
-                                                        </button>
+                                        <div class="p-2 w-96 " *ngFor="let m of map.selectedProcess; let i=index" >
+                                            
+                                                <div class="flex justify-center" >
+                                                    <div
+                                                        class="flex w-8 h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
+                                                        {{i+1}}
                                                     </div>
                                                 </div>
-                                            </div>
+                                                <div class="m-2 rounded-xl min-h-24 bg-gray-400 bg-opacity-12 hover:scale-105"
+                                                    (mouseover)="dropped(i)" (touchstart)="dropped(i)">
+                                                    <div class="p-3 ">
+                                                        <div *ngFor="let stage of m.stages"class="z-20 flex items-center justify-between py-3 px-4 my-2 cursor-move rounded-lg  bg-card"
+                                                             cdkDrag [cdkDragData]="stage"
+                                                            (mousedown)="getData(stage)" (touchstart)="getData(stage)">
+                                                            <div class="min-w-0">
+                                                                <div class="font-medium leading-5 truncate">
+                                                                    {{stage.process_name}}
+                                                                </div>
+                                                            </div>
+                                                            <button mat-icon-button (click)="cutStage(card)">
+                                                                <mat-icon svgIcon="heroicons_outline:x-circle"></mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            
+                                            
                                         </div>
-
                                     </div>
                                 </div>
                             </ng-template>
