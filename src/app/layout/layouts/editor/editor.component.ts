@@ -6,6 +6,8 @@ import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/co
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { environment } from '../../../../environments/environment';
+import { MatDialog } from '@angular/material/dialog';
+import { DialogComponent } from './dialog/dialog.component';
 
 @Component({
     selector     : 'editor-layout',
@@ -30,7 +32,9 @@ export class EditorLayoutComponent implements OnInit, OnDestroy
         private _router: Router,
         private _navigationService: NavigationService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
-        private _fuseNavigationService: FuseNavigationService
+        private _fuseNavigationService: FuseNavigationService,
+        private _matDialog: MatDialog,
+
     )
     {
     }
@@ -75,6 +79,22 @@ export class EditorLayoutComponent implements OnInit, OnDestroy
     // -----------------------------------------------------------------------------------------------------
     // @ Public methods
     // -----------------------------------------------------------------------------------------------------
+
+     /**
+     * Add a Ref note
+     */
+      addRefNote(): void
+      {
+        const dialogRef =  this._matDialog.open(DialogComponent, {
+              data:{
+                  message: 'Reference Ntes',
+                  buttonText: {
+                      cancel: "Done"
+                  }
+              }
+          });
+      }
+
 
     /**
      * Toggle navigation

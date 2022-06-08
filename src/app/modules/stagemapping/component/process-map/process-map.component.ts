@@ -1,8 +1,10 @@
 import { copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DOCUMENT } from '@angular/common';
-import { ChangeDetectorRef, Component, Inject, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectorRef, Component, DoCheck, Inject, IterableDiffers, OnInit, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
+import { remove, split } from 'lodash';
 import { elementAt, Subject, takeUntil } from 'rxjs';
 import { StagemappingService } from '../../stagemapping.service';
 import { cardsData, processCard, processCardsData, processData } from '../stage-map/stage-map.model';
@@ -22,13 +24,16 @@ export class ProcessMapComponent implements OnInit {
   cards: processCard[] = processCardsData;
   dragData: any
   dropIndex: any
+
   currentproject: number = 0;
+
   processData = processData
   @ViewChild('courseSteps', { static: true }) courseSteps: MatTabGroup;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
 
 
   constructor(private stageService: StagemappingService,
+    private _router: Router,
     private _fuseMediaWatcherService: FuseMediaWatcherService,
     @Inject(DOCUMENT) private _document: Document,
     private _changeDetectorRef: ChangeDetectorRef) { }
@@ -55,9 +60,14 @@ export class ProcessMapComponent implements OnInit {
 
     this.stageService.projectSelected.subscribe(res => {
       this.stagedData = res
-      this.stagedData = this.stagedData.filter(x => x.stages.length > 0)
+      if (this.stagedData == null) {
+        this._router.navigateByUrl('/stagemapping')
+      }
+      else {
+        this.stagedData = this.stagedData.filter(x => x.stages.length > 0)
+      }
     })
-    console.log('this.stagedData', this.stagedData);
+
 
     this.stagedData.forEach(x => {
       if (x.stages.length > 0) {
@@ -68,20 +78,35 @@ export class ProcessMapComponent implements OnInit {
       }
     })
 
+   
+
     this.mapData.forEach(x => {
       if (!x.selectedProcess) {
         x.selectedProcess = [{
           stages: []
         }]
       }
+      else {
+        let ele = Object.values(x.selectedProcess)
+        x.selectedProcess = [{
+          stages: []
+        }]
+
+        ele.forEach(j => {
+          x.selectedProcess.forEach(s => {
+            s.stages.push(j)
+          })
+        })
+      }
       let i = this.stagedData.findIndex(y => y.stages.includes(x))
-      x.i = i
+      x.default_order = i
       this.process.push(x.process)
     })
 
-    console.log(this.mapData);
+
 
   }
+
 
 
   trackByFn(index: number, item: any): any {
@@ -134,8 +159,7 @@ export class ProcessMapComponent implements OnInit {
 
     // Scroll the current step selector from sidenav into view
     this._scrollCurrentStepElementIntoView();
-    // this.cards = []
-    // this.cardPush()
+
   }
 
 
@@ -175,7 +199,6 @@ export class ProcessMapComponent implements OnInit {
     }
     else {
       event.currentIndex = this.dropIndex
-
       transferArrayItem(
         event.previousContainer.data,
         event.container.data,
@@ -202,12 +225,13 @@ export class ProcessMapComponent implements OnInit {
         }
       });
     }
-    console.log(this.mapData);
+    
+
   }
 
 
   cutStage(temp) {
-    
+
     this.mapData.forEach((element, index) => {
       if (index == this.currentproject) {
         let i = element.selectedProcess.filter(x => x.stages)
@@ -215,12 +239,12 @@ export class ProcessMapComponent implements OnInit {
         let k = j.stages.findIndex(e => e == temp)
         j.stages.splice(k, 1)
         element.process.unshift(temp)
-        if(j.stages.length == 0){
-          element.selectedProcess.splice(this.dropIndex,1)
+        if (j.stages.length == 0) {
+          element.selectedProcess.splice(this.dropIndex, 1)
           let val = element.selectedProcess.length - 1
           element.selectedProcess[val].stages.length == 0 ? null : this.cardPush()
         }
-        
+
       }
 
 
@@ -234,7 +258,6 @@ export class ProcessMapComponent implements OnInit {
   }
 
   cardPush() {
-
     let req = {
       stages: []
     }
@@ -245,6 +268,21 @@ export class ProcessMapComponent implements OnInit {
 
     });
 
+  }
+
+
+
+  saveMapping() {
+    this.mapData.forEach(x => {
+      x.selectedProcess.forEach((y) => {
+        y.stages.forEach(z => {
+          x.selectedProcess.push(z)
+          x.selectedProcess = x.selectedProcess.filter(a => a.process_name)
+        })
+      })
+    })
+
+  
   }
 
 

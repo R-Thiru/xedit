@@ -83,7 +83,7 @@ export class ProjectListComponent implements OnInit {
     // this.noteChanged.next(note);
   }
   private _readAsDataURL(file: File): Promise<any> {
-    
+    console.log(file)
     // Return a new promise
     return new Promise((resolve, reject) => {
 

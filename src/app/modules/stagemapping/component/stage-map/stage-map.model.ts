@@ -1,44 +1,25 @@
-export interface card {
- 
-  stages: stages[]
-}
+
 export interface processCard {
-  
-  stages:process[]
+  stages: any[]
 }
 
 export interface process {
-  process_name : any,
-  process_uuid : any,
-  process_id : any
+  process_name: any,
+  process_uuid: any,
+  process_id: any
 }
 
-export interface stages {
-  id?: string,
-  uuid?: any,
-  team_name: any,
-  color: any,
-  display_name: any,
-  is_active: any,
-  is_deleted: any,
-  created_on: any,
-  created_by: any,
-  modified_on: any,
-  modified_by: any,
-  deleted_on: any,
-  deleted_by: any,
-}
 
-export const cardsData: card[] = [
+
+export const cardsData = [
   {
-   
-    stages: []
+    stages:[]
   }
 ]
 
 export const processCardsData: processCard[] = [
   {
-    stages: []
+    stages:[]
   }
 ]
 
@@ -556,5 +537,135 @@ export const processData = [
     "stage_name": "test stage",
     "stage_uuid": "3dc8b4d2-5e34-11ec-a03f-42010a800009",
     "stage_id": "33"
+  }
+]
+
+
+export const mappedData = [
+  {
+    "stage_uuid": "6507668a-05bd-11e9-b4e7-42010a800002",
+    "stage_name": "PAT",
+    "stage_id": "1",
+    "default_order": "1",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "PAT",
+        "process_uuid": "65827c39-dc52-11e9-8f57-42010a800002",
+        "process_id": "16",
+        "default_order": "1",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "6c272762-05bd-11e9-b4e7-42010a800002",
+    "stage_name": "Pre-Editing",
+    "stage_id": "2",
+    "default_order": "2",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "pre-edit",
+        "process_uuid": "a3f8047a-05bd-11e9-b4e7-42010a800002",
+        "process_id": "2",
+        "default_order": "2",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "73800760-05bd-11e9-b4e7-42010a800002",
+    "stage_name": "Copy Editing",
+    "stage_id": "3",
+    "default_order": "2",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "copy-editing",
+        "process_uuid": "b5f122fd-05bd-11e9-b4e7-42010a800002",
+        "process_id": "3",
+        "default_order": "3",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "784185be-05bd-11e9-b4e7-42010a800002",
+    "stage_name": "Typesetting",
+    "stage_id": "4",
+    "default_order": "3",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "Pagination",
+        "process_uuid": "c297a6bd-05bd-11e9-b4e7-42010a800002",
+        "process_id": "4",
+        "default_order": "4",
+        "is_change": "YES"
+      },
+      {
+        "process_name": "QC",
+        "process_uuid": "ce5a6ea9-05bd-11e9-b4e7-42010a800002",
+        "process_id": "5",
+        "default_order": "4",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "f9eb22b2-7ee2-11e9-8229-42010a800002",
+    "stage_name": "PE Review",
+    "stage_id": "9",
+    "default_order": "3",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "Review1",
+        "process_uuid": "2bd78d24-7ee4-11e9-8229-42010a800002",
+        "process_id": "11",
+        "default_order": "1",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "03e4bb21-7ee3-11e9-8229-42010a800002",
+    "stage_name": "AU Review",
+    "stage_id": "10",
+    "default_order": "4",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "Author Review1",
+        "process_uuid": "036f48f3-98c5-11e9-912a-42010a800002",
+        "process_id": "12",
+        "default_order": "1",
+        "is_change": "YES"
+      }
+    ]
+  },
+  {
+    "stage_uuid": "befffc8f-f065-11eb-91e5-42010a800009",
+    "stage_name": "R2 Proofs",
+    "stage_id": "28",
+    "default_order": "5",
+    "is_change": "YES",
+    "selectedProcess": [
+      {
+        "process_name": "R2 Corrections",
+        "process_uuid": "c1a615d2-f066-11eb-91e5-42010a800009",
+        "process_id": "31",
+        "default_order": "1",
+        "is_change": "YES"
+      },
+      {
+        "process_name": "R2 QC",
+        "process_uuid": "c715dd64-f066-11eb-91e5-42010a800009",
+        "process_id": "32",
+        "default_order": "2",
+        "is_change": "YES"
+      }
+    ]
   }
 ]

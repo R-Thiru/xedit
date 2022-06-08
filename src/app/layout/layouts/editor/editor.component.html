@@ -12,17 +12,24 @@
             <img class="w-40" src="assets/images/logo/logo.svg" alt="XEditPro">
         </div>
         <div class="flex items-center pl-2 ml-auto space-x-0.5 sm:space-x-2">
+
+            <!-- Reference Button -->
+            <button class="ml-4 px-1 sm:px-4 min-w-10" mat-flat-button [color]="'primary'" (click)="addRefNote()">
+                <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:plus-circle'"></mat-icon>
+                <span class="hidden sm:inline-block ml-2">Ref note</span>
+            </button>
+
             <!-- full screen -->
             <fuse-fullscreen>
                 <!--(click)="showHide()"-->
-             </fuse-fullscreen>
+            </fuse-fullscreen>
             <button class="lg:hidden md:block sm:block hidden" mat-icon-button (click)="quickMenu.toggle()">
                 <mat-icon [svgIcon]="'mat_outline:menu'"></mat-icon>
             </button>
 
         </div>
     </div>
-    <!-- Content --> 
+    <!-- Content -->
     <div class="flex items-center flex-col flex-auto">
         <!-- *ngIf="true" hack is required here for router-outlet to work correctly.
              Otherwise, layout changes won't be registered and the view won't be updated! -->

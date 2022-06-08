@@ -2,7 +2,6 @@ import { NgModule } from '@angular/core';
 import { CommonModule } from '@angular/common';
 import { ProcessMapComponent } from './component/process-map/process-map.component';
 import { StageMapComponent } from './component/stage-map/stage-map.component';
-
 import { RouterModule } from '@angular/router';
 import { StagemappingRoutes } from './stagemapping.routing';
 import { SharedModule } from 'app/shared/shared.module';
@@ -25,7 +24,8 @@ import { FuseCardModule } from '@fuse/components/card';
     MaterialModule,
     TranslocoModule,
     FuseCardModule,
-    PipeModule
+    PipeModule,
+  
   ]
 })
 export class StagemappingModule { }

@@ -1,6 +1,5 @@
-// div {
-//     height: 100% !important;
-// }
-.ck ck-toolbar ck-toolbar_grouping {
-    display: none;
-}
+:host
+    ::ng-deep
+    .ck.ck-toolbar {
+        display: none;
+    }

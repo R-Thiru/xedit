@@ -20,10 +20,12 @@ import { SharedModule } from 'app/shared/shared.module';
 
 import { EditorLayoutComponent } from 'app/layout/layouts/editor/editor.component';
 import { MaterialModule } from 'app/shared/material.modules';
+import { DialogComponent } from './dialog/dialog.component';
 
 @NgModule({
     declarations: [
-        EditorLayoutComponent
+        EditorLayoutComponent,
+        DialogComponent
     ],
     imports     : [
         HttpClientModule,
