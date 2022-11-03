@@ -1,0 +1,260 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <div class="flex flex-auto overflow-hidden">
+        <div class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card">
+            <div
+                class="flex  flex-0 items-center  h-14 px-4 md:px-6 bg-white flex-0 sm:justify-between py-4 px-6 md:px-8 border-b ">
+                <!-- Title -->
+                <div *transloco="let t"
+                    class="text-2xl font-extrabold tracking-tight leading-5  truncate">
+                    {{t('bookmaking')}}</div>
+            </div>
+            <div class="flex flex-col flex-auto  overflow-hidden sm:overflow-y-auto bg-white">
+                <ng-container>
+                    <div class="inventory-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                        matSort matSortDisableClear>
+                        <div></div>
+                        <div class="hidden sm:block" [mat-sort-header]="'Project Name'">
+                            Project Name
+                        </div>
+                        <div class="hidden md:block" [mat-sort-header]="'Client'">
+                            Client
+                        </div>
+                        <div class="hidden md:block" [mat-sort-header]="'Type'">
+                            Type
+                        </div>
+
+                        <div class="hidden sm:block" [mat-sort-header]="'Title'">
+                            Title
+                        </div>
+
+                        <div>
+                            Details
+                        </div>
+                    </div>
+                    <ng-container *ngFor="let book of bookArr; trackBy: trackByFn">
+                        <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                            <div></div>
+                            <div class="hidden sm:block">
+                                {{book.display_name}}
+                            </div>
+                            <div class="hidden md:block">
+                                {{book.publisher_name}}
+                            </div>
+                            <div class="hidden md:block">
+                                {{book.project_type}}
+                            </div>
+
+                            <div class="hidden sm:block">
+                                {{book.workflow | uppercase}}
+                            </div>
+
+                            <div>
+                                <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button
+                                    (click)="toggleDetails(book)">
+                                    <mat-icon class="icon-size-5"
+                                        [svgIcon]="selectedBook?.id === book.id ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'">
+                                    </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <div class="grid">
+                            <ng-container *ngIf="selectedBook?.id === book.id">
+                                <ng-container *ngTemplateOutlet="rowDetailsTemplate;context: {$implicit: book}">
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+                <ng-template #rowDetailsTemplate let-book>
+                    <div class="shadow-lg overflow-hidden">
+                        <div class="flex border-b">
+                            <form class="flex flex-col" [formGroup]="chapterForm">
+                                <div class="flex flex-col sm:flex-row">
+                                    <div class="flex flex-col items-center sm:items-start mb-8 sm:mb-0 ">
+                                        <div class="flex flex-col space-y-4 w-screen lg:p-8 lg:pr-36 sm:pr-4 p-4 pr-24 ">
+                                            <div
+                                                class="flex flex-col flex-auto  overflow-hidden sm:overflow-y-auto bg-white max-h-52">
+                                                <ng-container>
+                                                    <div class="chapter-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                        matSort matSortDisableClear>
+                                                        <div>
+                                                            <mat-checkbox [formControlName]="'selectAll'"
+                                                                [color]="'primary'" [checked]="checkAll">
+                                                            </mat-checkbox>
+                                                        </div>
+                                                        <div class="hidden sm:block" [mat-sort-header]="'Chapter Name'">
+                                                            Chapter Name
+                                                        </div>
+                                                        <div class="hidden md:block"
+                                                            [mat-sort-header]="'Start Section'">
+                                                            Start Section
+                                                        </div>
+                                                        <div class="hidden md:block"
+                                                            [mat-sort-header]="'Page Num Style'">
+                                                            Page Num Style
+                                                        </div>
+                                                        <div class="hidden md:block" [mat-sort-header]="'Prefix'">
+                                                            Prefix
+                                                        </div>
+                                                        <div class="hidden sm:block">
+                                                            Delete
+                                                        </div>
+                                                    </div>
+                                                    <div cdkDropList (cdkDropListDropped)="drop($event)"
+                                                        class="cursor-move" >
+                                                        <ng-container *ngFor="let chapter of chapterArr">
+                                                            <div class="chapter-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b"
+                                                                cdkDrag [ngClass]="{'cursor-not-allowed':chapter.is_disable }">
+                                                                <div>
+                                                                    <mat-checkbox [color]="'primary'"
+                                                                        [formControlName]="'check'"
+                                                                        (click)="getCheck(chapter.file_uuid)">
+                                                                    </mat-checkbox>
+                                                                </div>
+                                                                <div class="hidden sm:block">
+                                                                    {{chapter.chapter_name}}
+                                                                </div>
+                                                                <div class="hidden sm:block">
+                                                                    <mat-radio-group class="flex flex-row space-x-2 "
+                                                                        [disabled]="chapter.is_disable"
+                                                                        [color]="'primary'" [formControlName]="'radio'">
+                                                                        <mat-radio-button [value]="'Cont.PageNum'">
+                                                                            Cont.PageNum
+                                                                        </mat-radio-button>
+                                                                        <mat-radio-button [value]="'Start.PageNum'">
+                                                                            Start.PageNum
+                                                                        </mat-radio-button>
+                                                                        
+                                                                        <mat-form-field class="max-w-xs ">
+                                                                            <input type="number" matInput class="disabled:cursor-not-allowed"
+                                                                                [formControlName]="'pageNo'">
+                                                                        </mat-form-field>
+
+                                                                    </mat-radio-group>
+                                                                </div>
+                                                                <div class="hidden sm:block">
+                                                                    <mat-form-field class="w-1/2 ">
+                                                                        <mat-select [formControlName]="'pageStyle'"
+                                                                            [disabled]="chapter.is_disable">
+                                                                            <ng-container>
+                                                                                <mat-option [value]="'1,2,3,4'">
+                                                                                    1,2,3,4
+                                                                                </mat-option>
+                                                                                <mat-option [value]="'a,b,c,d'">
+                                                                                    a,b,c,d
+                                                                                </mat-option>
+                                                                            </ng-container>
+                                                                        </mat-select>
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div class="hidden md:block">
+                                                                    <mat-form-field class="w-1/2">
+                                                                        <input matInput [formControlName]="'prefix'">
+                                                                    </mat-form-field>
+                                                                </div>
+                                                                <div>
+                                                                    <button (click)="delete()"
+                                                                        [disabled]="chapter.is_disable">
+                                                                        <mat-icon svgIcon="heroicons_solid:trash">
+                                                                        </mat-icon>
+                                                                    </button>
+                                                                </div>
+                                                            </div>
+                                                        </ng-container>
+                                                    </div>
+                                                </ng-container>
+                                            </div>
+                                            <div class="flex flex-row space-x-4">
+                                                <div class="w-1/2 space-x-2">
+                                                    <mat-form-field class="w-3/4">
+                                                        <mat-label>Book Name</mat-label>
+                                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                            [svgIcon]="'heroicons_solid:bookmark'"></mat-icon>
+                                                        <input matInput [formControlName]="'bookName'"
+                                                            [placeholder]="'Book Name'" [spellcheck]="false">
+                                                    </mat-form-field>
+                                                    <mat-form-field class="w-1/5">
+                                                        <mat-label>Type</mat-label>
+                                                        <mat-icon matPrefix class="hidden sm:flex icon-size-5"
+                                                            [svgIcon]="'heroicons_solid:cash'"></mat-icon>
+                                                        <mat-select [formControlName]="'bookType'">
+                                                            <ng-container>
+                                                                <mat-option value="Print PDF">
+                                                                    Print PDF
+                                                                </mat-option>
+                                                                <mat-option value="eBook PDF">
+                                                                    eBook PDF
+                                                                </mat-option>
+                                                            </ng-container>
+                                                        </mat-select>
+                                                    </mat-form-field>
+                                                </div>
+
+                                                <div class="w-1/2 flex flex-row">
+                                                    <div class="flex flex-col space-x-3 ">
+                                                        <p class="text-md font-semibold ml-4">Fornt Cover</p>
+                                                        <div
+                                                            class="w-32 h-44 border rounded overflow-hidden flex items-center justify-center">
+                                                            <div *ngIf="!dataImage">
+                                                                <input id="image-file-input"
+                                                                    class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                                                                    type="file" [multiple]="true"
+                                                                    [accept]="'image/jpeg, image/png, application/pdf'"
+                                                                    (change)="openImages(imageFileInput.files)"
+                                                                    #imageFileInput>
+                                                                <label
+                                                                    class="flex items-center justify-center w-8 h-8 rounded-full cursor-pointer hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                                                                    for="image-file-input" matRipple>
+                                                                    <mat-icon class="icon-size-6 text-hint"
+                                                                        [svgIcon]="'heroicons_outline:plus'">
+                                                                    </mat-icon>
+                                                                </label>
+                                                            </div>
+                                                            <ng-container *ngIf="dataImage">
+                                                                <!-- <div class="absolute md:right-0  md:bottom-0 p-4 md:p-8">
+                                                                <button mat-icon-button class="rounded-full bg-slate-100"
+                                                                    (click)="removeImage(card)">
+                                                                    <mat-icon class="text-black"
+                                                                        [svgIcon]="'heroicons_outline:trash'">
+                                                                    </mat-icon>
+                                                                </button>
+                                                            </div> -->
+                                                                <img class="w-full h-full object-cover"
+                                                                    [src]="dataImage"
+                                                                    *ngIf="dataImage.length > 20; else pdfFile"
+                                                                    alt="Card cover image">
+                                                                <ng-template #pdfFile>
+                                                                    <p>
+                                                                        {{dataImage}}
+                                                                    </p>
+                                                                </ng-template>
+                                                            </ng-container>
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col space-x-3 ml-4">
+                                                        <p class="text-md font-semibold ml-4">Back Cover</p>
+                                                        <div
+                                                            class="w-32 h-44 border rounded overflow-hidden flex items-center justify-center">
+                                                        </div>
+                                                    </div>
+                                                    <div class="flex flex-col space-x-3 ml-4">
+                                                        <p class="text-md font-semibold ml-4">Advertisement</p>
+                                                        <div
+                                                            class="w-32 h-44 border rounded overflow-hidden flex items-center justify-center">
+
+                                                        </div>
+                                                    </div>
+                                                </div>
+
+                                            </div>
+                                        </div>
+                                    </div>
+                                </div>
+                            </form>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+        </div>
+    </div>
+</div>

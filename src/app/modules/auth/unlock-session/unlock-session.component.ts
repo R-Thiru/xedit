@@ -1,10 +1,13 @@
 import { Component, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
+import { Location } from '@angular/common';
 import { FormBuilder, FormGroup, NgForm, Validators } from '@angular/forms';
-import { ActivatedRoute, Router } from '@angular/router';
 import { fuseAnimations } from '@fuse/animations';
 import { AuthService } from 'app/core/auth/auth.service';
 import { UserService } from 'app/core/user/user.service';
 import { FuseAlertType } from '@fuse/components/alert';
+import { AppService } from 'app/app.service';
+import { ProfileService } from 'app/modules/profile/profile.service';
+
 
 @Component({
     selector     : 'auth-unlock-session',
@@ -12,6 +15,7 @@ import { FuseAlertType } from '@fuse/components/alert';
     encapsulation: ViewEncapsulation.None,
     animations   : fuseAnimations
 })
+
 export class AuthUnlockSessionComponent implements OnInit
 {
     @ViewChild('unlockSessionNgForm') unlockSessionNgForm: NgForm;
@@ -23,19 +27,22 @@ export class AuthUnlockSessionComponent implements OnInit
     name: string;
     showAlert: boolean = false;
     unlockSessionForm: FormGroup;
+    redirectURL: any;
     private _email: string;
 
     /**
      * Constructor
      */
     constructor(
-        private _activatedRoute: ActivatedRoute,
+        private _location: Location,
         private _authService: AuthService,
         private _formBuilder: FormBuilder,
-        private _router: Router,
+        private _profileService : ProfileService,
         private _userService: UserService
     )
     {
+          
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -48,10 +55,18 @@ export class AuthUnlockSessionComponent implements OnInit
     ngOnInit(): void
     {
         // Get the user's name
-        this._userService.user$.subscribe((user) => {
-            this.name = user.name;
-            this._email = user.email;
-        });
+
+        this._profileService.getUserProfile().subscribe(res =>{
+            let data = res.data
+            this.name = data.first_name +' '+ data.last_name
+            this._email = data.user_name
+            this.unlockSessionForm.get('name').patchValue(this.name)
+        })
+
+        // this._userService.user$.subscribe((user) => {
+        //     this.name = user.name;
+        //     this._email = user.email;
+        // });
 
         // Create the form
         this.unlockSessionForm = this._formBuilder.group({
@@ -63,6 +78,9 @@ export class AuthUnlockSessionComponent implements OnInit
             ],
             password: ['', Validators.required]
         });
+
+       
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -87,7 +105,7 @@ export class AuthUnlockSessionComponent implements OnInit
         this.showAlert = false;
 
         this._authService.unlockSession({
-            email   : this._email ?? '',
+            username   : this._email ?? '',
             password: this.unlockSessionForm.get('password').value
         }).subscribe(
             () => {
@@ -96,10 +114,12 @@ export class AuthUnlockSessionComponent implements OnInit
                 // The '/signed-in-redirect' is a dummy url to catch the request and redirect the user
                 // to the correct page after a successful sign in. This way, that url can be set via
                 // routing file and we don't have to touch here.
-                const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') || '/signed-in-redirect';
+                // const redirectURL = this._activatedRoute.snapshot.queryParamMap.get('redirectURL') ;
 
+                this._location.back()
+                // console.log('this.redirectUR',this.redirectURL)
                 // Navigate to the redirect url
-                this._router.navigateByUrl(redirectURL);
+                // this._router.navigateByUrl());
 
             },
             (response) => {

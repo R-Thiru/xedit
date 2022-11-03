@@ -5,11 +5,7 @@ import { CommonDashboardComponent } from 'app/modules/dashboard/components/commo
 import { UsageDashboardComponent } from 'app/modules/dashboard/components/usage-dashboard/usage-dashboard.component';
 import { DashboardResolver } from 'app/modules/dashboard/dashboard.resolvers';
 const routes: Routes = [
-  // {
-  //   path: '',
-  //   pathMatch : 'full',
-  //   redirectTo : 'dashboard/common'
-  // },
+
   {
     path     : 'common',
     component: CommonDashboardComponent,

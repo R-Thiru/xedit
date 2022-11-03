@@ -1,17 +1,17 @@
-<div class="fixed lg:sticky top-0 bottom-0 sm:left-full w-full lg:w-16 sm:w-96  sm:h-screen sm:shadow">
+<div class="fixed lg:sticky top-0 bottom-0 sm:left-full w-full lg:w-12 sm:w-96  sm:h-screen sm:shadow">
     <div
         class="flex flex-col w-full sm:w-96 h-full transition-transform duration-400 ease-drawer bg-card"
         [ngClass]="{'-translate-x-full sm:-translate-x-96 lg:-translate-x-80 shadow': opened, 'translate-x-0': !opened}">
 
         <!-- Header -->
         <div
-            class="quick-menu-header flex flex-0 items-center justify-start cursor-pointer"
+            class="quick-menu-header h-12 flex flex-0 items-center justify-start cursor-pointer"
             (click)="toggle()">
 
             <!-- Toggle -->
             <ng-container *ngIf="!opened || (opened && !selectedMenu)">
                 <div class="flex flex-auto items-center justify-center">
-                    <div class="flex flex-0 items-center justify-center w-16">
+                    <div class="flex flex-0 items-center justify-center w-12">
                         <mat-icon
                             class="icon-size-6"
                             [svgIcon]="'mat_outline:menu'"></mat-icon>
@@ -51,13 +51,13 @@
 
             <!-- Menu list -->
             <div
-                class="flex-0 w-16 h-full overflow-y-auto overscroll-y-contain sm:overflow-hidden sm:overscroll-auto"
+                class="flex-0 w-12 h-full overflow-y-auto overscroll-y-contain sm:overflow-hidden sm:overscroll-auto"
                 fuseScrollbar
                 [fuseScrollbarOptions]="{wheelPropagation: false}">
                 <div class="flex-auto">
                     <ng-container *ngFor="let menu of menus; trackBy: trackByFn">
                         <div
-                            class="flex items-center py-3 px-4 cursor-pointer"
+                            class="flex items-center py-3 px-2 cursor-pointer"
                             [ngClass]="{'hover:bg-gray-100 dark:hover:bg-hover': !selectedMenu || selectedMenu.id !== menu.id,
                                         'bg-primary-50 dark:bg-hover': selectedMenu && selectedMenu.id === menu.id}"
                             (click)="selectMenu(menu.id)">

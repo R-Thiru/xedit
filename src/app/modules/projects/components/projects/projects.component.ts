@@ -1,6 +1,7 @@
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Inject, OnInit, ViewChild, ViewEncapsulation } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
+import { Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { Subject, takeUntil } from 'rxjs';
 import { ProjectsService } from '../../projects.service';
@@ -17,8 +18,13 @@ export class ProjectsComponent implements OnInit {
   constructor(
     @Inject(DOCUMENT) private _document: Document,
     private _changeDetectorRef: ChangeDetectorRef,
+    private _router: Router,
     private prjctServcie: ProjectsService,
-    private _fuseMediaWatcherService: FuseMediaWatcherService) { }
+    private _fuseMediaWatcherService: FuseMediaWatcherService) {
+
+
+  }
+
 
 
   @ViewChild('courseSteps', { static: true }) courseSteps: MatTabGroup;
@@ -28,6 +34,7 @@ export class ProjectsComponent implements OnInit {
   drawerMode: 'over' | 'side' = 'side';
   drawerOpened: boolean = true;
   private _unsubscribeAll: Subject<any> = new Subject<any>();
+
   projectsData = [
     {
       "stage_name": "PAT",
@@ -79,7 +86,9 @@ export class ProjectsComponent implements OnInit {
       "count": 0
     }
   ]
+
   ngOnInit(): void {
+
 
     this.prjctServcie.projectSelected.subscribe((res) => {
       this.selectedProject = res
@@ -122,6 +131,10 @@ export class ProjectsComponent implements OnInit {
   }
 
 
+  openEditor() {
+    this._router.navigateByUrl('edit/id')
+    // window.open('http://localhost:4200/edit/id')
+  }
   /**
     * Go to previous step
     */

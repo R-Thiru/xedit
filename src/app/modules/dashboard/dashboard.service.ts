@@ -39,7 +39,7 @@ export class DashboardService
     {
         return this._httpClient.get('api/dashboards/common').pipe(
             tap((response: any) => {
-                console.log(response);
+                // console.log(response);
                 this._data.next(response);
             })
         );

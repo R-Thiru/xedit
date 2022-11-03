@@ -3,13 +3,19 @@ import { CommonModule } from '@angular/common';
 import { FormsModule, ReactiveFormsModule } from '@angular/forms';
 import { PaginationComponent } from './pagination/pagination.component';
 import { MaterialModule } from './material.modules';
+import { InlineEditorModule } from './inline-editor/inline.module';
+
+
+
+
 
 @NgModule({
     imports: [
         CommonModule,
         FormsModule,
         ReactiveFormsModule,
-        MaterialModule
+        MaterialModule,
+        // InlineEditorModule
     ],
     exports: [
         CommonModule,
@@ -19,6 +25,7 @@ import { MaterialModule } from './material.modules';
     ],
     declarations: [
       PaginationComponent,
+      
       
     ]
 })

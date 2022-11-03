@@ -1,0 +1,48 @@
+<div class="flex flex-col  max-w-full w-full max-h-full h-86  sm:min-w-180">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-black border-b ">
+        <div class="text-lg font-medium">{{fileName}}</div>
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Content -->
+    <form [formGroup]="UploadForm" class="p-3 space-y-3">
+        <div class="flex flex-col w-1/2" *ngIf="selectedFile.length == 0">
+            <span class="items-center">Upload File</span>
+            <div
+                class="flex flex-col items-center justify-center w-full h-28 rounded-lg cursor-pointer border-2 border-gray-300 border-dashed hover:bg-hover transition-colors duration-150 ease-in-out">
+                <input id="image-file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                    [accept]="'application/pdf'" [formControlName]="'fileUploading'" type="file" [multiple]="true"
+                    (change)="openFiles(FileInput)" #FileInput>
+                <label
+                    class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                    for="image-file-input" matRipple>
+                    <mat-icon class="icon-size-12 text-hint" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                </label>
+            </div>
+        </div>
+        <div class="flex flex-col w-1/2 space-y-3" *ngIf="selectedFile.length > 0">
+            <span class="border-2 border-gray-300 border rounded-lg grid  justify-between p-4 min-h-28 max-h-full gap-3">
+                <ng-conatiner *ngFor="let file of selectedFile">
+                    <div class="flex justify-between border ring-2 ring-red-700">
+                        <span>{{file.name}}</span>
+                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700  top-0 right-0"(click)="deleteFileSelected(file)"></mat-icon>
+                    </div>
+                    <!-- <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                        [matTooltip]="file.name">{{file.name}}</p> -->
+                </ng-conatiner>
+            </span>
+        </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-12 px-4  bg-gray-50 ">
+
+        <button class="ml-2" mat-flat-button [mat-dialog-close]="true" [color]="'primary'" [matTooltip]="'Upload'"
+            (click)="uploadFiles()">
+            Upload
+        </button>
+
+    </div>
+</div>

@@ -5,11 +5,14 @@ import { FuseHorizontalNavigationComponent } from '@fuse/components/navigation/h
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { FuseUtilsService } from '@fuse/services/utils/utils.service';
+import { EditorInsertComponent } from 'app/modules/editor/components/Menu/editor-insert/editor-insert.component';
+import { MatDialog } from '@angular/material/dialog';
 
 @Component({
     selector       : 'fuse-horizontal-navigation-basic-item',
     templateUrl    : './basic.component.html',
-    changeDetection: ChangeDetectionStrategy.OnPush
+    styleUrls      : ['./basic.component.scss'],
+    // changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDestroy
 {
@@ -24,6 +27,7 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
      * Constructor
      */
     constructor(
+        private _matDialog: MatDialog,
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
         private _fuseUtilsService: FuseUtilsService
@@ -77,5 +81,15 @@ export class FuseHorizontalNavigationBasicItemComponent implements OnInit, OnDes
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
+    }
+
+
+    openDialog(item){
+        let selectedMenu = item.title;
+        if (item.title) {
+          const dialogRef = this._matDialog.open(EditorInsertComponent, {
+            data: selectedMenu
+          });
+        }
     }
 }

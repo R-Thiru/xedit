@@ -1,0 +1,28 @@
+::ng-deep .fuse-horizontal-navigation-menu-panel .mat-menu-content {
+    padding-top: 8px !important;
+    padding-bottom: 8px !important;
+    display: flex !important;
+}
+
+::ng-deep .custom__menu+* .cdk-overlay-pane {
+    position: absolute;
+    pointer-events: auto;
+    box-sizing: border-box;
+    z-index: 1000;
+    display: flex;
+    max-width: 100%;
+    max-height: 100%;
+    width: 100% !important;
+}
+
+::ng-deep .custom__menu+* .mat-menu-panel {
+        min-width: 112px;
+        max-width: 100% !important;
+        overflow: auto;
+        -webkit-overflow-scrolling: touch;
+        max-height: calc(100vh - 48px);
+        border-radius: 4px;
+        outline: 0;
+        min-height: 44px;
+        width: 100% !important
+    }

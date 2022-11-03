@@ -2,9 +2,11 @@ import { animate, state, style, transition, trigger } from '@angular/animations'
 import { DOCUMENT } from '@angular/common';
 import { Component, OnInit, ChangeDetectionStrategy, ViewEncapsulation, ChangeDetectorRef, Inject, ViewChild, ElementRef } from '@angular/core';
 import { FormControl } from '@angular/forms';
+import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
 import { Router } from '@angular/router';
 import { AppService } from 'app/app.service';
+import { PublishersService } from 'app/modules/publishers/publishers.service';
 import { ignoreElements, Observable, Subject } from 'rxjs';
 import { ProjectsService } from '../../projects.service';
 import { project, projectData } from './project-list.model';
@@ -29,17 +31,23 @@ import { project, projectData } from './project-list.model';
   changeDetection: ChangeDetectionStrategy.OnPush
 })
 export class ProjectListComponent implements OnInit {
-  public projectData: project[] = projectData
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>(this.projectData);
+
+  projectData: any[];
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
   obs: Observable<any>;
-  inputData: any
+  inputData: any;
+  projectId: any;
+
+  @ViewChild('matDrawer') public matDrawer: MatDrawer
+
   constructor(public service: AppService,
-    public prjctService : ProjectsService,
-    public _router : Router,
+    public _projectService: ProjectsService,
+
+    public _router: Router,
     public _changeDetectorRef: ChangeDetectorRef) { }
 
   ngOnInit(): void {
-
+    this.getProjectData()
     this.obs = this.dataSource.connect();
     this.service.searchData.subscribe((res: any) => {
       this.inputData = res.toLowerCase()
@@ -48,7 +56,6 @@ export class ProjectListComponent implements OnInit {
   }
 
   openImages(fileList: FileList) {
-    
     // Return if cancelled
     if (!fileList.length) {
       return;
@@ -63,27 +70,29 @@ export class ProjectListComponent implements OnInit {
 
     this._readAsDataURL(file).then((data) => {
       this.projectData.forEach(x => {
-        if (x.id == this.projectId) {
+        if (x.uuid == this.projectId) {
           x.image = data
         }
       })
       this._changeDetectorRef.detectChanges()
     });
   }
-  projectId: any
+
+
+
   uploadImages(project): void {
-    console.log('checked', project.id)
-    this.projectId = project.id
+    this.projectId = project.uuid
   }
+
   removeImage(project): void {
-    console.log('delete', project.id)
     project.image = null;
 
     // // Update the note
     // this.noteChanged.next(note);
   }
+
   private _readAsDataURL(file: File): Promise<any> {
-    console.log(file)
+
     // Return a new promise
     return new Promise((resolve, reject) => {
 
@@ -98,18 +107,18 @@ export class ProjectListComponent implements OnInit {
       // Reject the promise on error
       reader.onerror = (e): void => {
         reject(e);
-        
       };
 
       // Read the file as the
       reader.readAsDataURL(file);
+
     });
   }
 
 
   flipData: any
   toggleFlip(card) {
-    
+
     this.projectData.forEach(x => {
       if (x.id == card) {
         x.toggle = !x.toggle
@@ -117,14 +126,65 @@ export class ProjectListComponent implements OnInit {
     })
   }
 
-  viewChapters(project):void{
+  viewChapters(project): void {
     this._router.navigateByUrl('/projects/details')
-    this.prjctService.projectSelected.next(project)
+    this._projectService.projectSelected.next(project)
+
+  }
+
+  createProject() {
+    this.matDrawer.open()
     
   }
 
-  
+  saveProject(data) {
+    
+    data.uuid ? this.updateProjectData(data) : this.saveProjectData(data)
+  }
+
+  getProjectData() {
+    this._projectService.getProject().subscribe(res => {
+      if (res.status) {
+        this.projectData = res.data
+        this.dataSource = new MatTableDataSource(this.projectData)
+        this.obs = this.dataSource.connect()
+        this._changeDetectorRef.detectChanges()
+      }
+    },
+      (error) => {
+
+      })
+  }
+
+
+  saveProjectData(data) {
+    
+    let req = data
+    this._projectService.saveProject(req).subscribe(res => {
+      if (res.status) {
+        console.log('save', res);
+
+      }
+    },
+      (error) => {
+
+      })
+  }
+
+
+  updateProjectData(data) {
+    let req = data
+    this._projectService.updateProject(req).subscribe(res => {
+      if (res.status) {
+        console.log('Update', res);
+
+      }
+    },
+      (error) => {
+
+      })
+  }
+
+
 
 }
-
-

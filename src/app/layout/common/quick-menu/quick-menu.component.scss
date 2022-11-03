@@ -22,14 +22,14 @@ quick-menu {
     }
 }
 /* Adjustments depending on the selected layout */
-.quick-menu-header {
-    height: 64px;
+// .quick-menu-header {
+//     // height: 44px;
 
-    enterprise-layout &,
-    modern-layout & {
-        height: 80px !important;
-    }
-}
+//     enterprise-layout &,
+//     modern-layout & {
+//         // height: 80px !important;
+//     }
+// }
 
 /* Overlay */
 .quick-menu-overlay {

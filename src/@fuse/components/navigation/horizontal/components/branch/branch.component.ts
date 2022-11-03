@@ -1,18 +1,21 @@
-import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, ViewChild } from '@angular/core';
+import { ChangeDetectionStrategy, ChangeDetectorRef, Component, Input, OnDestroy, OnInit, QueryList, ViewChild, ViewChildren, ViewEncapsulation } from '@angular/core';
 import { BooleanInput } from '@angular/cdk/coercion';
-import { MatMenu } from '@angular/material/menu';
+import { MatMenu, MatMenuTrigger } from '@angular/material/menu';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseHorizontalNavigationComponent } from '@fuse/components/navigation/horizontal/horizontal.component';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
+import { ModernService } from 'app/layout/layouts/horizontal/modern/modern.service';
+import { items } from 'app/mock-api/apps/file-manager/data';
 
 @Component({
-    selector       : 'fuse-horizontal-navigation-branch-item',
-    templateUrl    : './branch.component.html',
+    selector: 'fuse-horizontal-navigation-branch-item',
+    templateUrl: './branch.component.html',
+    styleUrls: ['./branch.component.scss'],
+    encapsulation: ViewEncapsulation.Emulated,
     changeDetection: ChangeDetectionStrategy.OnPush
 })
-export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDestroy
-{
+export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDestroy {
     /* eslint-disable @typescript-eslint/naming-convention */
     static ngAcceptInputType_child: BooleanInput;
     /* eslint-enable @typescript-eslint/naming-convention */
@@ -20,7 +23,9 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
     @Input() child: boolean = false;
     @Input() item: FuseNavigationItem;
     @Input() name: string;
-    @ViewChild('matMenu', {static: true}) matMenu: MatMenu;
+    @ViewChild('matMenu', { static: true }) matMenu: MatMenu;
+    @ViewChildren('trigger') Mattrigger: QueryList<MatMenuTrigger>;
+    @ViewChild('trigger') trigger: MatMenuTrigger;
 
     private _fuseHorizontalNavigationComponent: FuseHorizontalNavigationComponent;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
@@ -31,8 +36,9 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService
-    )
-    {
+    ) {
+
+
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -42,8 +48,7 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Get the parent navigation component
         this._fuseHorizontalNavigationComponent = this._fuseNavigationService.getComponent(this.name);
 
@@ -60,8 +65,7 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
     /**
      * On destroy
      */
-    ngOnDestroy(): void
-    {
+    ngOnDestroy(): void {
         // Unsubscribe from all subscriptions
         this._unsubscribeAll.next(null);
         this._unsubscribeAll.complete();
@@ -74,11 +78,11 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
     /**
      * Trigger the change detection
      */
-    triggerChangeDetection(): void
-    {
-        // Mark for check
+    triggerChangeDetection(): void {
         this._changeDetectorRef.markForCheck();
     }
+
+   
 
     /**
      * Track by function for ngFor loops
@@ -86,8 +90,10 @@ export class FuseHorizontalNavigationBranchItemComponent implements OnInit, OnDe
      * @param index
      * @param item
      */
-    trackByFn(index: number, item: any): any
-    {
+    trackByFn(index: number, item: any): any {
         return item.id || index;
     }
+
+
+   
 }

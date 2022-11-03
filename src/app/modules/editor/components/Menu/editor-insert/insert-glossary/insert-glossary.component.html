@@ -1,0 +1,92 @@
+<div class="flex flex-col  max-w-full w-full max-h-full h-86  sm:min-w-180">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-black border-b ">
+        <div class="text-lg font-medium">Glossary</div>
+
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+    <!-- Content -->
+    <form [formGroup]="glossaryForm" class="p-3 space-y-4 flex flex-col">
+        <section>
+            <mat-radio-group [formControlName]="'glossary'" [color]="'primary'" class="grid grid-cols-2 gap-2">
+                <mat-radio-button value="New" [checked]="true">New</mat-radio-button>
+                <mat-radio-button value="Existing">Existing</mat-radio-button>
+            </mat-radio-group>
+        </section>
+        <section class="flex flex-col space-y-2">
+            <mat-label>Glossary Type <span class="text-red-400">*</span></mat-label>
+            <mat-radio-group [formControlName]="'glossaryType'" [color]="'primary'" class="grid grid-cols-2 gap-2">
+                <mat-radio-button value="ChapterEnd" [checked]="true">Chapter End</mat-radio-button>
+                <mat-radio-button value="BookEnd">Book End</mat-radio-button>
+            </mat-radio-group>
+        </section>
+
+        <ng-container *ngIf="glossaryForm.get('glossary').value == 'New'">
+            <div class="flex flex-col">
+                <mat-label>Term Link Text</mat-label>
+                <ckeditor matInput class="w-full min-h-40 h-full" [editor]="Editor" (ready)="editorReady($event)"
+                    [formControlName]="'linkText'" [config]="{ toolbar: [ 'xeditbold','xedititalic','xeditstrikethrough',
+                'xeditunderline','xeditsubscript','xeditsuperscript' ] }">
+                </ckeditor>
+            </div>
+            <div class="flex flex-col">
+                <mat-label>Term definition &#8721;</mat-label>
+                <ckeditor matInput class="w-full min-h-40 h-full" [editor]="Editor" (ready)="editorReady($event)"
+                    [formControlName]="'definition'" [config]="{ toolbar: [ 'xeditbold','xedititalic','xeditstrikethrough',
+                    'xeditunderline','xeditsubscript','xeditsuperscript' ] }">
+                </ckeditor>
+            </div>
+        </ng-container>
+
+        <ng-container *ngIf="glossaryForm.get('glossary').value == 'Existing'">
+            <div class="grid grid-cols-2 gap-2">
+                <mat-form-field class="w-full" *ngIf="glossaryForm.get('glossaryType').value == 'BookEnd'">
+                    <mat-label>Select Chapter</mat-label>
+                    <mat-select [formControlName]="'selectChapter'">
+                        <ng-container >
+                            <mat-option [value]="'Sample'">
+                                Sample
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>  
+
+                <mat-form-field class="w-full">
+                    <mat-label>Select Link</mat-label>
+                    <mat-select [formControlName]="'selectLink'">
+                        <ng-container >
+                            <mat-option [value]="'Sample'">
+                                Sample
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <mat-form-field class="w-full">
+                    <mat-label>Select End Group</mat-label>
+                    <mat-select [formControlName]="'selectEnd'">
+                        <ng-container >
+                            <mat-option [value]="'Sample'">
+                                Sample
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                
+            </div>
+        </ng-container>
+
+       
+    </form>
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-12 px-4  bg-gray-50 ">
+
+        <button class="ml-2" mat-flat-button [color]="'primary'" [matTooltip]="'Submit'" (click)="submitGlos()">
+            Submit
+        </button>
+
+    </div>
+</div>

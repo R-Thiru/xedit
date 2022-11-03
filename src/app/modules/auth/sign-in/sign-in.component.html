@@ -19,7 +19,7 @@
             <!-- Alert -->
             <fuse-alert
                 class="mt-8 -mb-4"
-                *ngIf="showAlert"
+                *ngIf="showAlert"   
                 [appearance]="'outline'"
                 [showIcon]="false"
                 [type]="alert.type"
@@ -37,13 +37,13 @@
                 <mat-form-field class="w-full">
                     <mat-label>Email address</mat-label>
                     <input
-                        id="email"
+                        id="username"
                         matInput
-                        [formControlName]="'email'">
-                    <mat-error *ngIf="signInForm.get('email').hasError('required')">
+                        [formControlName]="'username'">
+                    <mat-error *ngIf="signInForm.get('username').hasError('required')">
                         Email address is required
                     </mat-error>
-                    <mat-error *ngIf="signInForm.get('email').hasError('email')">
+                    <mat-error *ngIf="signInForm.get('username').hasError('username')">
                         Please enter a valid email address
                     </mat-error>
                 </mat-form-field>
@@ -65,11 +65,11 @@
                         <mat-icon
                             class="icon-size-5"
                             *ngIf="passwordField.type === 'password'"
-                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
                         <mat-icon
                             class="icon-size-5"
                             *ngIf="passwordField.type === 'text'"
-                            [svgIcon]="'heroicons_solid:eye-off'"></mat-icon>
+                            [svgIcon]="'heroicons_solid:eye'"></mat-icon>
                     </button>
                     <mat-error>
                         Password is required

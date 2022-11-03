@@ -1,5 +1,14 @@
 :host
-    ::ng-deep
-    .ck.ck-toolbar {
-        display: none;
+    ::ng-deep{
+        .ck.ck-toolbar {
+            display: none;
+            position: sticky;
+            top: 0;
+            z-index: 9999999;
+        }
+    
+        .ck.ck-placeholder, .ck .ck-placeholder {
+             position:unset !important;
+        }
     }
+    

@@ -11,8 +11,7 @@ export class PaginationComponent implements OnInit {
   @ViewChild(MatPaginator) paginator: MatPaginator;
   pageSize: number;
   pageIndex: number;
-  length: number;
-  
+  length: number = 10;
   pageNumbers: number[];
 
 
@@ -31,13 +30,12 @@ export class PaginationComponent implements OnInit {
   }
   @Input('pageSize') set pageSizeChanged(pageSize: number) {
     this.pageSize = pageSize;
-   
   }
 
   constructor() {}
 
   ngOnInit() {
-  
+    
   }
 
   ngAfterViewInit (){
@@ -48,6 +46,7 @@ export class PaginationComponent implements OnInit {
     this.length = pageEvt.length;
     this.pageIndex = pageEvt.pageIndex;
     this.pageSize = pageEvt.pageSize;
+    
     
     this.emitPageEvent(pageEvt);
 

@@ -1,4 +1,4 @@
-<div class="fuse-vertical-navigation-wrapper">
+<div class="fuse-vertical-navigation-wrapper"  #takewidth>
 
     <!-- Header -->
     <div class="fuse-vertical-navigation-header">
@@ -10,7 +10,7 @@
         class="fuse-vertical-navigation-content"
         fuseScrollbar
         [fuseScrollbarOptions]="{wheelPropagation: inner, suppressScrollX: true}"
-        #navigationContent>
+        #navigationContent  >
 
         <!-- Content header -->
         <div class="fuse-vertical-navigation-content-header">
@@ -51,7 +51,7 @@
 
                 <!-- Divider -->
                 <ng-container *ngIf="item.type === 'divider'">
-                    <fuse-vertical-navigation-divider-item
+                    <fuse-vertical-navigation-divider-item    
                         [item]="item"
                         [name]="name"></fuse-vertical-navigation-divider-item>
                 </ng-container>
@@ -89,7 +89,7 @@
     <div class="fuse-vertical-navigation-footer">
     <ng-container >
         <div class="flex flex-0 items-center justify-center h-16 pr-6 pl-2 mt-2 mb-4 opacity-12">
-            Version : 4.2.2
+            Version : 5.0.0
         </div>
     </ng-container>
     </div>

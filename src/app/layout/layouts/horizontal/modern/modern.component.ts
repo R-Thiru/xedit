@@ -1,20 +1,23 @@
 import { Component, OnDestroy, OnInit, ViewEncapsulation } from '@angular/core';
-import { ActivatedRoute, Router } from '@angular/router';
+import { ActivatedRoute,  Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
 import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/components/navigation';
-import { Navigation } from 'app/core/navigation/navigation.types';
+
 import { NavigationService } from 'app/core/navigation/navigation.service';
+import { ModernService } from './modern.service';
+
 
 @Component({
     selector     : 'modern-layout',
     templateUrl  : './modern.component.html',
+    styleUrls: ['./modern.component.scss'],
     encapsulation: ViewEncapsulation.None
 })
 export class ModernLayoutComponent implements OnInit, OnDestroy
 {
     isScreenSmall: boolean;
-    navigation: Navigation;
+    navigation: any;
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
     /**
@@ -23,16 +26,15 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
+        private _modernService : ModernService,
         private _navigationService: NavigationService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
     )
     {
+       
     }
 
-    // -----------------------------------------------------------------------------------------------------
-    // @ Accessors
-    // -----------------------------------------------------------------------------------------------------
 
     /**
      * Getter for current year
@@ -51,12 +53,15 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
      */
     ngOnInit(): void
     {
+        
         // Subscribe to navigation data
-        this._navigationService.navigation$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((navigation: Navigation) => {
-                this.navigation = navigation;
-            });
+        this._modernService.getEditor().pipe(takeUntil(this._unsubscribeAll))
+        .subscribe((navigation: any) =>{
+            this.navigation = navigation 
+            
+        })
+        
+        
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -65,6 +70,8 @@ export class ModernLayoutComponent implements OnInit, OnDestroy
 
                 // Check if the screen is small
                 this.isScreenSmall = !matchingAliases.includes('md');
+              
+                
             });
     }
 

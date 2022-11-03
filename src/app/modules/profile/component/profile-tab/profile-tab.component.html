@@ -1,0 +1,119 @@
+<div class="w-full">
+     <!-- Alert -->
+     <div class="w-full z-10 flex fixed justify-center" *ngIf="showAlert">
+        <fuse-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+            (dismissedChanged)="output($event)" class="max-w-sm  top-0"
+            [type]="alert.type" [@shake]="alert.type === 'error'"
+            [@slideInTop]="alert.type === 'success'">
+            {{alert.message}}
+        </fuse-alert>
+    </div>
+    <!-- Form -->
+    <form [formGroup]="profileForm">
+        <!-- Section -->
+        <div class="w-full ">
+            <div class="text-secondary">Following information is publicly displayed, be careful!</div>
+        </div>
+        <div class="flex flex-row space-x-12 w-full">
+
+            <div class="grid sm:grid-cols-4 gap-6 w-full mt-8 max-w-3xl xxl:max-w-full">
+                <!-- First Name -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>First Name</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                        <input [formControlName]="'firstName'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Username -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript  w-full">
+                        <mat-label>Last Name</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user'" matPrefix></mat-icon>
+                        <input [formControlName]="'lastName'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Email -->
+                <div class="sm:col-span-4">
+                    <mat-form-field class="fuse-mat-no-subscript  w-full">
+                        <mat-label>Email</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:mail'" matPrefix></mat-icon>
+                        <input [readonly]="true" [formControlName]="'email'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Team -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript  w-full">
+                        <mat-label>Team</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:user-group'" matPrefix></mat-icon>
+                        <input [readonly]="true" [formControlName]="'team'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Role -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class="fuse-mat-no-subscript  w-full">
+                        <mat-label>Role</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:briefcase'" matPrefix></mat-icon>
+                        <input [readonly]="true" [formControlName]="'role'" matInput>
+                    </mat-form-field>
+                </div>
+
+                <!-- Language -->
+                <div class="sm:col-span-4">
+                    <mat-form-field class="fuse-mat-no-subscript w-full">
+                        <mat-label>Language</mat-label>
+                        <mat-icon class="icon-size-5" [svgIcon]="'heroicons_solid:globe-alt'" matPrefix></mat-icon>
+                        <mat-select [formControlName]="'language'" (selectionChange)="langChanges(profileForm.get('language').value)">
+                          <ng-conatiner *ngFor="let lan of language">
+                            <mat-option [value]="lan.uuid">
+                                {{lan.display_name}}
+                            </mat-option>
+                          </ng-conatiner>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+            <div
+                class=" w-48 mt-14 h-64 flex items-center ring-2 ring-amber-400 justify-center relative" >
+                <div *ngIf="!profileForm.get('image').value">
+                    <input id="image-file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
+                        type="file" [multiple]="false" [accept]="'image/jpeg, image/png'"
+                        (change)="openImages(imageFileInput.files)" #imageFileInput>
+                    <label
+                        class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                        for="image-file-input" matRipple>
+                        <mat-icon class="icon-size-12 text-hint" [svgIcon]="'heroicons_outline:plus'">
+                        </mat-icon>
+                    </label>
+
+                </div>
+                <ng-container *ngIf="profileForm.get('image').value">
+                    <img class="w-full h-full object-cover " [src]="profileForm.get('image').value"
+                        alt="Card cover image">
+                    <button mat-icon-button (click)="removeImage()" class="absolute bottom-0 right-0">
+                        <mat-icon class="text-red-800" [svgIcon]="'heroicons_outline:trash'">
+                        </mat-icon>
+                    </button>
+                </ng-container>
+            </div>
+        </div>
+         <!-- Divider -->
+        <div class="my-10 border-t"></div>
+
+        <!-- Actions -->
+        <div class="flex items-center justify-end">
+            <button
+                mat-stroked-button
+                type="button">
+                Cancel
+            </button>
+            <button
+                class="ml-4"
+                mat-flat-button
+                type="button"
+                (click)="updateProfileData(profileForm.value)"
+                [color]="'primary'">Save
+            </button>
+        </div>
+    </form>
+</div>

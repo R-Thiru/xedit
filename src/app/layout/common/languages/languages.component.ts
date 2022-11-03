@@ -7,7 +7,6 @@ import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/co
     selector       : 'languages',
     templateUrl    : './languages.component.html',
     encapsulation  : ViewEncapsulation.None,
-    changeDetection: ChangeDetectionStrategy.OnPush,
     exportAs       : 'languages'
 })
 export class LanguagesComponent implements OnInit, OnDestroy
@@ -41,7 +40,6 @@ export class LanguagesComponent implements OnInit, OnDestroy
 
         // Subscribe to language changes
         this._translocoService.langChanges$.subscribe((activeLang) => {
-
             // Get the active lang
             this.activeLang = activeLang;
 
@@ -51,12 +49,15 @@ export class LanguagesComponent implements OnInit, OnDestroy
 
         // Set the country iso codes for languages for flags
         this.flagCodes = {
-            'en': 'us',
+            'en-us': 'us',
             'fr': 'fr',
             'in': 'in',
             'in-t': 'in',
             'in-te': 'in'
         };
+    
+       
+        
     }
 
     /**
@@ -78,7 +79,9 @@ export class LanguagesComponent implements OnInit, OnDestroy
     setActiveLang(lang: string): void
     {
         // Set the active lang
+        localStorage.setItem('lang',lang)
         this._translocoService.setActiveLang(lang);
+        this._changeDetectorRef.detectChanges()
     }
 
     /**

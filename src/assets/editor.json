@@ -1,0 +1,279 @@
+[
+    {
+        "id": "home",
+        "title": "Home",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":0,
+        "children": [
+            {
+                "id": "home.undo",
+                "title": "Undo",
+                "type": "basic",
+                "icon": "undo"
+                
+            },
+            {
+                "id": "home.redo",
+                "title": "Redo",
+                "type": "basic",
+                "icon": "redo"
+                
+            },
+            {
+                "id": "home.find",
+                "title": "Find",
+                "type": "basic",
+                "icon": "search"
+                
+            },
+            {
+                "id": "home.replace",
+                "title": "Replace",
+                "type": "basic",
+                "icon": "autorenew"
+                
+            },
+            {
+                "id": "home.bold",
+                "title": "Bold",
+                "type": "basic",
+                "icon": "format_bold"
+                
+            },
+            {
+                "id": "home.italic",
+                "title": "Italic",
+                "type": "basic",
+                "icon": "format_italic"
+                
+            },
+            {
+                "id": "home.underline",
+                "title": "Underline",
+                "type": "basic",
+                "icon": "feather:underline"
+                
+            },
+            {
+                "id": "home.strike",
+                "title": "Strike",
+                "type": "basic",
+                "icon": "strikethrough_s"
+                
+            },
+            {
+                "id": "home.superscript",
+                "title": "Superscript",
+                "type": "basic",
+                "icon": "superscript"
+                
+            },
+            {
+                "id": "home.superscript",
+                "title": "Subscript",
+                "type": "basic",
+                "icon": "superscript"
+                
+             
+            },
+            {
+                "id":"home.cut",
+                "title":"Cut",
+                "type":"basic",
+                "icon":"content_cut"
+                
+
+            },
+            {
+                "id":"home.Sample_data",
+                "title":"Sample Data",
+                "type":"basic",
+                "icon":"format_bold"
+            }
+        ]
+    },
+                                {
+        "id": "masters",
+        "title": "Insert",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":1,
+        "children": [
+            {
+                "id": "image",
+                "title": "Image",
+                "type": "basic",
+                "icon": "heroicons_outline:academic-cap"
+            },
+            {
+                "id": "multiImage",
+                "title": "MultiImage",
+                "type": "basic",
+                "icon": "heroicons_outline:credit-card"
+            },
+            {
+                "id": "table",
+                "title": "Table",
+                "type": "basic",
+                "icon": "heroicons_outline:user-group"
+            },
+            {
+                "id": "reference",
+                "title": "Reference",
+                "type": "basic",
+                "icon": "heroicons_outline:book-open"
+            },
+            {
+                "id": "masters.users",
+                "title": "Users",
+                "type": "basic",
+                "icon": "heroicons_outline:users"
+            },
+            {
+                "id": "masters.chapterReoder",
+                "title": "ChapterReoder",
+                "type": "basic",
+                "icon": "heroicons_outline:users"
+            },
+            {
+                "id": "masters.menumapping",
+                "title": "Menu Mapping",
+                "type": "basic",
+                "icon": "heroicons_outline:users"
+            },
+            {
+                "id": "masters.stage",
+                "title": "Stages & Process",
+                "type": "basic",
+                "icon": "heroicons_outline:newspaper"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "Tools",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":2,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "Reviews",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":3,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "Output",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":4,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "Formatting",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":5,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "Table Layout",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":6,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    },
+    {
+        "id": "projects",
+        "title": "CE Tools",
+        "type": "group",
+        "icon": "heroicons_outline:home",
+        "order":7,
+        "children": [
+            {
+                "id": "projects.projects",
+                "title": "Projects",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            },
+            {
+                "id": "StageMap",
+                "title": "StageMap",
+                "type": "basic",
+                "icon": "heroicons_outline:folder"
+            }
+        ]
+    }
+]

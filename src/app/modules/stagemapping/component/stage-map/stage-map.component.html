@@ -4,7 +4,7 @@
     <div
         class="flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between p-6 sm:py-4 sm:px-10 border-b bg-card dark:bg-transparent">
         <div class="flex-1 min-w-0">
-            <h2 class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+            <h2 class="text-2xl font-extrabold tracking-tight leading-5  truncate">
                 Stage Mapping
             </h2>
         </div>
@@ -14,12 +14,23 @@
         <!-- Stages Drag -->
         <div class="flex  h-full md:w-1/4 bg-card ">
             <div class="flex overflow-hidden w-full">
-
                 <div class="flex-auto overflow-y-auto bg-card">
-                    <div cdkDropList #stageList="cdkDropList" [cdkDropListData]="stageData"
-                        [cdkDropListConnectedTo]="[mapDataList]">
+                    <div class="relative z-20 flex items-center py-3 px-4 max-h-12 xxl:max-h-full border">
+                        <mat-form-field class="w-full">
+                            <mat-icon
+                                class="icon-size-5"
+                                matPrefix
+                                [svgIcon]="'heroicons_solid:search'"></mat-icon>
+                            <input
+                                matInput
+                                [formControl]="searchInputControl"
+                                [autocomplete]="'off'"
+                                [placeholder]="'Search Stages'">
+                        </mat-form-field>
+                    </div>
+                    <div cdkDropList #stageList="cdkDropList" [cdkDropListData]="inputData" [cdkDropListConnectedTo]="[mapDataList]">
                         <div class="z-20 flex items-center py-3 px-4 max-h-2 xxl:max-h-full cursor-move border"
-                            *ngFor="let stage of stageData;" cdkDrag  [cdkDragDisabled]="dragOn">
+                            *ngFor="let stage of inputData;" cdkDrag  [cdkDragDisabled]="dragOn">
                             <div class="min-w-0 ml-4">
                                 <div class="font-medium leading-5 truncate">{{stage.stage_name}}</div>
                             </div>
@@ -36,13 +47,13 @@
             <div class="flex flex-col items-center md:w-1/2 md:max-h-full max-h-96  overflow-y-auto  w-full"
                 cdkDropList cdkDropListSortingDisabled="true" [cdkDropListData]="mapData" #mapDataList="cdkDropList"
                 (cdkDropListDropped)="drop($event)">
-                <div class="xxl:p-2 p-1 w-96  bg-default" *ngFor="let card of cards; let i=index">
-                    <div class="flex justify-center">
+                <div class="flex flex-row xxl:p-2 p-1 w-96  bg-default space-x-4" *ngFor="let card of cards; let i=index ">
+                    <div class="flex justify-center items-center">
                         <div class="flex w-6 h-6 xxl:w-8 xxl:h-8 rounded-full  bg-opacity-12 items-center justify-center  bg-gray-400">
                             {{i+1}}
                         </div>
                     </div>
-                    <div class="xxl:m-2 m-1 xxl:rounded-xl rounded-lg xxl:min-h-24 min-h-14 bg-gray-400 bg-opacity-12 hover:scale-105" 
+                    <div class="xxl:m-2 m-1 xxl:rounded-xl rounded-lg xxl:min-h-24 min-h-14 bg-gray-400 bg-opacity-12 hover:scale-x-105 cursor-grab w-full" [ngClass]="{'cursor-grabbing':dragData}"  
                         (mouseover)="dropped(i)" (touchstart)="dropped(i)" cdkDrag (mousedown)="getData(card)" (touchstart)="getData(card)">
                         <div class="xxl:p-3 p-2">
                             <div class="z-20 flex items-center justify-between xxl:py-3 py-1 xxl:px-4 px-2 xxl:my-2 my-1 cursor-move xxl:rounded-lg rounded-md  bg-card max-h-8 xxl:max-h-full"
@@ -56,15 +67,14 @@
                             </div>
                         </div>
                     </div>
-                    
                 </div>
                 <div class="flex items-center mt-1 -mx-1">
                     <button class="px-6 mt-2 items-center" mat-flat-button [color]="'primary'" [disabled]="cards.length == 1" (click)="nextStage()">
                         Next
                     </button>
-
                 </div>
             </div>
+            <!-- Custom Template -->
             <!-- <div class="flex md:flex-col flex-row md:w-1/2  w-full h-full md:border-l-2 border-t-2 p-4">
                 <div class="grid grid-cols-2  md:grid-cols-3  gap-4  w-full  min-w-0 md:max-h-full max-h-96 overflow-y-auto">
                     <fuse-card class="flex flex-col  max-w-80 w-full  p-3 filter-info"

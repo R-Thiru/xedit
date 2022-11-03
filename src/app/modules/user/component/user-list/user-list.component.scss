@@ -1,0 +1,20 @@
+.inventory-grid {
+    grid-template-columns: 48px auto 40px;
+
+    @media (min-width: 640px) {
+        grid-template-columns: 48px auto 200px;
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: 48px 112px;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 48px auto 200px;
+    }
+}
+
+
+.my-custom-tooltip {
+    max-width: unset !important;
+}

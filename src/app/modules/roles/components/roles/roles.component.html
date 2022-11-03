@@ -12,7 +12,7 @@
 
     <div class="w-full ">
 
-        <form [formGroup]="rolesForm" >
+        <form [formGroup]="rolesForm">
 
             <div class="flex flex-auto items-end -mt-16 px-6 sm:px-12">
                 <div
@@ -22,7 +22,9 @@
                     <div class="absolute inset-0 flex items-center justify-center z-20">
                         <div>
                             <input id="avatar-file-input"
-                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file">
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file"
+                                [multiple]="false" [accept]="'image/jpeg, image/png'"
+                                (change)="uploadAvatar(avatarFileInput.files)" #avatarFileInput>
                             <label
                                 class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
                                 for="avatar-file-input" matRipple>
@@ -30,18 +32,15 @@
                             </label>
                         </div>
                         <div>
-                            <button mat-icon-button>
+                            <button mat-icon-button (click)="deleteImage()">
                                 <mat-icon class="text-white" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                             </button>
                         </div>
                     </div>
-                    <!-- Image/Letter -->
-                    <img class="object-cover w-full h-full">
-                    <!-- <div
-                        class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                        *ngIf="!contact.avatar">
-                        {{contact.name.charAt(0)}}
-                    </div> -->
+                    <!-- Image -->
+                    <img class="object-cover w-full h-full" [src]="rolesForm.get('image').value"
+                        *ngIf="rolesForm.get('image').value">
+
                 </div>
             </div>
 
@@ -51,13 +50,13 @@
                     <mat-label>RolesName</mat-label>
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-circle'">
                     </mat-icon>
-                    <input matInput [formControlName]="'name'" [placeholder]="'Name'" [spellcheck]="false">
+                    <input matInput [formControlName]="'name'" autocomplete="off" [placeholder]="'Name'" [spellcheck]="false">
                 </mat-form-field>
                 <mat-form-field class="fuse-mat-no-subscript w-full">
                     <mat-label>Description</mat-label>
                     <mat-icon matPrefix class="hidden sm:flex icon-size-5"
                         [svgIcon]="'heroicons_solid:location-marker'"></mat-icon>
-                    <input matInput [formControlName]="'description'" [placeholder]="'Description'"
+                    <input matInput [formControlName]="'description'" autocomplete="off" [placeholder]="'Description'"
                         [spellcheck]="false">
                 </mat-form-field>
 
@@ -68,7 +67,8 @@
                     Cancel
                 </button>
                 <!-- Save -->
-                <button class="ml-2" mat-flat-button [color]="'primary'" [disabled]="rolesForm.invalid" [matTooltip]="'Save'">
+                <button class="ml-2" mat-flat-button [color]="'primary'" [disabled]="rolesForm.invalid"
+                    [matTooltip]="'Save'" (click)="saveRoles()">
                     Save
                 </button>
             </div>

@@ -1,0 +1,28 @@
+:host ::ng-deep {
+
+  .ck.ck-editor__editable_inline {
+    overflow: auto;
+    padding: 0 var(--ck-spacing-standard);
+    border: 1px solid #cbd5e1;
+    border-radius: 6px !important;
+  }
+
+  .ck.ck-toolbar {
+    display: block;
+    position: sticky;
+    top: 0;
+    z-index: 9999999;
+  }
+
+  .ck-editor__editable_inline {
+    max-height: 400px;
+    height: 35px !important;
+    max-width: 100%;
+  }
+
+
+  --ck-spacing-large: calc(var(--ck-spacing-unit)*0.5);
+
+
+}
+

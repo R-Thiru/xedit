@@ -20,6 +20,7 @@ import { FuseVerticalNavigationGroupItemComponent } from '@fuse/components/navig
 import { FuseVerticalNavigationSpacerItemComponent } from '@fuse/components/navigation/vertical/components/spacer/spacer.component';
 import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/vertical/vertical.component';
 
+
 @NgModule({
     declarations: [
         FuseHorizontalNavigationBasicItemComponent,
@@ -33,7 +34,8 @@ import { FuseVerticalNavigationComponent } from '@fuse/components/navigation/ver
         FuseVerticalNavigationDividerItemComponent,
         FuseVerticalNavigationGroupItemComponent,
         FuseVerticalNavigationSpacerItemComponent,
-        FuseVerticalNavigationComponent
+        FuseVerticalNavigationComponent,
+  
     ],
     imports     : [
         CommonModule,

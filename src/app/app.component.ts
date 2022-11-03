@@ -1,16 +1,18 @@
-import { Component } from '@angular/core';
-import { Idle, DEFAULT_INTERRUPTSOURCES } from '@ng-idle/core';
-import { Keepalive } from '@ng-idle/keepalive';
-import { Router } from '@angular/router';
-import { AppService } from './app.service'
-import { environment } from '../environments/environment';
+import { Component, HostListener, OnInit } from '@angular/core';
+import { Idle } from '@ng-idle/core';
+import {  Router } from '@angular/router';
+import { Subject,filter } from 'rxjs';
+import { TranslocoService } from '@ngneat/transloco';
+
 @Component({
-    selector   : 'app-root',
+    selector: 'app-root',
     templateUrl: './app.component.html',
-    styleUrls  : ['./app.component.scss']
+    styleUrls: ['./app.component.scss']
 })
-export class AppComponent
-{
+export class AppComponent implements OnInit {
+
+    userActivity;
+    userInactive: Subject<any> = new Subject();
     idleState = 'Not started.';
     timedOut = false;
     lastPing?: Date = null;
@@ -18,12 +20,19 @@ export class AppComponent
      * Constructor
      */
     constructor(
-        private _idle: Idle, 
-        private _keepalive: Keepalive,
+        private _idle: Idle,
         private _router: Router,
-        private _appService:AppService
-    )
-    {
+        private _transLocoService:TranslocoService
+      
+    ) {
+
+        
+    
+        // const url = window.location.href
+        // this._appService.getSite(url).subscribe(res => {
+        //     console.log(res)
+        // })
+       
         // this._idle.setIdle(environment.idleTime);
         // this._idle.setTimeout(environment.idleTimeout);
         // this._idle.setInterrupts(DEFAULT_INTERRUPTSOURCES);
@@ -61,12 +70,41 @@ export class AppComponent
         //         this._idle.stop();
         //     }
         // });
-            // this.reset();
+        // this.reset();
+    }
+
+    ngOnInit(): void {
+        // this._appService.routerUrl.next(this._router.url)
+        this.setTimeout();
+        this._transLocoService.setActiveLang(localStorage.getItem('lang'))
+        
+        this.userInactive.subscribe(res =>{
+            if(res == "Times-Up"){
+                this._router.navigateByUrl('unlock-session')
+            }
+        });
     }
 
     reset() {
         this._idle.watch();
         this.idleState = 'Started.';
         this.timedOut = false;
-      }
+        
+        
+    }
+
+    setTimeout() {
+        this.userActivity = setTimeout(() => this.userInactive.next('Times-Up'), 600000);
+    }
+
+
+    @HostListener('window:mousemove') refreshUserState() {
+        clearTimeout(this.userActivity);
+        this.setTimeout();
+    }
+
+    @HostListener('document:keydown', ['$event']) onKeydownHandler(event: KeyboardEvent) {
+        clearTimeout(this.userActivity);
+        this.setTimeout();
+    }
 }

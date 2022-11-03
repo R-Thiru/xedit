@@ -26,7 +26,11 @@ export class NavigationService
      */
     get navigation$(): Observable<Navigation>
     {
+        
+        
         return this._navigation.asObservable();
+      
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -38,10 +42,16 @@ export class NavigationService
      */
     get(): Observable<Navigation>
     {
-        return this._httpClient.get<Navigation>('api/common/navigation').pipe(
-            tap((navigation) => {
+        
+        return this._httpClient.get<Navigation>('api/common/navigation').pipe(tap((navigation) => {
+                
+              
+                
                 this._navigation.next(navigation);
             })
         );
     }
+
+
+    
 }

@@ -78,6 +78,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
      * @param changes
      */
     ngOnChanges(changes: SimpleChanges): void {
+        
         // Appearance
         if ('appearance' in changes) {
             // To prevent any issues, close the
@@ -90,6 +91,7 @@ export class SearchComponent implements OnChanges, OnInit, OnDestroy {
      * On init
      */
     ngOnInit(): void {
+        
         // Subscribe to the search field value changes
         this.searchControl.valueChanges.pipe(debounceTime(this.debounce), takeUntil(this._unsubscribeAll), map((value) => {
 

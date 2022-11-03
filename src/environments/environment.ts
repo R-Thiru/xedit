@@ -4,11 +4,12 @@
 
 export const environment = {
     production: false,
-    version : '4.2.0',
+    version : '5.0.0',
     idleTime: 5,
     idleTimeout : 5,
     apiAuth :'',
-    api :''
+    api :'https://api.xeditpro.com/v5/'
+    // api:'http://172.16.8.55/xeditpro-api-v5/v5/'
 };
 
 /*

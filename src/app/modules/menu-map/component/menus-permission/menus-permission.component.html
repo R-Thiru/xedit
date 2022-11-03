@@ -1,0 +1,258 @@
+<div class="absolute inset-0 flex flex-col min-w-0 overflow-hidden">
+    <div class="flex flex-auto overflow-hidden">
+        <form class="flex flex-col flex-auto overflow-y-auto lg:overflow-hidden bg-card" [formGroup]="menuMapForm">
+            <!-- Alert -->
+            <div class="w-full z-10 flex fixed justify-center " *ngIf="showAlert">
+                <fuse-alert [appearance]="'soft'" [dismissible]="true" [dismissed]="false"
+                    (dismissedChanged)="output($event)" class="max-w-sm top-0" [type]="alert.type"
+                    [@shake]="alert.type === 'error'" [@slideInTop]="alert.type === 'success'">
+                    {{alert.message}}
+                </fuse-alert>
+            </div>
+            <!-- Page Content -->
+            <div
+                class="flex  flex-0 items-center  h-12 px-4 md:px-6 bg-white flex-0 sm:justify-between py-10 px-6 md:px-8 border-b w-full">
+
+                <!-- Title -->
+                <div *transloco="let t"
+                    class="text-2xl font-extrabold tracking-tight leading-5  truncate">
+                    {{t('menu-mapping')}}
+                </div>
+
+                <div class="flex space-x-4 mt-4 w-1/2">
+                    <!-- Team -->
+                    <mat-form-field class="fuse-mat-dense w-full">
+                        <mat-label>Team</mat-label>
+                        <mat-select [formControlName]="'team'"
+                            (selectionChange)="getRole(menuMapForm.get('team').value)">
+                            <ng-container *ngFor="let team of teams">
+                                <mat-option [value]="team.uuid">
+                                    {{team.display_name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Role -->
+                    <mat-form-field class="fuse-mat-dense w-full">
+                        <mat-label>Role</mat-label>
+                        <mat-select [formControlName]="'role'">
+                            <ng-container *ngFor="let role of roles">
+                                <mat-option [value]="role.uuid">
+                                    {{role.display_name}}
+                                </mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+            </div>
+
+            <!-- content -->
+            <div class="flex  relative flex-col flex-auto  overflow-hidden sm:overflow-y-auto bg-white">
+                <ng-container>
+                    <div class="inventory-grid z-20 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 "
+                        matSort matSortDisableClear>
+                        <div></div>
+                        <div>
+                            Menus
+                        </div>
+                        <div>
+                            Access
+                        </div>
+                    </div>
+                    <!-- Menu list -->
+                    <ng-container *ngFor="let menu of menus; let i = index">
+                        <div class="sticky z-10 top-10 grid items-center gap-4 py-3 px-6 md:px-8 border-b bg-slate-900"
+                            *ngIf="i == 0 || menu.is_editor != menus[i-1].is_editor">
+
+                            <div class="text-lg text-white">
+
+                                <mat-checkbox [formControlName]="'isActiveAll'" [color]="'primary'"
+                                    (change)="selectMenuAll(menu)" *ngIf="menu.is_editor == 0">
+                                </mat-checkbox>
+                                <mat-checkbox [formControlName]="'isActiveAll'" [color]="'primary'"
+                                    (change)="selectEditorAll(menu)" *ngIf="menu.is_editor == 1">
+                                </mat-checkbox>
+                                {{menu.is_editor == 1 ? 'Editor Menu' : 'Main Menu'}}
+                            </div>
+                        </div>
+                        <!-- Main CheckBox  -->
+                        <div class="inventory-grid grid items-center gap-4 py-3 px-6 md:px-8 border-b">
+                            <div>
+                                <button class="mr-2 -ml-2.5 leading-none" (click)="selectMenu(menu)" mat-icon-button>
+                                    <ng-container *ngIf="menu.is_active">
+                                        <mat-icon class="text-primary" [svgIcon]="'heroicons_outline:check-circle'">
+                                        </mat-icon>
+                                    </ng-container>
+                                    <ng-container *ngIf="!menu.is_active">
+                                        <mat-icon class="text-hint" [svgIcon]="'heroicons_outline:check-circle'">
+                                        </mat-icon>
+                                    </ng-container>
+                                </button>
+
+                            </div>
+                            <!-- Menu Name -->
+                            <div class="capitalize">
+                                {{menu.display_name}}
+                            </div>
+                            <div *ngIf="menu.submenu.length > 0 || menu.access.length > 0">
+                                <button class="min-w-10 min-h-7 h-7 px-2 leading-6" mat-stroked-button
+                                    [disabled]="!menu.is_active" (click)="toggleDetails(menu)"
+                                    [ngClass]="{'cursor-not-allowed': menu.is_active == false}">
+                                    <mat-icon class="icon-size-5"
+                                        [svgIcon]="selectedMenu?.uuid === menu.uuid ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'">
+                                    </mat-icon>
+                                </button>
+                            </div>
+                        </div>
+                        <!-- Selected Menu Open -->
+                        <div class="grid">
+                            <ng-container *ngIf="selectedMenu?.uuid === menu.uuid">
+                                <ng-container *ngTemplateOutlet="menuDetailsTemplate; context:{$implicit: menu}">
+                                </ng-container>
+                            </ng-container>
+                        </div>
+                    </ng-container>
+                </ng-container>
+
+                <!-- Selected Menu Details -->
+                <ng-template #menuDetailsTemplate let-menu>
+                    <div class="shadow-lg overflow-hidden">
+                        <div class="flex border-b">
+                            <div class="flex flex-col sm:flex-row">
+                                <div class="flex flex-col items-center sm:items-start mb-8 sm:mb-0 ">
+                                    <div class="flex flex-col space-y-4 w-screen lg:p-8 lg:pr-36 sm:pr-4 p-4 pr-24 ">
+                                        <div class="flex flex-col flex-auto  overflow-hidden sm:overflow-y-auto bg-white max-h-52 min-h-10"
+                                            [ngClass]="{'min-h-44':menu.submenu.length > 0}">
+
+                                            <!-- SubMenus Content -->
+                                            <ng-container *ngIf="menu.submenu.length > 0 && menu.is_editor == 0 ">
+                                                <!-- SubMenu Header -->
+                                                <div class="chapter-grid z-10 sticky top-0 grid gap-4 py-4 px-6 md:px-8 shadow text-md font-semibold text-secondary bg-gray-50 dark:bg-black dark:bg-opacity-5"
+                                                    matSort matSortDisableClear>
+                                                    <div>
+                                                        <mat-checkbox [color]="'primary'"
+                                                            [formControlName]="'isActiveSubmenu'"
+                                                            (change)="selectAllSubMenu(menu)">
+                                                        </mat-checkbox>
+                                                    </div>
+                                                    <div>
+                                                        Sub Menus
+                                                    </div>
+                                                    <div>
+                                                        Permissions
+                                                    </div>
+                                                </div>
+
+                                                <!-- Submenu Table Details -->
+                                                <ng-container *ngFor="let child of menu.submenu; let i = index">
+                                                    <div class="chapter-grid grid items-center gap-4 px-6  md:px-8 border-b"
+                                                        [ngClass]="{'py-2':child.access.length == 0}">
+                                                        <div>
+                                                            <mat-checkbox [color]="'primary'"
+                                                                (change)="selectSubMenu(child)"
+                                                                [checked]="child.is_active">
+                                                            </mat-checkbox>
+                                                        </div>
+                                                        <div>
+                                                            {{child.display_name}}
+                                                        </div>
+                                                        <!-- Submenu Permissions -->
+                                                        <div class="mt-2" *ngIf="child.access.length > 0">
+                                                            <button class="min-w-10 min-h-7 h-7 px-2 leading-6"
+                                                                (click)="toggleAccess(child)"
+                                                                [disabled]="!child.is_active"
+                                                                [ngClass]="{'cursor-not-allowed': child.is_active == false}">
+                                                                <mat-icon class="icon-size-5"
+                                                                    [svgIcon]="selectedAccess?.uuid === child.uuid ? 'heroicons_solid:chevron-up' : 'heroicons_solid:chevron-down'">
+                                                                </mat-icon>
+                                                            </button>
+                                                        </div>
+                                                    </div>
+                                                    <!-- Selected Submenu Open -->
+                                                    <div class="grid">
+                                                        <ng-container *ngIf="selectedAccess?.uuid === child.uuid">
+                                                            <ng-container
+                                                                *ngTemplateOutlet="accessTemplate; context:{$implicit: child}">
+                                                            </ng-container>
+                                                        </ng-container>
+                                                    </div>
+                                                </ng-container>
+
+                                            </ng-container>
+
+
+                                            <!-- Selected Submenu Opened List -->
+                                            <ng-template #accessTemplate let-child>
+                                                <div class="shadow-inner overflow-hidden">
+                                                    <div class="flex border-b">
+                                                        <div class="flex flex-col sm:flex-row">
+                                                            <div
+                                                                class="flex flex-col items-center sm:items-start mb-8 sm:mb-0 ">
+                                                                <div
+                                                                    class="flex flex-col space-y-4 w-screen lg:p-2 lg:pr-36 sm:pr-4 pr-24 ">
+                                                                    <div
+                                                                        class="flex flex-col flex-auto  overflow-hidden sm:overflow-y-auto bg-white max-h-52 min-h-10">
+                                                                        <ng-container>
+                                                                            <div
+                                                                                class="grid xxl:grid-cols-6 grid-cols-5 gap-4 mx-10">
+                                                                                <mat-checkbox [color]="'primary'"
+                                                                                    *ngFor="let per of child.access"
+                                                                                    class="capitalize"
+                                                                                    [checked]="per.is_active"
+                                                                                    (change)="selectAccess(per)">
+                                                                                    {{per.name}}
+                                                                                </mat-checkbox>
+                                                                            </div>
+                                                                        </ng-container>
+                                                                    </div>
+                                                                </div>
+                                                            </div>
+                                                        </div>
+                                                    </div>
+                                                </div>
+                                            </ng-template>
+
+
+                                            <!-- Only Permissions -->
+                                            <ng-container *ngIf="menu.submenu.length == 0 && menu.is_editor == 0">
+                                                <div class="flex justify-between mx-10">
+                                                    <div class="text-black text-lg">Permissions:-</div>
+                                                    <mat-checkbox [color]="'primary'" *ngFor="let per of menu.access"
+                                                        [checked]="per.is_active" (change)="selectAccess(per)">
+                                                        {{per.name}}
+                                                    </mat-checkbox>
+                                                </div>
+                                            </ng-container>
+
+                                            <!-- Editor Menu Content -->
+                                            <ng-container *ngIf="menu.is_editor == 1">
+                                                <div class="grid xxl:grid-cols-6 grid-cols-5 gap-4 mx-10">
+                                                    <mat-checkbox [color]="'primary'" *ngFor="let child of menu.submenu"
+                                                        class="capitalize" [checked]="child.is_active"
+                                                        (change)="selectSubMenu(child)">
+                                                        {{child.display_name}}
+                                                    </mat-checkbox>
+                                                </div>
+                                            </ng-container>
+
+                                        </div>
+                                    </div>
+                                </div>
+                            </div>
+                        </div>
+                    </div>
+                </ng-template>
+            </div>
+
+            <!-- Submit Button -->
+            <div class="inset-x-0 w-full bottom-0 border-2 bg-gray-50 py-2 float-right justify-items-end grid pr-4">
+
+                <button mat-flat-button [color]="'primary'" (click)="mappedMenus()">
+                    <span class="ml-2 mr-1">Submit</span>
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>

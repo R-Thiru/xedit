@@ -1,0 +1,213 @@
+<div class="relative w-full h-18 sm:h-10 bg-accent-100">
+    <!-- Close button -->
+    <div class="flex items-center justify-end w-full  mx-1 pt-0 bg-accent-100 border-b">
+        <button mat-icon-button [matTooltip]="'Close'" (click)="close()">
+            <mat-icon class="text-black" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+</div>
+<div class="relative flex flex-col flex-auto items-center overflow-hidden">
+    <div class="w-full">
+        <form [formGroup]="projectForm">
+            <div class="mt-2  px-6 sm:px-12 h-full sm:mb-16">
+                <mat-form-field class=" w-full">
+                    <mat-label>Project type</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:book-open'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'project_type'">
+                        <ng-container>
+                            <mat-option value="Book">
+                                Book
+                            </mat-option>
+                            <mat-option value="Journal">
+                                Journal
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Project Name</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-circle'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'project_name'" [placeholder]="'Name'" autocomplete="off" [spellcheck]="false">
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Project Title</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:briefcase'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'project_title'" [placeholder]="'Title'"  autocomplete="off" [spellcheck]="false">
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Publisher</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-group'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'publisher'">
+                        <ng-container *ngFor="let publisher of publisherList">
+                            <mat-option [value]="publisher.uuid">
+                                {{publisher.display_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Project Complexity</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:newspaper'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'project_complexity'">
+                        <ng-container>
+                            <mat-option value="Simple">
+                                Simple
+                            </mat-option>
+                            <mat-option value="Medium">
+                                Medium
+                            </mat-option>
+                            <mat-option value="Complex">
+                                Complex
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>WorkFlow</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:trending-up'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'workflow'">
+                        <ng-container>
+                            <mat-option value="Simple">
+                                Latex
+                            </mat-option>
+                            <mat-option value="Medium">
+                                InDesign
+                            </mat-option>
+                            <mat-option value="Complex">
+                                Epub
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Reference Type</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:collection'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'reference_type'">
+                        <ng-container>
+                            <mat-option value="Simple">
+                                Chapter End
+                            </mat-option>
+                            <mat-option value="Medium">
+                                Book End
+                            </mat-option>
+
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Reference Style</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:database'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'reference_style'">
+                        <ng-container>
+                            <mat-option value="Simple">
+                                APA
+                            </mat-option>
+                            <mat-option value="Medium">
+                                AMA
+                            </mat-option>
+
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full">
+                    <mat-label>Reference Call-Out Style</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:color-swatch'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'reference_call'">
+                        <ng-container>
+                            <mat-option value="Simple">
+                                SuperScript
+                            </mat-option>
+                            <mat-option value="Medium">
+                                ()
+                            </mat-option>
+                            <mat-option value="Complex">
+                                []
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class=" w-full z-0">
+                    <mat-label>Start Date</mat-label>
+                    <input matInput [matDatepicker]="startDatepicker" [formControlName]="'start_date'" autocomplete="off"
+                        [placeholder]="'Start Date'">
+                    <mat-datepicker-toggle matPrefix [for]="startDatepicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #startDatepicker></mat-datepicker>
+                </mat-form-field>
+                <mat-form-field class=" w-full z-0">
+                    <mat-label>Due Date</mat-label>
+                    <input matInput [matDatepicker]="dueDatepicker" [formControlName]="'due_date'" autocomplete="off"
+                        [placeholder]="'Due Date'">
+                    <mat-datepicker-toggle matPrefix [for]="dueDatepicker">
+                    </mat-datepicker-toggle>
+                    <mat-datepicker #dueDatepicker></mat-datepicker>
+                </mat-form-field>
+                <ng-container *ngIf="projectForm.get('project_type').value == 'Book';else journal">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Digital ISBN</mat-label>
+                        <mat-icon matPrefix class=" hidden sm:flex icon-size-5"
+                            [svgIcon]="'mat_solid:collections_bookmark'">
+                        </mat-icon>
+                        <input matInput [formControlName]="'digital_isbn'" [placeholder]="'Digital ISBN'" autocomplete="off"
+                            [spellcheck]="false">
+                    </mat-form-field>
+                    <mat-form-field class=" w-full">
+                        <mat-label>Print ISBN</mat-label>
+                        <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'mat_solid:print'"></mat-icon>
+                        <input matInput [formControlName]="'print_isbn'" autocomplete="off" [placeholder]="'Print ISBN'" [spellcheck]="false">
+                    </mat-form-field>
+                </ng-container>
+                <ng-template #journal>
+                    <mat-form-field class=" w-full">
+                        <mat-label>ISSN</mat-label>
+                        <mat-icon matPrefix class=" hidden sm:flex icon-size-5"
+                            [svgIcon]="'mat_solid:collections_bookmark'">
+                        </mat-icon>
+                        <input matInput [formControlName]="'issn'" [placeholder]="'ISSN'" autocomplete="off"
+                            [spellcheck]="false">
+                    </mat-form-field>
+                    <mat-form-field class=" w-full">
+                        <mat-label>ISSUE</mat-label>
+                        <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'mat_solid:print'"></mat-icon>
+                        <input matInput [formControlName]="'issue'" [placeholder]="'Issue'" [spellcheck]="false" autocomplete="off">
+                    </mat-form-field>
+                </ng-template>
+                
+                <mat-form-field class=" w-full">
+                    <mat-label>Trim Size</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'mat_solid:trip_origin'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'trim_size'" [placeholder]="'Trim Size'" [spellcheck]="false" autocomplete="off">
+                </mat-form-field>
+                <div class="flex flex-row w-full justify-between z-0">
+                    <mat-label class="font-medium">SplitEditor</mat-label>
+                    <mat-slide-toggle [formControlName]="'split_editor'" [color]="'primary'" autocomplete="off">
+                    </mat-slide-toggle>
+                </div>
+
+            </div>
+            <!-- Actions -->
+            <div class="flex fixed bottom-0 items-center w-full border-t  mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700 z-20">
+
+                <button mat-button [matTooltip]="'Cancel'" (click)="close()">
+                    Cancel
+                </button>
+
+                <button class="ml-2" mat-flat-button [color]="'primary'" [disabled]="projectForm.invalid" (click)="saveProject()"
+                    [matTooltip]="'Save'">
+                    Save
+                </button>
+
+            </div>
+        </form>
+    </div>
+</div>

@@ -1,4 +1,4 @@
-import { CdkDragDrop, moveItemInArray, transferArrayItem, copyArrayItem } from '@angular/cdk/drag-drop';
+import { moveItemInArray, transferArrayItem, } from '@angular/cdk/drag-drop';
 import { ChangeDetectionStrategy, ChangeDetectorRef, Component, HostListener, OnInit, ViewEncapsulation } from '@angular/core';
 import { FormControl } from '@angular/forms';
 import * as _ from 'lodash'
@@ -12,28 +12,36 @@ import { cardsData, mappedData, processData, templateData } from './stage-map.mo
   selector: 'stage-map',
   templateUrl: './stage-map.component.html',
   styleUrls: ['./stage-map.component.scss'],
-  encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  // encapsulation: ViewEncapsulation.None,
 })
 export class StageMapComponent implements OnInit {
 
   drawerMode: 'over' | 'side' = 'side';
   drawerOpened: boolean = true;
   dragOn: boolean = false
-  stageData = processData
+  stageData = processData;
+  searchInputControl : FormControl = new FormControl()
   cards: any = cardsData;
   templateData = templateData;
   mapData: any = []
   mapdetails: any = [];
   isTouch: boolean = false;
   flag: boolean = true;
-
+  inputData :any;
   constructor(private _changeDetectorRef: ChangeDetectorRef,
     private router: Router,
     private stageService: StagemappingService) { }
 
   ngOnInit(): void {
     
+    this.inputData = this.stageData
+    this.searchInputControl.valueChanges.subscribe(val =>{
+      let a = val.toUpperCase()
+      let b = this.stageData.filter(x => x.stage_name.toUpperCase().includes(a))
+      this.inputData = b
+      console.log(b);
+      this._changeDetectorRef.detectChanges()
+    })
     // Existing data
     // this.mapdetails = mappedData
     // this.mapdetails.forEach(y => {
@@ -65,13 +73,10 @@ export class StageMapComponent implements OnInit {
   // Drop Data
   dragData: any
   drop(event) {
-    debugger
     if (event.previousContainer === event.container) {
       event.currentIndex = this.dropIndex
       event.container.data[0] = this.dragData
-      
       this.dragData.stages ? this.outsideDrag(event): this.insideDrag() 
-      
       moveItemInArray(event.container.data, event.previousIndex, event.currentIndex);
     } else {
       event.currentIndex = this.dropIndex
@@ -85,7 +90,12 @@ export class StageMapComponent implements OnInit {
     
     if(this.dragData !=undefined && this.dragData.stages){
       this.dragData = undefined
-      return
+      if(!this.isTouch){
+        return
+      }
+      else{
+        this.dropIn(event)
+      }
     }
     else{
       this.dropIn(event)
@@ -109,13 +119,10 @@ export class StageMapComponent implements OnInit {
     let i = this.cards.findIndex(x=> x.stages == event.container.data[0].stages )
     this.cards.splice(i , 1)
     this.cards.splice(event.currentIndex,0,event.container.data[0])
-    
-    console.log(this.cards)
   }
 
   // Drop Inside Box
   dropIn(event){
-    debugger
     if(this.mapData) {
       this.cards.forEach((x, index) => {
         let i = index
@@ -162,7 +169,7 @@ export class StageMapComponent implements OnInit {
       }
     })
 
-    this.stageData.unshift(temp)
+    this.inputData.unshift(temp)
     this._changeDetectorRef.detectChanges()
   }
 
@@ -181,6 +188,8 @@ export class StageMapComponent implements OnInit {
 
   // Next process
   nextStage() {
+    console.log(this.cards);
+    
     this.stageService.projectSelected.next(this.cards)
     this.router.navigateByUrl('/stagemapping/processmap')
   }

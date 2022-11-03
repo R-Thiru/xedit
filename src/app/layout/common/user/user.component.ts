@@ -4,7 +4,31 @@ import { BooleanInput } from '@angular/cdk/coercion';
 import { Subject, takeUntil } from 'rxjs';
 import { User } from 'app/core/user/user.types';
 import { UserService } from 'app/core/user/user.service';
+import { ProfileService } from 'app/modules/profile/profile.service';
+import { TranslocoService } from '@ngneat/transloco';
+import { AppService } from 'app/app.service';
+import { MenuMapService } from 'app/modules/menu-map/menu-map.service';
+import { LayoutService } from 'app/layout/layout.service';
 
+
+export const user =
+{
+    user_uuid: '',
+    first_name: '',
+    last_name: '',
+    user_name: '',
+    user_type: '',
+    language: '',
+    language_uuid: '',
+    last_login: '',
+    image: '',
+    member_form: '',
+    is_editable:'',
+    role_uuid: '',
+    role_display_name:'', 
+    team_uuid: '',
+    team_display_name: '',
+}
 @Component({
     selector       : 'user',
     templateUrl    : './user.component.html',
@@ -19,7 +43,7 @@ export class UserComponent implements OnInit, OnDestroy
     /* eslint-enable @typescript-eslint/naming-convention */
 
     @Input() showAvatar: boolean = true;
-    user: User;
+    user: any = user;
 
     private _unsubscribeAll: Subject<any> = new Subject<any>();
 
@@ -27,9 +51,12 @@ export class UserComponent implements OnInit, OnDestroy
      * Constructor
      */
     constructor(
+        private _transLocoService: TranslocoService,
+        private _profileServcie : ProfileService,
+        private _menuMapService : MenuMapService,
         private _changeDetectorRef: ChangeDetectorRef,
+        private _layoutService : LayoutService,
         private _router: Router,
-        private _userService: UserService
     )
     {
     }
@@ -44,14 +71,39 @@ export class UserComponent implements OnInit, OnDestroy
     ngOnInit(): void
     {
         // Subscribe to user changes
-        this._userService.user$
-            .pipe(takeUntil(this._unsubscribeAll))
-            .subscribe((user: User) => {
-                this.user = user;
+        // this._userService.user$
+        //     .pipe(takeUntil(this._unsubscribeAll))
+        //     .subscribe((user: User) => {
+        //         this.user = user;
 
-                // Mark for check
-                this._changeDetectorRef.markForCheck();
-            });
+        //         // Mark for check
+        //         this._changeDetectorRef.markForCheck();
+        //     });
+        this._profileServcie.getUserProfile().subscribe(res =>{
+            if(res.status){
+                this.user = res.data
+                localStorage.setItem('lang',this.user.language_code)
+                this._transLocoService.setActiveLang(this.user.language_code)
+                this._changeDetectorRef.detectChanges()
+            }
+        },
+        (error)=>{
+
+        },
+        ()=>{
+            let req ={
+                team_uuid : this.user.team_uuid,
+                role_uuid : this.user.role_uuid
+            }
+            this._menuMapService.getMappedMenuList(req).subscribe(res =>{
+                if(res.status){
+                    this._layoutService.accessControlData.next(res.data)
+                    
+                }
+                
+            })
+        })
+
     }
 
     /**
@@ -73,20 +125,20 @@ export class UserComponent implements OnInit, OnDestroy
      *
      * @param status
      */
-    updateUserStatus(status: string): void
-    {
-        // Return if user is not available
-        if ( !this.user )
-        {
-            return;
-        }
+    // updateUserStatus(status: string): void
+    // {
+    //     // Return if user is not available
+    //     if ( !this.user )
+    //     {
+    //         return;
+    //     }
 
-        // Update the user
-        this._userService.update({
-            ...this.user,
-            status
-        }).subscribe();
-    }
+    //     // Update the user
+    //     this._userService.update({
+    //         ...this.user,
+    //         status
+    //     }).subscribe();
+    // }
 
     /**
      * Sign out

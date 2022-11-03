@@ -1,13 +1,12 @@
-import { copyArrayItem, moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
+import { moveItemInArray, transferArrayItem } from '@angular/cdk/drag-drop';
 import { DOCUMENT } from '@angular/common';
 import { ChangeDetectorRef, Component, DoCheck, Inject, IterableDiffers, OnInit, ViewChild } from '@angular/core';
 import { MatTabGroup } from '@angular/material/tabs';
 import { Router } from '@angular/router';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
-import { remove, split } from 'lodash';
-import { elementAt, Subject, takeUntil } from 'rxjs';
+import {  Subject, takeUntil } from 'rxjs';
 import { StagemappingService } from '../../stagemapping.service';
-import { cardsData, processCard, processCardsData, processData } from '../stage-map/stage-map.model';
+import { processCard, processCardsData, processData } from '../stage-map/stage-map.model';
 
 @Component({
   selector: 'process-map',
@@ -103,7 +102,8 @@ export class ProcessMapComponent implements OnInit {
       this.process.push(x.process)
     })
 
-
+    console.log('this.mapData',this.mapData);
+    
 
   }
 
@@ -185,7 +185,6 @@ export class ProcessMapComponent implements OnInit {
   obj: any
   arr = []
   drop(event) {
-
     if (event.previousContainer === event.container) {
       event.currentIndex = this.dropIndex
       event.container.data[0] = this.dragData
@@ -231,7 +230,6 @@ export class ProcessMapComponent implements OnInit {
 
 
   cutStage(temp) {
-
     this.mapData.forEach((element, index) => {
       if (index == this.currentproject) {
         let i = element.selectedProcess.filter(x => x.stages)
@@ -244,10 +242,7 @@ export class ProcessMapComponent implements OnInit {
           let val = element.selectedProcess.length - 1
           element.selectedProcess[val].stages.length == 0 ? null : this.cardPush()
         }
-
       }
-
-
     });
     this._changeDetectorRef.detectChanges()
   }
@@ -281,7 +276,8 @@ export class ProcessMapComponent implements OnInit {
         })
       })
     })
-
+    console.log(this.mapData);
+    
   
   }
 

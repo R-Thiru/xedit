@@ -17,11 +17,11 @@
         <input
             class="w-full h-full px-16 sm:px-18"
             [formControl]="searchControl"
-            [matAutocomplete]="matAutocomplete"
-            [placeholder]="'Search for a page or a contact'"
+          
+            [placeholder]="'Search for Details'"
             (keydown)="onKeydown($event)"
             #barSearchInput>
-        <mat-autocomplete
+        <!-- <mat-autocomplete
             class="max-h-128 sm:px-2 border-t rounded-b shadow-md"
             [disableRipple]="true"
             #matAutocomplete="matAutocomplete">
@@ -38,22 +38,22 @@
                     <mat-option
                         class="group relative mb-1 py-0 px-6 text-md rounded-md hover:bg-gray-100 dark:hover:bg-hover"
                         [routerLink]="result.link">
-                        <!-- Contacts -->
+                       
                         <ng-container *ngIf="resultSet.id === 'publisher'">
                             <ng-container *ngTemplateOutlet="contactResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
-                        <!-- Pages -->
+                     
                         <ng-container *ngIf="resultSet.id === 'pages'">
                             <ng-container *ngTemplateOutlet="pageResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
-                        <!-- Tasks -->
+                    
                         <ng-container *ngIf="resultSet.id === 'tasks'">
                             <ng-container *ngTemplateOutlet="taskResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
                     </mat-option>
                 </ng-container>
             </ng-container>
-        </mat-autocomplete>
+        </mat-autocomplete> -->
         <button
             class="absolute top-1/2 right-5 sm:right-7 shrink-0 w-10 h-10 -mt-5"
             mat-icon-button
@@ -94,16 +94,16 @@
                     <mat-option
                         class="group relative mb-1 py-0 px-6 text-md rounded-md hover:bg-gray-100 dark:hover:bg-hover"
                         [routerLink]="result.link">
-                        <!-- Contacts -->
+                       
                         <ng-container *ngIf="resultSet.id === 'publisher'">
-                            <!-- <p>{{result.publisherName}}</p> -->
+                          
                             <ng-container *ngTemplateOutlet="contactResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
-                        <!-- Pages -->
+                       
                         <ng-container *ngIf="resultSet.id === 'pages'">
                             <ng-container *ngTemplateOutlet="pageResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
-                        <!-- Tasks -->
+                      
                         <ng-container *ngIf="resultSet.id === 'tasks'">
                             <ng-container *ngTemplateOutlet="taskResult; context: {$implicit: result}"></ng-container>
                         </ng-container>
@@ -115,7 +115,7 @@
 </ng-container>
 
 <!-- Contact result template -->
-<ng-template
+<!-- <ng-template
     #contactResult
     let-result>
     <div class="flex items-center">
@@ -132,10 +132,10 @@
             <span [innerHTML]="result.publisher_name"></span>
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <!-- Page result template -->
-<ng-template
+<!-- <ng-template
     #pageResult
     let-result>
     <div class="flex flex-col">
@@ -146,10 +146,10 @@
             {{result.link}}
         </div>
     </div>
-</ng-template>
+</ng-template> -->
 
 <!-- Task result template -->
-<ng-template
+<!-- <ng-template
     #taskResult
     let-result>
     <div class="flex items-center">
@@ -168,4 +168,4 @@
             [ngClass]="{'line-through text-hint': result.completed}"
             [innerHTML]="result.title"></div>
     </div>
-</ng-template>
+</ng-template> -->

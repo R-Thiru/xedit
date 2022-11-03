@@ -26,6 +26,7 @@ export class AuthUtils
      */
     static isTokenExpired(token: string, offsetSeconds?: number): boolean
     {
+        
         // Return if there is no token
         if ( !token || token === '' )
         {
@@ -34,7 +35,8 @@ export class AuthUtils
 
         // Get the expiration date
         const date = this._getTokenExpirationDate(token);
-
+        
+        
         offsetSeconds = offsetSeconds || 0;
 
         if ( date === null )
@@ -42,6 +44,8 @@ export class AuthUtils
             return true;
         }
 
+    
+        
         // Check if the token is expired
         return !(date.valueOf() > new Date().valueOf() + offsetSeconds * 1000);
     }
@@ -120,6 +124,7 @@ export class AuthUtils
      */
     private static _urlBase64Decode(str: string): string
     {
+        
         let output = str.replace(/-/g, '+').replace(/_/g, '/');
         switch ( output.length % 4 )
         {
@@ -153,6 +158,7 @@ export class AuthUtils
      */
     private static _decodeToken(token: string): any
     {
+        
         // Return if there is no token
         if ( !token )
         {
@@ -186,6 +192,7 @@ export class AuthUtils
      */
     private static _getTokenExpirationDate(token: string): Date | null
     {
+        
         // Get the decoded token
         const decodedToken = this._decodeToken(token);
 

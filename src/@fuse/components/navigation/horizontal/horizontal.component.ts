@@ -4,6 +4,7 @@ import { fuseAnimations } from '@fuse/animations';
 import { FuseNavigationItem } from '@fuse/components/navigation/navigation.types';
 import { FuseNavigationService } from '@fuse/components/navigation/navigation.service';
 import { FuseUtilsService } from '@fuse/services/utils/utils.service';
+import { AppService } from 'app/app.service';
 
 @Component({
     selector       : 'fuse-horizontal-navigation',
@@ -17,10 +18,13 @@ import { FuseUtilsService } from '@fuse/services/utils/utils.service';
 export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnDestroy
 {
     @Input() name: string = this._fuseUtilsService.randomId();
-    @Input() navigation: FuseNavigationItem[];
+    @Input() navigation: any[];
 
     onRefreshed: ReplaySubject<boolean> = new ReplaySubject<boolean>(1);
     private _unsubscribeAll: Subject<any> = new Subject<any>();
+
+
+    getMenuAccess : any
 
     /**
      * Constructor
@@ -28,9 +32,12 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
     constructor(
         private _changeDetectorRef: ChangeDetectorRef,
         private _fuseNavigationService: FuseNavigationService,
-        private _fuseUtilsService: FuseUtilsService
+        private _fuseUtilsService: FuseUtilsService,
+        private _appService : AppService
     )
     {
+    
+        
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -44,6 +51,7 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
      */
     ngOnChanges(changes: SimpleChanges): void
     {
+        
         // Navigation
         if ( 'navigation' in changes )
         {
@@ -57,6 +65,8 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
      */
     ngOnInit(): void
     {
+       
+        
         // Make sure the name input is not an empty string
         if ( this.name === '' )
         {
@@ -65,6 +75,10 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
 
         // Register the navigation component
         this._fuseNavigationService.registerComponent(this.name, this);
+
+        this._appService.menuChanges.subscribe(res =>{
+            this.getMenuAccess = res
+        })
     }
 
     /**
@@ -104,6 +118,13 @@ export class FuseHorizontalNavigationComponent implements OnChanges, OnInit, OnD
      */
     trackByFn(index: number, item: any): any
     {
+        
         return item.id || index;
     }
+
+
+
+    
+
+  
 }

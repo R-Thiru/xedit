@@ -21,13 +21,16 @@ import { MaterialModule } from 'app/shared/material.modules';
 import { TranslocoModule } from '@ngneat/transloco';
 import { PipeModule } from 'app/shared/pipes/pipes.module';
 import { FormsModule } from '@angular/forms';
+import { PublishersModule } from '../publishers/publishers.module';
+import { ProjectCreateComponent } from './components/project-create/project-create.component';
 
 
 
 @NgModule({
   declarations: [
     ProjectListComponent,
-    ProjectsComponent
+    ProjectsComponent,
+    ProjectCreateComponent
   ],
   imports: [
     RouterModule.forChild(projectsRoutes),
@@ -48,7 +51,8 @@ import { FormsModule } from '@angular/forms';
     PipeModule,
     MatMenuModule,
     SharedModule,
-    MaterialModule
+    MaterialModule,
+    
   ],
   exports:[
     // ProjectListComponent,

@@ -1,0 +1,66 @@
+<div class="flex flex-col  max-w-full w-full max-h-full h-86  sm:min-w-180">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-black border-b ">
+        <div class="text-lg font-medium">Citation Link</div>
+
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Content -->
+    <form [formGroup]="citationForm" class="p-3 space-y-3">
+        <section>
+            <mat-label>Citaton Type <span class="text-red-400">*</span></mat-label>
+            <mat-radio-group [formControlName]="'citationType'" [color]="'primary'" class="flex justify-evenly">
+                <mat-radio-button value="Internal" [checked]="true">Internal</mat-radio-button>
+                <mat-radio-button value="External">External</mat-radio-button>
+            </mat-radio-group>
+        </section>
+        <div class="grid grid-cols-2 gap-1">
+            <mat-form-field *ngIf="citationForm.get('citationType').value == 'External'">
+                <mat-label>Select Chapter</mat-label>
+                <mat-select [formControlName]="'selectChapter'">
+                    <ng-container >
+                        <mat-option [value]="'Sample'">
+                            Sample
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Select Type</mat-label>
+                <mat-select [formControlName]="'selectType'">
+                    <ng-container >
+                        <mat-option [value]="'Sample'">
+                            Sample
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+            <mat-form-field >
+                <mat-label>Enter Label</mat-label>
+                <input matInput [formControlName]="'enterLabel'">
+            </mat-form-field>
+            <mat-form-field>
+                <mat-label>Select Link</mat-label>
+                <mat-select [formControlName]="'selectLink'">
+                    <ng-container >
+                        <mat-option [value]="'Sample'">
+                            Sample
+                        </mat-option>
+                    </ng-container>
+                </mat-select>
+            </mat-form-field>
+        </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-12 px-4  bg-gray-50 ">
+
+        <button class="ml-2" mat-flat-button [color]="'primary'" [matTooltip]="'Submit'" (click)="submitForm()">
+            Submit
+        </button>
+
+    </div>
+</div>

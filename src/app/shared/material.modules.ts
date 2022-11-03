@@ -41,6 +41,7 @@ import {ScrollingModule} from '@angular/cdk/scrolling';
 import {CdkStepperModule} from '@angular/cdk/stepper';
 import {CdkTableModule} from '@angular/cdk/table';
 import {CdkTreeModule} from '@angular/cdk/tree';
+import {OverlayModule} from '@angular/cdk/overlay';
 // services
 
 
@@ -90,6 +91,7 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     MatToolbarModule,
     MatTooltipModule,
     MatStepperModule,
+    OverlayModule
   ],
   exports: [
     A11yModule,
@@ -132,6 +134,7 @@ import {CdkTreeModule} from '@angular/cdk/tree';
     MatTooltipModule,
     MatStepperModule,
     MatFormFieldModule,
+    OverlayModule
   ],
   providers: [
    

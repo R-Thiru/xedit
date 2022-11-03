@@ -64,6 +64,7 @@
             <ng-container *ngIf="data.actions.cancel.show">
                 <button
                     mat-stroked-button
+                    [color]="data.actions.cancel.color"
                     [matDialogClose]="'cancelled'">
                     {{data.actions.cancel.label}}
                 </button>

@@ -14,7 +14,7 @@ import { TranslocoHttpLoader } from 'app/core/transloco/transloco.http-loader';
             useValue: translocoConfig({
                 availableLangs      : [
                     {
-                        id   : 'en',
+                        id   : 'en-us',
                         label: 'English'
                     },
                     {
@@ -34,8 +34,8 @@ import { TranslocoHttpLoader } from 'app/core/transloco/transloco.http-loader';
                         label: 'India-Telugu'
                     }
                 ],
-                defaultLang         : 'en',
-                fallbackLang        : 'en',
+                defaultLang         : 'en-us',
+                fallbackLang        : 'en-us',
                 reRenderOnLangChange: true,
                 prodMode            : environment.production
             })

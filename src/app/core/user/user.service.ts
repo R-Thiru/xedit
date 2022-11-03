@@ -28,6 +28,7 @@ export class UserService
      */
     set user(value: User)
     {
+        
         // Store the value
         this._user.next(value);
     }
@@ -46,11 +47,19 @@ export class UserService
      */
     get(): Observable<User>
     {
+
+        // return this._user.pipe(tap((x)=>{
+        //     this._user.next(x);
+        //     console.log(x);
+        // })
         return this._httpClient.get<User>('api/common/user').pipe(
             tap((user) => {
+                
                 this._user.next(user);
+                
             })
-        );
+         );
+        
     }
 
     /**

@@ -1,0 +1,20 @@
+<div class="flex flex-col  sm:max-w-2xl max-w-full w-full max-h-full h-56  sm:min-w-180">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 px-4 bg-primary text-black border-b ">
+        <div class="text-lg font-medium">MultiImage</div>
+
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Tab -->
+    <div class="m-6 items-center">
+
+        <button mat-flat-button [color]="'primary'">DAM</button>
+        <div class="mt-4">
+            <mat-checkbox [color]="'primary'">Common Images</mat-checkbox>
+        </div>
+    </div>
+</div>

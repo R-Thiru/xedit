@@ -1,4 +1,4 @@
-import { Component, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
+import { Component, ElementRef, OnDestroy, OnInit, Output, ViewEncapsulation } from '@angular/core';
 import { ActivatedRoute, Router } from '@angular/router';
 import { Subject, takeUntil } from 'rxjs';
 import { FuseMediaWatcherService } from '@fuse/services/media-watcher';
@@ -6,6 +6,7 @@ import { FuseNavigationService, FuseVerticalNavigationComponent } from '@fuse/co
 import { Navigation } from 'app/core/navigation/navigation.types';
 import { NavigationService } from 'app/core/navigation/navigation.service';
 import { environment } from '../../../../../environments/environment';
+import { LayoutService } from 'app/layout/layout.service';
 
 @Component({
     selector     : 'dense-layout',
@@ -27,6 +28,7 @@ export class DenseLayoutComponent implements OnInit, OnDestroy
     constructor(
         private _activatedRoute: ActivatedRoute,
         private _router: Router,
+        private _layoutService : LayoutService,
         private _navigationService: NavigationService,
         private _fuseMediaWatcherService: FuseMediaWatcherService,
         private _fuseNavigationService: FuseNavigationService
@@ -68,8 +70,13 @@ export class DenseLayoutComponent implements OnInit, OnDestroy
             .subscribe((navigation: Navigation) => {
                 this.navigation = navigation;
                 
-                
+                 
             });
+
+        this._layoutService.accessControlData.subscribe(res =>{
+           
+            
+        })
 
         // Subscribe to media changes
         this._fuseMediaWatcherService.onMediaChange$
@@ -81,10 +88,10 @@ export class DenseLayoutComponent implements OnInit, OnDestroy
 
                 // Change the navigation appearance
                 this.navigationAppearance = this.isScreenSmall ? 'default' : 'dense';
-                
+              
             });
         
-        
+       
     }
 
     /**
@@ -124,8 +131,11 @@ export class DenseLayoutComponent implements OnInit, OnDestroy
      */
     toggleNavigationAppearance(): void
     {
-       
+        
         this.navigationAppearance = (this.navigationAppearance === 'default' ? 'dense' : 'default');
+        
+        this.navigationAppearance === 'default' ? this.smallLogo = true : this.smallLogo = false
+        
     }
 
     
@@ -134,7 +144,8 @@ export class DenseLayoutComponent implements OnInit, OnDestroy
      */
 
     logoChange(event){
-        this.smallLogo = event
+        event > 200  ? this.smallLogo = true : this.smallLogo = false      
     }
 
+    
 }

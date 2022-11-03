@@ -1,0 +1,35 @@
+<div class="w-full max-w-3xl xxl:max-w-full">
+    <!-- Form -->
+    <form [formGroup]="notificationsForm">
+        <!-- Section -->
+        <div class="w-full text-xl">Alerts</div>
+        <div class="grid grid-cols-1 gap-6 w-full mt-8">
+            <!-- Communication -->
+            <div class="flex items-center justify-between">
+                <div class="flex-auto cursor-pointer" (click)="communication.toggle()">
+                    <div class="leading-6 font-medium">Allow Notifications</div>
+                    <div class="text-md text-secondary">Get news, announcements, and product updates.</div>
+                </div>
+                <mat-slide-toggle class="ml-2" [color]="'primary'" [formControlName]="'communication'" #communication>
+                </mat-slide-toggle>
+            </div>
+
+            <div class="flex items-center justify-between">
+                <div class="flex-auto cursor-pointer" (click)="editorMenu.toggle()">
+                    <div class="leading-6 font-medium">Editor Menu</div>
+                    <div class="text-md text-secondary">Select Draggable Menu or Default Menu</div>
+                </div>
+                <div class="flex-col">
+                    <mat-slide-toggle class="ml-2" [color]="'primary'" [formControlName]="'editorMenu'" #editorMenu style="float:right;">
+                    </mat-slide-toggle>
+                    <div>
+                        {{notificationsForm.get('editorMenu').value ? 'Default_Menu' : 'Draggable_Menu'}}
+                    </div>
+                    
+                </div>
+
+
+            </div>
+        </div>
+    </form>
+</div>

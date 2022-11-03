@@ -1,19 +1,17 @@
-<div class="fuse-horizontal-navigation-wrapper">
+<div class="fuse-horizontal-navigation-wrapper" >
 
-    <ng-container *ngFor="let item of navigation; trackBy: trackByFn">
+    <ng-container *ngFor="let item of navigation; let i = index; trackBy: trackByFn;">
 
         <!-- Skip the hidden items -->
         <ng-container *ngIf="(item.hidden && !item.hidden(item)) || !item.hidden">
 
             <!-- Basic -->
             <ng-container *ngIf="item.type === 'basic'">
-                <fuse-horizontal-navigation-basic-item
-                    class="fuse-horizontal-navigation-menu-item"
-                    [item]="item"
+                <fuse-horizontal-navigation-basic-item class="fuse-horizontal-navigation-menu-item" [item]="item" 
                     [name]="name"></fuse-horizontal-navigation-basic-item>
             </ng-container>
 
-            <!-- Branch: aside, collapsable, group -->
+            <!-- Branch: aside, collapsable, group,  && getMenuAccess -->
             <ng-container *ngIf="item.type === 'aside' || item.type === 'collapsable' || item.type === 'group'">
                 <fuse-horizontal-navigation-branch-item
                     class="fuse-horizontal-navigation-menu-item"
@@ -23,9 +21,7 @@
 
             <!-- Spacer -->
             <ng-container *ngIf="item.type === 'spacer'">
-                <fuse-horizontal-navigation-spacer-item
-                    class="fuse-horizontal-navigation-menu-item"
-                    [item]="item"
+                <fuse-horizontal-navigation-spacer-item class="fuse-horizontal-navigation-menu-item" [item]="item"
                     [name]="name"></fuse-horizontal-navigation-spacer-item>
             </ng-container>
 

@@ -20,6 +20,7 @@ import { MaterialModule } from 'app/shared/material.modules';
 import { TranslocoModule } from '@ngneat/transloco';
 import { RolesComponent } from './components/roles/roles.component';
 import { RolesListComponent } from './components/roles-list/roles-list.component';
+import { PipeModule } from 'app/shared/pipes/pipes.module';
 
 
 
@@ -31,21 +32,12 @@ import { RolesListComponent } from './components/roles-list/roles-list.component
   imports: [
     RouterModule.forChild(rolesRoutes),
     CommonModule,
-    MatButtonModule,
-    MatFormFieldModule,
-    MatIconModule,
-    TranslocoModule,
-    MatInputModule,
-    MatRadioModule,
-    MatSelectModule,
-    MatSidenavModule,
-    MatTableModule,
-    MatSlideToggleModule,
     FuseAlertModule,
     FuseCardModule,
-    MatMenuModule,
     SharedModule,
-    MaterialModule
+    PipeModule,
+    MaterialModule,
+    TranslocoModule
   ],
   exports:[
     RolesComponent,

@@ -1,7 +1,6 @@
 import { NgModule } from '@angular/core';
 import { LayoutComponent } from 'app/layout/layout.component';
 import { EmptyLayoutModule } from 'app/layout/layouts/empty/empty.module';
-import { EditorLayoutModule} from 'app/layout/layouts/editor/editor.module';
 import { CenteredLayoutModule } from 'app/layout/layouts/horizontal/centered/centered.module';
 import { EnterpriseLayoutModule } from 'app/layout/layouts/horizontal/enterprise/enterprise.module';
 import { MaterialLayoutModule } from 'app/layout/layouts/horizontal/material/material.module';
@@ -15,12 +14,14 @@ import { ThinLayoutModule } from 'app/layout/layouts/vertical/thin/thin.module';
 import { SettingsModule } from 'app/layout/common/settings/settings.module';
 import { SharedModule } from 'app/shared/shared.module';
 
+
 const layoutModules = [
+
+   
     // Empty
     EmptyLayoutModule,
 
-    //Editor
-    EditorLayoutModule,
+   
 
     // Horizontal navigation
     CenteredLayoutModule,
@@ -36,6 +37,7 @@ const layoutModules = [
     FuturisticLayoutModule,
     ThinLayoutModule,
 
+    
 ];
 
 @NgModule({
@@ -52,6 +54,4 @@ const layoutModules = [
         ...layoutModules
     ]
 })
-export class LayoutModule
-{
-}
+export class LayoutModule{}

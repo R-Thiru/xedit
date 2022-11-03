@@ -1,0 +1,55 @@
+.inventory-grid {
+    grid-template-columns: 48px auto 40px;
+
+    @media (min-width: 640px) {
+        grid-template-columns: 48px auto 200px;
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: 48px auto 120px 100px;
+    }
+
+    @media (min-width: 1024px) {
+        grid-template-columns: 48px 280px auto 100px 150px 120px;
+    }
+}
+
+.chapter-grid {
+    grid-template-columns: 48px auto 40px;
+
+    @media (min-width: 640px) {
+        grid-template-columns: 48px auto 112px 72px;
+    }
+
+    @media (min-width: 768px) {
+        grid-template-columns: 48px 112px auto 112px 72px;
+    }
+    @media (min-width: 1024px) {
+        grid-template-columns: 5px 120px 405px 125px 95px 0px;
+    }
+    @media (min-width: 1280px){
+        grid-template-columns: 48px 160px auto 130px 90px 25px;;
+    }
+    @media (min-width: 1300px){
+        grid-template-columns: 48px 250px auto 150px 100px 80px;
+    }
+    @media (min-width: 1440px){
+        grid-template-columns: 48px 220px auto 180px 120px 80px;
+    }
+}
+
+
+:host
+    ::ng-deep
+    .mat-form-field-flex{
+        min-height: 35px !important;
+        max-height: 35px !important;
+        padding: 0 8px !important; 
+    }
+    .mat-form-field {
+        display: inline-block;
+        position: relative;
+        text-align: left;
+        max-height: 35px !important;
+    }
+    

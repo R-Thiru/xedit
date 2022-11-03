@@ -1,0 +1,131 @@
+<!-- Main -->
+  <div class="flex flex-row justify-between 2xl:p-4 lg:p-0 sm:p-0" *ngIf="menuToggle">
+    <div class="pr-4 w-full hidden md:block">
+      <mat-tab-group class="pr-4 md:pr-6 sm:pr-10" [selectedIndex]="selected.value" [animationDuration]="'0'"
+        (selectedIndexChange)="selected.setValue($event)">
+        <mat-tab class="border-solid " *ngFor="let tab of tabs; let index = index" [label]="tab">{{tab | titlecase}}
+        </mat-tab>
+      </mat-tab-group>
+    </div>
+
+    <!-- Back to Chapter -->
+    <div class="font-medium leading-5">
+      <button mat-icon-button [color]="primary" (click)="openBackToChaptersDialog()">
+        <mat-icon class="text-current" [matTooltip]="tooltip || 'Back to Chapters'"
+          [svgIcon]="'heroicons_solid:arrow-sm-left'">
+        </mat-icon>
+      </button>
+    </div>
+
+    <!-- Help Icon -->
+    <div class="font-medium leading-5 mt-2.5">
+      <button class="icon-size-5" mat-icon-button>
+        <a target="_blank" href="https://help.xeditpro.com/help.html" rel="noreferrer">
+          <mat-icon [svgIcon]="'mat_solid:help'" [matTooltip]="tooltip || 'HELP'"></mat-icon>
+        </a>
+      </button>
+    </div>
+  </div>
+
+  <!-- <div *ngIf="menuToggle"
+  class="relative flex flex-col sm:flex-row flex-0 sm:items-center sm:justify-between"> -->
+
+  <!-- Back to Chapters -->
+  <!-- <div  class="text-3xl md:text-4xl font-extrabold tracking-tight leading-7 sm:leading-10 truncate">
+    <button mat-icon-button [routerLink]="['../projects/details']">
+      <mat-icon class="text-current" [matTooltip]="tooltip || 'Back to Chapters'"
+        [svgIcon]="'heroicons_solid:arrow-sm-left'">
+      </mat-icon>
+    </button>
+  </div> -->
+  <!-- Actions -->
+  <!-- <div class="flex shrink-0 items-center mt-6 sm:mt-0 sm:ml-4">
+    <mat-tab-group class="sm:px-2" [animationDuration]="'0'">
+      <mat-tab label="Grid">
+
+      </mat-tab>
+      <mat-tab label="List">
+
+      </mat-tab>
+    </mat-tab-group> -->
+  <!-- Add product button -->
+  <!-- <button class="ml-4" mat-flat-button [color]="'primary'">
+      <mat-icon [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+      <span class="ml-2 mr-1" *transloco="let t"></span>
+    </button> -->
+
+
+  <!-- Split Editor Panel button -->
+  <!-- <mat-slide-toggle class="pr-2 mt-0 sm:mt-0 sm:ml-auto" [color]="'primary'"
+      [matTooltip]="tooltip || 'Split Editor Panel'">
+    </mat-slide-toggle> -->
+
+  <!-- Track change Highlitining button -->
+  <!-- <mat-slide-toggle class="pr-2 mt-0 sm:mt-0 sm:ml-auto" [color]="'primary'"
+      [matTooltip]="tooltip || 'Track changes Highlighting'">
+    </mat-slide-toggle> -->
+
+  <!-- Reference Colour Coding button -->
+  <!-- <mat-slide-toggle class="pr-2 mt-0 sm:mt-0 sm:ml-auto" [color]="'primary'"
+      [matTooltip]="tooltip || 'Reference Colour Coding'">
+    </mat-slide-toggle>
+  </div>
+</div> -->
+
+  <!-- <div class="flex flex-auto">
+
+  <div class="flex flex-col flex-auto w-full max-w-xs sm:max-w-5xl mx-auto">
+    <div class="flex flex-col sm:flex-row items-center justify-between w-full max-w-xs sm:max-w-none">
+      <nav class="nav flex flex-wrap items-center justify-between">
+        <ul class="menu md:border-none flex justify-end list-reset m-0 w-full md:w-auto">
+          <li class="border-t md:border-none">
+            <a href="/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker font-bold">HOME</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/about/"
+              class="block md:inline-block px-2 py-2 border-b rounded-r	no-underline text-grey-darkest hover:text-grey-darker">INSERT</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">TOOLS</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">REVIEWS</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">INDEX</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">OUTPUT</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">FORMATTING</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">TABLE
+              LAYOUT</a>
+          </li>
+
+          <li class="border-t md:border-none">
+            <a href="/blog/"
+              class="block md:inline-block px-2 py-2 border-b no-underline text-grey-darkest hover:text-grey-darker">CE
+              TOOLS</a>
+          </li>
+        </ul>
+      </nav>
+    </div>
+  </div>
+</div> -->

@@ -8,6 +8,8 @@ import { MaterialModule } from 'app/shared/material.modules';
 import { SharedModule } from 'app/shared/shared.module';
 import { TranslocoModule } from '@ngneat/transloco';
 import { FuseCardModule } from '@fuse/components/card';
+import { FuseAlertModule } from '@fuse/components/alert';
+import { PipeModule } from 'app/shared/pipes/pipes.module';
 @NgModule({
   declarations: [
     TeamsCreateComponent,
@@ -20,7 +22,9 @@ import { FuseCardModule } from '@fuse/components/card';
     SharedModule,
     TranslocoModule,
     TeamsRoutingModule,
-    FuseCardModule
+    FuseCardModule,
+    FuseAlertModule,
+    PipeModule,
   ],
   exports: [
     TeamsCreateComponent,

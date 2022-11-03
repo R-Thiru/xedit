@@ -6,17 +6,16 @@ import { FuseAlertType } from '@fuse/components/alert';
 import { AuthService } from 'app/core/auth/auth.service';
 
 @Component({
-    selector     : 'auth-forgot-password',
-    templateUrl  : './forgot-password.component.html',
+    selector: 'auth-forgot-password',
+    templateUrl: './forgot-password.component.html',
     encapsulation: ViewEncapsulation.None,
-    animations   : fuseAnimations
+    animations: fuseAnimations
 })
-export class AuthForgotPasswordComponent implements OnInit
-{
+export class AuthForgotPasswordComponent implements OnInit {
     @ViewChild('forgotPasswordNgForm') forgotPasswordNgForm: NgForm;
 
     alert: { type: FuseAlertType; message: string } = {
-        type   : 'success',
+        type: 'success',
         message: ''
     };
     forgotPasswordForm: FormGroup;
@@ -28,8 +27,7 @@ export class AuthForgotPasswordComponent implements OnInit
     constructor(
         private _authService: AuthService,
         private _formBuilder: FormBuilder
-    )
-    {
+    ) {
     }
 
     // -----------------------------------------------------------------------------------------------------
@@ -39,8 +37,7 @@ export class AuthForgotPasswordComponent implements OnInit
     /**
      * On init
      */
-    ngOnInit(): void
-    {
+    ngOnInit(): void {
         // Create the form
         this.forgotPasswordForm = this._formBuilder.group({
             email: ['', [Validators.required, Validators.email]]
@@ -54,11 +51,9 @@ export class AuthForgotPasswordComponent implements OnInit
     /**
      * Send the reset link
      */
-    sendResetLink(): void
-    {
+    sendResetLink(): void {
         // Return if the form is invalid
-        if ( this.forgotPasswordForm.invalid )
-        {
+        if (this.forgotPasswordForm.invalid) {
             return;
         }
 
@@ -68,38 +63,45 @@ export class AuthForgotPasswordComponent implements OnInit
         // Hide the alert
         this.showAlert = false;
 
+        let req = {
+            email: this.forgotPasswordForm.get('email').value
+        }
+
         // Forgot password
-        this._authService.forgotPassword(this.forgotPasswordForm.get('email').value)
-            .pipe(
-                finalize(() => {
+        this._authService.forgotPassword(req).subscribe(response => {    
+            if (response.status) {
+                this.showAlert = true;
+                // Re-enable the form
+                this.forgotPasswordForm.enable();
 
-                    // Re-enable the form
-                    this.forgotPasswordForm.enable();
+                // Reset the form
+                this.forgotPasswordNgForm.resetForm();
 
-                    // Reset the form
-                    this.forgotPasswordNgForm.resetForm();
+                // Set the alert
+                this.alert = {
+                    type: 'success',
+                    message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
+                };
+            }
+            
+        },
+        (error)=>{
+            this.showAlert = true;
+            // Re-enable the form
+            this.forgotPasswordForm.enable();
 
-                    // Show the alert
-                    this.showAlert = true;
-                })
-            )
-            .subscribe(
-                (response) => {
+            // Reset the form
+            this.forgotPasswordNgForm.resetForm();
 
-                    // Set the alert
-                    this.alert = {
-                        type   : 'success',
-                        message: 'Password reset sent! You\'ll receive an email if you are registered on our system.'
-                    };
-                },
-                (response) => {
-
-                    // Set the alert
-                    this.alert = {
-                        type   : 'error',
-                        message: 'Email does not found! Are you sure you are already a member?'
-                    };
-                }
-            );
+            this.alert = {
+                type: 'error',
+                message: error.error.message
+            }
+            
+        })
+            
     }
+
+
+
 }

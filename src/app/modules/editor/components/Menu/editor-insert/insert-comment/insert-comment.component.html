@@ -1,0 +1,66 @@
+<div class="flex flex-col  max-w-full w-full max-h-full h-86  sm:min-w-180" cdkDrag
+cdkDragRootElement=".cdk-overlay-pane">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-black border-b cursor-move" cdkDragHandle>
+        <div class="text-lg font-medium">Comment</div>
+
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <form [formGroup]="commentForm" class="p-3 space-y-3">
+
+        <div class="flex" >
+                <ckeditor  matInput  class="w-full min-h-40 h-full"
+                  [editor]="Editor" (ready)="editorReady($event)" 
+                  [formControlName]="'comment'"
+                  [config]="commentConfig">
+                </ckeditor>
+        </div>
+
+        <div class="flex flex-col">
+            <div class="flex space-x-2 justify-between">
+                <mat-form-field class="w-full">
+                    <mat-label>Select Team</mat-label>
+                    <mat-select [formControlName]="'select_team'" (selectionChange)="getSelectTeam(commentForm.get('select_team').value)">
+                        <ng-container *ngFor="let select_team of Team">
+                            <mat-option [value]="select_team.uuid">
+                                {{select_team.display_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>Select Role</mat-label>
+                    <mat-select [formControlName]="'select_role'">
+                        <ng-container *ngFor="let select_role of Roles">
+                            <mat-option [value]="select_role.uuid">
+                                {{select_role.display_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+                <mat-form-field class="w-full">
+                    <mat-label>Select User</mat-label>
+                    <mat-select [formControlName]="'select_user'">
+                        <ng-container *ngFor="let select_user of User">
+                            <mat-option [value]="select_user.user_uuid">
+                                {{select_user.first_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+            </div>
+        </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-12 px-4  bg-gray-50 ">
+        <button class="ml-2" mat-flat-button  [mat-dialog-close]="true" [color]="'primary'" [matTooltip]="'Submit'"
+            (click)="submitInsertComment()">
+            Submit
+        </button>
+    </div>
+</div>

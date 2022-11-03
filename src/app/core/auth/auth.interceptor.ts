@@ -22,6 +22,7 @@ export class AuthInterceptor implements HttpInterceptor
      */
     intercept(req: HttpRequest<any>, next: HttpHandler): Observable<HttpEvent<any>>
     {
+        
         // Clone the request object
         let newReq = req.clone();
 
@@ -32,8 +33,8 @@ export class AuthInterceptor implements HttpInterceptor
         // This will force the server to return a "401 Unauthorized" response
         // for the protected API routes which our response interceptor will
         // catch and delete the access token from the local storage while logging
-        // the user out from the app.
-        if ( this._authService.accessToken && !AuthUtils.isTokenExpired(this._authService.accessToken) )
+        // the user out from the app.&& !AuthUtils.isTokenExpired(this._authService.accessToken)
+        if ( this._authService.accessToken  )
         {
             newReq = req.clone({
                 headers: req.headers.set('Authorization', 'Bearer ' + this._authService.accessToken)
@@ -43,7 +44,7 @@ export class AuthInterceptor implements HttpInterceptor
         // Response
         return next.handle(newReq).pipe(
             catchError((error) => {
-
+                
                 // Catch "401 Unauthorized" responses
                 if ( error instanceof HttpErrorResponse && error.status === 401 )
                 {

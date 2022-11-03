@@ -3,36 +3,46 @@ import { FormBuilder, FormGroup } from '@angular/forms';
 import { MatPaginator } from '@angular/material/paginator';
 import { MatDrawer } from '@angular/material/sidenav';
 import { MatTableDataSource } from '@angular/material/table';
+import { fuseAnimations } from '@fuse/animations';
+import { FuseAlertType } from '@fuse/components/alert';
 import { FuseConfirmationService } from '@fuse/services/confirmation';
 import { AppService } from 'app/app.service';
 import { Observable } from 'rxjs';
+import { PublishersService } from '../../publishers.service';
 import { PublisherCreateComponent } from '../publisher-create/publisher-create.component';
-import { card, cardData } from './publisher.model';
+
 
 @Component({
   selector: 'publisher-list',
   templateUrl: './publisher-list.component.html',
   styleUrls: ['./publisher-list.component.scss'],
-  // encapsulation: ViewEncapsulation.None,
-  changeDetection: ChangeDetectionStrategy.OnPush
+  animations: fuseAnimations
 })
 export class PublisherListComponent implements OnInit {
 
-  public cardData: card[] = cardData
+  alert: { type: FuseAlertType; message: string } = {
+    type: 'success',
+    message: ''
+  };
+
+  publisherDatas: any = []
   isLoading: boolean = false;
-  paginationToggle: boolean = true;
+  showAlert: boolean = false;
   gridView: boolean = true;
   paginationData: any
   obs: Observable<any>;
   publisherForm: any;
   inputData: any
-  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>(this.cardData);
+  dataSource: MatTableDataSource<any> = new MatTableDataSource<any>();
+
   @ViewChild(PublisherCreateComponent) PublisherCreateComponent
   @ViewChild('matDrawer') public matDrawer: MatDrawer
   @ViewChild('paginator') paginator: MatPaginator;
+
   configForm: FormGroup;
 
   constructor(private _changeDetectorRef: ChangeDetectorRef,
+    private _publishService: PublishersService,
     private _formBuilder: FormBuilder,
     private _fuseConfirmationService: FuseConfirmationService,
     public service: AppService) {
@@ -40,6 +50,8 @@ export class PublisherListComponent implements OnInit {
   }
 
   ngOnInit() {
+
+    this.getPublisherData()
 
     this.service.searchData.subscribe((res: any) => {
       this.inputData = res.toLowerCase()
@@ -71,18 +83,17 @@ export class PublisherListComponent implements OnInit {
 
 
 
-  createPublisher(list) {
-
-    this.PublisherCreateComponent.patchValue(list)
+  addPublisher() {
+    this.PublisherCreateComponent.publishersForm.resetForm()
     this.matDrawer.open()
-    this.paginationToggle = false
-
-
   }
 
-  trackByFn(index: number, item: any): any {
-    return item.id || index;
+  editPublisher(publisher) {
+    this.PublisherCreateComponent.patchValue(publisher)
+    this.matDrawer.open()
   }
+
+
 
   openConfirmationDialog(list): void {
     // Open the dialog and save the reference of it
@@ -93,11 +104,8 @@ export class PublisherListComponent implements OnInit {
     dialogRef.afterClosed().subscribe((result) => {
 
       if (result === 'confirmed') {
-        // alert('Delete SuccessFully')
-        let i = this.cardData.findIndex(x => x.uuid == list.uuid)
-        this.cardData.splice(i, 1)
-
-        this.dataSource = new MatTableDataSource<any>(this.cardData);
+        this.deletePublisherData(list)
+        this.dataSource = new MatTableDataSource<any>(this.publisherDatas);
         this.dataSource.paginator = this.paginationData
         this.obs = this.dataSource.connect();
       }
@@ -105,13 +113,91 @@ export class PublisherListComponent implements OnInit {
     });
   }
 
-  getData(data) {
-    this.paginationData = data
+  getData(pagedata) {
+    this.paginationData = pagedata
     this.dataSource.paginator = this.paginationData
     this.obs = this.dataSource.connect();
   }
 
   selectedTabValue(event) {
     event.tab.textLabel == 'Grid' ? this.gridView = true : this.gridView = false
+  }
+
+
+  // get publisher data from database
+  getPublisherData() {
+    this._publishService.getPublisher().subscribe(res => {
+      if (res.status) {
+        this.publisherDatas = res.data
+        this.dataSource = new MatTableDataSource(this.publisherDatas)
+        this.obs = this.dataSource.connect();
+        this.dataSource.paginator = this.paginationData
+      }
+    })
+  }
+
+
+  // add publisher
+  createPublisherData(data) {
+    this._publishService.createPublisher(data).subscribe(res => {
+      if (res.status) {
+        this.showAlert = true
+        this.alert = {
+          message: 'Publisher Added SuccessFully',
+          type: 'success'
+        }
+        this.getPublisherData()
+      }
+    },
+      (error) => {
+        this.showAlert = true,
+          this.alert = {
+            message: error.error.message,
+            type: 'error'
+          }
+      })
+  }
+
+  // UpdatePublisher
+  updatePublisherData(data) {
+    this._publishService.updatePublisher(data).subscribe(res => {
+      if (res.status) {
+        this.showAlert = true,
+          this.alert = {
+            message: res.message,
+            type: 'success'
+          }
+        this.getPublisherData()
+      }
+    },
+      (error) => {
+        this.showAlert = true,
+          this.alert = {
+            message: error.error.message,
+            type: 'error'
+          }
+      })
+  }
+
+  // deletePublisher
+  deletePublisherData(data) {
+    let req = {
+      uuid: data.uuid
+    }
+    this._publishService.deletePublisher(req).subscribe(res => {
+      if (res.status) {
+        this.showAlert = true
+        this.alert = {
+          message: 'Deleted SuccessFully',
+          type: 'success'
+        }
+        this.getPublisherData()
+      }
+    })
+  }
+
+  // Output from alert component
+  output(item) {
+    this.showAlert = !item
   }
 }

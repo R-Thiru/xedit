@@ -1,0 +1,387 @@
+<div class="flex flex-col  max-w-180 w-full max-h-96 sm:min-w-180" cdkDrag cdkDragRootElement=".cdk-overlay-pane">
+
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-12 px-4 bg-primary text-black border-b cursor-move"  cdkDragHandle>
+        <div class="text-lg font-medium">Image</div>
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <!-- Tab -->
+    <div class="flex flex-row items-center h-12 ">
+        <mat-tab-group (selectedTabChange)="selectedTabValue($event)" [animationDuration]="'0'">
+            <mat-tab label="IMAGE"></mat-tab>
+            <mat-tab label="META"></mat-tab>
+        </mat-tab-group>
+    </div>
+
+    <!-- content -->
+    <form [formGroup]="insertFormGroup" fuseScrollbar [fuseScrollbarOptions]="{wheelPropagation: true, suppressScrollX: true}" class="max-h-full">
+        <div class="w-full mt-8 space-y-4 grid items-center" *ngIf="gridView">
+
+            <div class="flex flex-col px-8">
+                <mat-radio-group class="flex flex-row space-x-4 " [color]="'primary'" 
+                    [formControlName]="'radioImage'">
+                    <mat-radio-button   [value]="'inline'" [checked]="true">
+                        Inline Image
+                    </mat-radio-button>
+
+                    <mat-radio-button [value]="'multipart'">
+                        Display Image
+                    </mat-radio-button>
+                </mat-radio-group>
+
+               
+            </div>
+
+            <div class="flex flex-row justify-between items-center px-8 space-y-2">
+                <div class="flex flex-col w-1/2" *ngIf="selectedFile.length == 0">
+                    <span class="items-center">From Local Drive</span>
+                    <!-- image/jpeg, image/png ,image/gif, image/tiff, image/svg + xml,application/pdf' -->
+                    <div
+                        class="flex flex-col items-center justify-center w-full h-28 rounded-lg cursor-pointer border-2 border-gray-300 border-dashed hover:bg-hover transition-colors duration-150 ease-in-out">
+                        <input id="image-file-input" class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" [accept]="'image/*,application/postscript,application/pdf'" [formControlName]="'imageUploading'"
+                            type="file" [multiple]="insertFormGroup.get('radioImage').value == 'inline'|| insertFormGroup.get('radioImage').value == ''? false : true" (change)="openImages(imageFileInput)" #imageFileInput>
+                        <label
+                            class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-gray-400 hover:bg-opacity-20 dark:hover:bg-black dark:hover:bg-opacity-5"
+                            for="image-file-input" matRipple>
+                            <mat-icon class="icon-size-12 text-hint" [svgIcon]="'heroicons_outline:plus'"></mat-icon>
+                        </label>
+                    </div>
+                </div>
+                <div class="flex flex-col w-1/2 space-y-3" *ngIf="selectedFile.length > 0">
+                    <span
+                        class="border-2 border-gray-300 border rounded-lg grid grid-cols-4 justify-between p-4 min-h-28 max-h-full gap-3" cdkDropList  (cdkDropListDropped)="drop($event)">
+                        
+                            <div *ngFor="let file of selectedFile" class="flex flex-col space-y-1 relative" cdkDrag >
+
+                                <ng-container *ngIf="file.type.includes('jpeg') || file.type.includes('jpg') || file.type.includes('png')  || file.type.includes('gif')">
+                                    <div class="border ring-2 ring-red-700 h-20 w-16">
+                                        <img [src]="file.imageUrl" [alt]="file.name" class="h-full" >
+                                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700 absolute top-0 right-0"
+                                            (click)="deleteFileSelected(file)"></mat-icon>
+                                    </div>
+                                    
+                                    <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                                    [matTooltip]="file.name">{{file.name}}</p>
+                                </ng-container>
+
+                                <ng-conatiner *ngIf="file.type.includes('tiff')">
+                                    <div class="border ring-2 ring-red-700 h-20 w-16">
+                                        <img src="assets/images/bg/tiff.jpg" alt="tiff" class="h-full" >
+                                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700 absolute top-0 right-0"
+                                        (click)="deleteFileSelected(file)"></mat-icon>
+                                    </div>
+                                    <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                                    [matTooltip]="file.name">{{file.name}}</p>
+                                </ng-conatiner>
+
+                                <ng-conatiner *ngIf="file.type.includes('svg')">
+                                    <div class="border ring-2 ring-red-700 h-20 w-16">
+                                        <img src="assets/images/bg/SVG_logo.png" alt="svg" class="h-full">
+                                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700 absolute top-0 right-0"
+                                        (click)="deleteFileSelected(file)"></mat-icon>
+                                    </div>
+                                    <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                                    [matTooltip]="file.name">{{file.name}}</p>
+                                </ng-conatiner>
+
+                                <ng-conatiner *ngIf="file.type.includes('pdf')">
+                                    <div class="border ring-2 ring-red-700 h-20 w-16">
+                                        <img src="assets/images/bg/PDF.png" alt="PDF" class="h-full">
+                                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700 absolute top-0 right-0"
+                                        (click)="deleteFileSelected(file)"></mat-icon>
+                                    </div>
+                                    <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                                    [matTooltip]="file.name">{{file.name}}</p>
+                                </ng-conatiner>
+
+                                <ng-conatiner *ngIf="file.type.includes('postscript')">
+                                    <div class="border ring-2 ring-red-700 h-20 w-16">
+                                        <img src="assets/images/bg/AI.png" alt="AI" class="h-full">
+                                        <mat-icon svgIcon="heroicons_solid:x-circle" class="text-red-700 absolute top-0 right-0"
+                                        (click)="deleteFileSelected(file)"></mat-icon>
+                                    </div>
+                                    <p class="truncate" matTooltipClass="my-custom-tooltip" matTooltipPosition="above"
+                                    [matTooltip]="file.name">{{file.name}}</p>
+                                </ng-conatiner>
+                            </div>
+                        </span>
+                    </div>
+
+
+
+                <div class="items-center sm:col-span-3">
+                    <span class="flex items-center">OR</span>
+                </div>
+
+                <div class="flex flex-row">
+                    <div class="flex flex-row items-center sm:col-span-3 space-y-2">
+                        <div>
+                            <!-- Send -->
+                            <button class="order-first sm:order-last" mat-flat-button [color]="'primary'">
+                                From DAM Library
+                            </button>
+                        </div>
+                    </div>
+                </div>
+
+            </div>
+            <div class="grid sm:grid-cols-4 gap-2 w-full mt-8 px-8" *ngIf="multiPart">
+                <!-- Label -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Label</mat-label>
+                        <input [formControlName]="'label'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Title -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Title</mat-label>
+                        <input [formControlName]="'title'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Caption -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Caption</mat-label>
+                        <input [formControlName]="'caption'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Credit Line -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Credit Line</mat-label>
+                        <input [formControlName]="'credit_line'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Source line -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Source Line</mat-label>
+                        <input [formControlName]="'source_line'" matInput>
+                    </mat-form-field>
+                </div>
+                <!-- Note -->
+                <div class="sm:col-span-2">
+                    <mat-form-field class=" w-full">
+                        <mat-label>Note</mat-label>
+                        <input [formControlName]="'note'" matInput>
+                    </mat-form-field>
+                </div>
+            </div>
+
+        </div>
+
+        <div class="w-full mt-2 px-8" *ngIf="!gridView">
+            <div class="flex flex-auto flex-wrap mt-2">
+                <div class="flex  w-full space-x-2">
+                    <!-- Title -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Title</mat-label>
+                        <input matInput [formControlName]="'title'">
+                    </mat-form-field>
+                    <!-- Source -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Source</mat-label>
+                        <input matInput [formControlName]="'source'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Product Status -->
+                    <mat-form-field class="w-1/6">
+                        <mat-label>Model</mat-label>
+                        <mat-select [formControlName]="'model'">
+                            <ng-container>
+                                <mat-option [value]="Yes">Yes</mat-option>
+                                <mat-option [value]="No"> No</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+
+                    <!-- Creator -->
+                    <mat-form-field class="w-5/6">
+                        <mat-label>Creator</mat-label>
+                        <input matInput [formControlName]="'creator'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Subject -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Subject</mat-label>
+                        <input matInput [formControlName]="'subject'">
+                    </mat-form-field>
+
+                    <!-- Contributor -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Contributor</mat-label>
+                        <input matInput [formControlName]="'contributor'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Publisher -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Publisher</mat-label>
+                        <input matInput [formControlName]="'publisher'">
+                    </mat-form-field>
+
+                    <!-- Credit line -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Credit line</mat-label>
+                        <input matInput [formControlName]="'credit_line'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Date -->
+                    <mat-form-field class="w-1/4">
+                        <mat-label>Date</mat-label>
+                        <mat-datepicker-toggle matSuffix [for]="datepicker">
+                        </mat-datepicker-toggle>
+                        <mat-datepicker #datepicker></mat-datepicker>
+                        <input matInput [matDatepicker]="datepicker" [formControlName]="'date'"
+                            [placeholder]="'Birthday'">
+
+                    </mat-form-field>
+
+                    <!-- Type -->
+                    <mat-form-field class="w-3/4">
+                        <mat-label>Type</mat-label>
+                        <input matInput [formControlName]="'type'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Format -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Format</mat-label>
+                        <input matInput [formControlName]="'format'">
+                    </mat-form-field>
+
+                    <!-- Identifier -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Identifier</mat-label>
+                        <input matInput [formControlName]="'identifier'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Rights -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Rights</mat-label>
+                        <input matInput [formControlName]="'rights'">
+                    </mat-form-field>
+
+                    <!-- Keywords -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Keywords</mat-label>
+                        <input matInput [formControlName]="'keyword'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Pixel -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Pixel</mat-label>
+                        <input matInput [formControlName]="'pixel'">
+                    </mat-form-field>
+
+                    <!-- Location -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Location</mat-label>
+                        <input matInput [formControlName]="'location'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Alt text -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Alt Text</mat-label>
+                        <textarea matInput [formControlName]="'alt_text'" [placeholder]="'alttext'" [rows]="4"
+                            [spellcheck]="false" matTextareaAutosize></textarea>
+                    </mat-form-field>
+                    <div class="flex flex-col w-1/2">
+                        <!-- Image Position -->
+                        <mat-form-field class="w-full">
+                            <mat-label>Image Position</mat-label>
+                            <input matInput [formControlName]="'image_position'">
+                        </mat-form-field>
+                        <!-- Image id -->
+                        <mat-form-field class="w-full">
+                            <mat-label>Image Id</mat-label>
+                            <input matInput [formControlName]="'image_id'">
+                        </mat-form-field>
+                    </div>
+
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- Rating -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Rating</mat-label>
+                        <input matInput [formControlName]="'rating'">
+                    </mat-form-field>
+
+                    <!-- Taxonomy -->
+                    <mat-form-field class="w-1/2">
+                        <mat-label>Taxonomy</mat-label>
+                        <input matInput [formControlName]="'taxonomy'">
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full space-x-2">
+                    <!-- License -->
+                    <mat-form-field class="w-1/4 ">
+                        <mat-label>License</mat-label>
+                        <mat-select [formControlName]="'license'">
+                            <ng-container>
+                                <mat-option [value]="Yes">Yes</mat-option>
+                                <mat-option [value]="No"> No</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- Restriction -->
+                    <mat-form-field class="w-1/4 ">
+                        <mat-label>Restriction</mat-label>
+                        <mat-select [formControlName]="'restriction'">
+                            <ng-container>
+                                <mat-option [value]="Yes">Yes</mat-option>
+                                <mat-option [value]="No"> No</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- Property -->
+                    <mat-form-field class="w-1/4 ">
+                        <mat-label>Property</mat-label>
+                        <mat-select [formControlName]="'property'">
+                            <ng-container>
+                                <mat-option [value]="Yes">Yes</mat-option>
+                                <mat-option [value]="No"> No</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                    <!-- Fpo -->
+                    <mat-form-field class="w-1/4">
+                        <mat-label>FPO</mat-label>
+                        <mat-select [formControlName]="'fpo'">
+                            <ng-container>
+                                <mat-option [value]="Yes">Yes</mat-option>
+                                <mat-option [value]="No"> No</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="flex w-full" fuseScrollbar [fuseScrollbarOptions]="{wheelPropagation: false}">
+                    <mat-form-field class="w-full">
+                        <mat-label>Description</mat-label>
+                        <textarea matInput [formControlName]="'description'" [placeholder]="'Description'" [rows]="3"
+                            [spellcheck]="false" matTextareaAutosize></textarea>
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+    </form>
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-12 px-4 py-2 bg-gray-50 ">
+        <button class="ml-2" mat-flat-button  [mat-dialog-close]="true" [color]="'primary'" [matTooltip]="'Submit'"
+            (click)="submitInsertImage()">
+            Submit
+        </button>
+    </div>
+</div>

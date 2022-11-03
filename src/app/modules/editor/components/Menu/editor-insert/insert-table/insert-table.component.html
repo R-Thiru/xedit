@@ -1,0 +1,94 @@
+<div class="relative flex flex-col  sm:max-w-2xl max-w-full w-full max-h-full ">
+    <!-- Header -->
+    <div class="flex flex-0 items-center justify-between h-16 px-4 bg-primary text-black border-b ">
+        <div class="text-lg font-medium">Table</div>
+
+        <button mat-icon-button mat-dialog-close [tabIndex]="-1" (click)="closeDialog()">
+            <mat-icon class="text-current" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+
+    <form [formGroup]="tableForm" class="p-3">
+        <div class=" SizeChooser h-full flex justify-between space-x-4">
+            <table class="w-2/5 h-full">
+                <tr *ngFor="let row of rowContent; let i = index">
+                    <td *ngFor="let col of row.row let j = index" (mouseover)="getCol(i,j)" (mouseleave)="clearCol()"
+                        (click)="selectedRow(i,j)"
+                        [ngClass]="{'bg-cyan-100':col.isChecked == false,'border border-black bg-cyan-50':col.isSelected == true }">
+
+                    </td>
+                </tr>
+            </table>
+
+            <div class="flex flex-col w-3/5">
+                <div class="w-full flex space-x-2">
+                    <mat-form-field class="w-1/6 ">
+                        <mat-label>Rows</mat-label>
+                        <input type="number" [formControlName]="'rows'" placeholder="Rows" matInput autocomplete="off">
+                    </mat-form-field>
+                    <mat-form-field class="w-1/6 ">
+                        <mat-label>Cols</mat-label>
+                        <input type="number" [formControlName]="'cols'" placeholder="Cols" matInput autocomplete="off">
+                    </mat-form-field>
+                    <mat-form-field class="w-full ">
+                        <mat-label>Headers</mat-label>
+                        <mat-select [placeholder]="'Select'" [formControlName]="'header'">
+                            <ng-container>
+                                <mat-option selected [value]="'First Row'">First Row</mat-option>
+                                <mat-option [value]="'First Col'"> First Col</mat-option>
+                                <mat-option [value]="'Both'"> Both</mat-option>
+                            </ng-container>
+                        </mat-select>
+                    </mat-form-field>
+                </div>
+                <div class="w-full flex">
+                    <mat-form-field class="w-full ">
+                        <mat-label>Caption</mat-label>
+                        <input [formControlName]="'caption'" placeholder="Caption" matInput autocomplete="off">
+                    </mat-form-field>
+                </div>
+            </div>
+        </div>
+
+        <div class="flex flex-col ">
+            <div class="flex flex-row space-x-2">
+                <mat-form-field class="w-1/2 ">
+                    <mat-label>Credit Line</mat-label>
+                    <input [formControlName]="'credit_line'" placeholder="Credit Line" matInput autocomplete="off">
+                </mat-form-field>
+                <mat-form-field class="w-1/2 ">
+                    <mat-label>Source Line</mat-label>
+                    <input [formControlName]="'source_line'" placeholder="Source Line" matInput autocomplete="off">
+                </mat-form-field>
+            </div>
+
+        </div>
+
+        <div class="flex flex-col ">
+            <div class="flex flex-row space-x-2">
+                <mat-form-field class="w-full ">
+                    <mat-label>Note</mat-label>
+                    <textarea matInput [formControlName]="'note'" [placeholder]="'Note'" [rows]="3" [spellcheck]="false"
+                        matTextareaAutosize></textarea>
+
+                </mat-form-field>
+
+            </div>
+
+        </div>
+
+    </form>
+
+
+    <!-- Footer -->
+    <div class="flex  bottom-0 items-center w-full border-t justify-end h-16 px-4  bg-gray-50 ">
+
+        <button class="ml-2" mat-flat-button [color]="'primary'" [mat-dialog-close]="true" [matTooltip]="'Submit'" (click)="submitInsertTable()">
+            Submit
+        </button>
+
+    </div>
+
+
+
+</div>

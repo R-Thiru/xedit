@@ -1,0 +1,143 @@
+<div class="relative w-full h-18 sm:h-20 px-8 sm:px-12 bg-accent-100 dark:bg-accent-700">
+    <!-- Close button -->
+    <div class="flex items-center justify-end w-full max-w-3xl mx-auto pt-6">
+        <button mat-icon-button [matTooltip]="'Close'" (click)="close()">
+            <mat-icon class="text-black" [svgIcon]="'heroicons_outline:x'"></mat-icon>
+        </button>
+    </div>
+</div>
+<div class="relative flex flex-col flex-auto items-center">
+    <div class="w-full ">
+        <form [formGroup]="userForm" #userNgForm="ngForm">
+
+            <div class="flex flex-auto items-end -mt-16 px-6 sm:px-12">
+                <div
+                    class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                    <!-- Upload / Remove avatar -->
+                    <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
+                    <div class="absolute inset-0 flex items-center justify-center z-20">
+                        <div>
+                            <input id="avatar-file-input"
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file"
+                                [multiple]="false" [accept]="'image/jpeg, image/png'"
+                                (change)="uploadAvatar(avatarFileInput.files)" #avatarFileInput>
+                            <label
+                                class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
+                                for="avatar-file-input" matRipple>
+                                <mat-icon class="text-white" [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                            </label>
+                        </div>
+                        <div>
+                            <button mat-icon-button (click)="deleteImage()">
+                                <mat-icon class="text-white" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            </button>
+                        </div>
+                    </div>
+                    <!-- Image/Letter -->
+                    <img class="object-cover w-full h-full" [src]="userForm.get('image').value" *ngIf="userForm.get('image').value">
+
+                </div>
+            </div>
+            <!-- inputs -->
+            <div class="mt-2 space-y-4 px-6 sm:px-12 sm:mb-24">
+
+                <!-- FirstName -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>First Name</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-circle'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'first_Name'" autocomplete="off" [placeholder]="'FirstName'" [spellcheck]="false">
+                </mat-form-field>
+
+                <!-- LastName -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Last Name</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-circle'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'last_Name'" autocomplete="off" [placeholder]="'LastName'" [spellcheck]="false">
+                </mat-form-field>
+
+                <!-- User name -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Email</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:mail'">
+                    </mat-icon>
+                    <input matInput [formControlName]="'email'" autocomplete="off" [placeholder]="'Email'" [spellcheck]="false">
+                </mat-form-field>
+
+                <!-- PassWord -->
+                <mat-form-field class="fuse-mat-no-subscript w-full" *ngIf="!userForm.get('uuid').value">
+                    <mat-label>Password</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="passwordField.type === 'password'? 'heroicons_solid:eye-off' :'heroicons_solid:eye'" 
+                    (click)="passwordField.type === 'password' ? passwordField.type = 'text' : passwordField.type = 'password'">
+                    </mat-icon>
+                    <input type="password" matInput [formControlName]="'password'" autocomplete="off" [placeholder]="'Password'" [spellcheck]="false" #passwordField>
+                </mat-form-field>
+                
+                <div *ngIf="!userForm.get('uuid').value && userForm.get('password').dirty" class="border-2 rounded-md h-0" [ngClass]="{'border-white':!userForm.get('password').value , 'border-red-400 w-1/6':pswrdLen <= 5 && pswrdLen > 1,'border-yellow-200 w-1/2':pswrdLen <= 7 && pswrdLen > 5, 'border-green-600 w-full':pswrdLen >= 8 }">
+                    &nbsp;
+                </div>
+                
+                <!-- User type -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>User Type</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:users'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'user_type'">
+                        <ng-container *ngFor="let usertype of userTypes">
+                            <mat-option [value]="usertype.name">
+                                {{usertype.name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Team -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Team</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:user-group'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'team'"  (selectionChange)="getRoleData(userForm.get('team').value)" >
+                        <ng-container *ngFor="let team of teamList" >
+                            <mat-option  [value]="team.uuid" >
+                                {{team.display_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- Role -->
+                <mat-form-field class="fuse-mat-no-subscript w-full">
+                    <mat-label>Role</mat-label>
+                    <mat-icon matPrefix class="hidden sm:flex icon-size-5" [svgIcon]="'heroicons_solid:academic-cap'">
+                    </mat-icon>
+                    <mat-select [formControlName]="'role'">
+                        <ng-container *ngFor="let role of roleList" >
+                            <mat-option  [value]="role.uuid" >
+                                {{role.display_name}}
+                            </mat-option>
+                        </ng-container>
+                    </mat-select>
+                </mat-form-field>
+
+                <!-- <mat-slide-toggle [formControlName]="'notify'" [color]="'primary'">
+                    Check If you want welcome notification
+                   
+                </mat-slide-toggle> -->
+            </div>
+            <!-- Actions -->
+            <div
+                class="flex fixed bottom-0 items-center w-full border-t  mt-8 px-8 py-5 bg-gray-50 dark:bg-gray-700 z-20">
+                <!-- Cancel -->
+                <button mat-button [matTooltip]="'Cancel'" (click)="close()">
+                    Cancel
+                </button>
+                <!-- Save -->
+                <button class="ml-2" mat-flat-button [color]="'primary'" (click)="save()" [disabled]="userForm.invalid"
+                    [matTooltip]="'Save'">
+                    Save
+                </button>
+            </div>
+        </form>
+    </div>
+</div>

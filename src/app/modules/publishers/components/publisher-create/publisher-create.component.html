@@ -17,51 +17,39 @@
     
     <div class="w-full ">
         
-        <form [formGroup]="publisherForm">
+        <form [formGroup]="publisherForm" #publishersForm="ngForm">
 
             <div class="flex flex-auto items-end -mt-16 px-6 sm:px-12">
-                <div class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card">
+                <div
+                    class="relative flex items-center justify-center w-32 h-32 rounded-full overflow-hidden ring-4 ring-bg-card" >
                     <!-- Upload / Remove avatar -->
                     <div class="absolute inset-0 bg-black bg-opacity-50 z-10"></div>
-                    <div class="absolute inset-0 flex items-center justify-center z-20">
+                    <div class="absolute inset-0 flex items-center justify-center z-20"  >
                         <div>
-                            <input
-                                id="avatar-file-input"
-                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none"
-                                type="file"
-                                >
+                            <input id="avatar-file-input"
+                                class="absolute h-0 w-0 opacity-0 invisible pointer-events-none" type="file"
+                                [multiple]="false" [accept]="'image/jpeg, image/png'"
+                                (change)="uploadAvatar(avatarFileInput.files)" #avatarFileInput>
                             <label
                                 class="flex items-center justify-center w-10 h-10 rounded-full cursor-pointer hover:bg-hover"
-                                for="avatar-file-input"
-                                matRipple>
-                                <mat-icon
-                                    class="text-white"
-                                    [svgIcon]="'heroicons_outline:camera'"></mat-icon>
+                                for="avatar-file-input" matRipple>
+                                <mat-icon class="text-white" [svgIcon]="'heroicons_outline:camera'"></mat-icon>
                             </label>
                         </div>
                         <div>
-                            <button mat-icon-button>
-                                <mat-icon
-                                    class="text-white"
-                                    [svgIcon]="'heroicons_outline:trash'"></mat-icon>
+                            <button mat-icon-button (click)="deleteImage()">
+                                <mat-icon class="text-white" [svgIcon]="'heroicons_outline:trash'"></mat-icon>
                             </button>
                         </div>
                     </div>
-                    <!-- Image/Letter -->
-                    <img
-                        class="object-cover w-full h-full"
-                       
-                       >
-                    <!-- <div
-                        class="flex items-center justify-center w-full h-full rounded overflow-hidden uppercase text-8xl font-bold leading-none bg-gray-200 text-gray-600 dark:bg-gray-700 dark:text-gray-200"
-                        *ngIf="!contact.avatar">
-                        {{contact.name.charAt(0)}}
-                    </div> -->
+                    <!-- Image -->
+                    <img class="object-cover w-full h-full" [src]="publisherForm.get('image').value" *ngIf="publisherForm.get('image').value" >
+
                 </div>
             </div>
 
             <!-- Name -->
-            <div class="mt-2 space-y-4 px-6 sm:px-12">
+            <div class="mt-2 space-y-4 px-6 sm:px-12 sm:mb-24">
                 <mat-form-field class="fuse-mat-no-subscript w-full">
                     <mat-label>PublisherName</mat-label>
                     <mat-icon
@@ -71,6 +59,7 @@
                     <input
                         matInput
                         [formControlName]="'name'"
+                        autocomplete="off"
                         [placeholder]="'Name'"
                         [spellcheck]="false">
                 </mat-form-field>
@@ -83,6 +72,7 @@
                     <input
                         matInput
                         [formControlName]="'address1'"
+                        autocomplete="off"
                         [placeholder]="'Address1'"
                         [spellcheck]="false">
                 </mat-form-field>
@@ -95,6 +85,7 @@
                     <input
                         matInput
                         [formControlName]="'address2'"
+                        autocomplete="off"
                         [placeholder]="'Address2'"
                         [spellcheck]="false">
                 </mat-form-field>
@@ -104,9 +95,10 @@
                         matPrefix
                         class="hidden sm:flex icon-size-5"
                         [svgIcon]="'heroicons_solid:user-circle'"></mat-icon>
-                    <input
+                    <input  type="number"
                         matInput
                         [formControlName]="'phoneNumbers'"
+                        autocomplete="off"
                         [placeholder]="'Contact Number'"
                         [spellcheck]="false">
                 </mat-form-field>
@@ -119,6 +111,7 @@
                     <input
                         matInput
                         [formControlName]="'emails'"
+                        autocomplete="off"
                         [placeholder]="'Email'"
                         [spellcheck]="false">
                 </mat-form-field>
@@ -128,13 +121,10 @@
                     matPrefix
                     class="hidden sm:flex icon-size-5"
                     [svgIcon]="'heroicons_solid:globe'"></mat-icon>
-                    <mat-select [formControlName]="'country'">
-                        <ng-container>
-                            <mat-option value="India">
-                                India
-                            </mat-option>
-                            <mat-option value="Australia">
-                                Australia
+                    <mat-select [formControlName]="'country'" >
+                        <ng-container *ngFor="let country of countries">
+                            <mat-option [value]="country.uuid">
+                                {{country.country_name}}
                             </mat-option>
                         </ng-container>
                     </mat-select>

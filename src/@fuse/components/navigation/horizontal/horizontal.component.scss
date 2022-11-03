@@ -1,4 +1,7 @@
 /* Root navigation specific */
+
+
+
 fuse-horizontal-navigation {
 
     .fuse-horizontal-navigation-wrapper {
@@ -8,6 +11,7 @@ fuse-horizontal-navigation {
         /* Basic, Branch */
         fuse-horizontal-navigation-basic-item,
         fuse-horizontal-navigation-branch-item {
+            
 
             @screen sm {
 
@@ -18,6 +22,8 @@ fuse-horizontal-navigation {
                     }
                 }
             }
+
+           
 
             .fuse-horizontal-navigation-item-wrapper {
                 border-radius: 4px;
@@ -82,6 +88,7 @@ fuse-horizontal-navigation {
 .fuse-horizontal-navigation-menu-panel {
 
     .fuse-horizontal-navigation-menu-item {
+        display: flex;
         height: auto;
         min-height: 0;
         line-height: normal;
@@ -149,13 +156,14 @@ fuse-horizontal-navigation {
             display: flex;
             align-items: center;
             justify-content: flex-start;
-            min-height: 48px;
+            min-height: 30px;
             width: 100%;
             font-size: 13px;
             font-weight: 500;
             text-decoration: none;
 
             .fuse-horizontal-navigation-item-title-wrapper {
+                display: flex;
 
                 .fuse-horizontal-navigation-item-subtitle {
                     font-size: 12px;
@@ -178,3 +186,5 @@ fuse-horizontal-navigation {
         }
     }
 }
+
+

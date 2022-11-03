@@ -23,18 +23,18 @@
                             </ng-container>
                             <div class="relative flex items-start cursor-pointer" (click)="goToStep(i)">
                                 <div class="flex flex-0 items-center justify-center w-8 h-8 rounded-full  ring-2 ring-inset  bg-card dark:bg-default"
-                                    [ngClass]="{'ring-primary ': i === currentproject,
-                                            'ring-gray-300 dark:ring-gray-600 group-hover:ring-gray-400': i > currentproject,
-                                            'bg-primary dark:bg-primary ring-transparent text-on-primary group-hover:bg-primary-800': i < currentproject}">
+                                    [ngClass]="{'bg-primary dark:bg-primary ring-transparent text-on-primary group-hover:bg-primary-800': i === currentproject,
+                                            'ring-gray-300  group-hover:ring-gray-400': i > currentproject,
+                                            'ring-primary ': i < currentproject}">
                                     <!-- Check icon, show if the project is completed -->
                                     <ng-container *ngIf="i < currentproject">
-                                        <div class="text-md font-semibold text-white dark:text-primary-500">
+                                        <div class="text-md font-semibold text-primary dark:text-primary-500">
                                             {{map.default_order + 1 }}
                                         </div>
                                     </ng-container>
                                     <!-- project default_order, show if the project is the current project -->
                                     <ng-container *ngIf="i === currentproject">
-                                        <div class="text-md font-semibold text-primary dark:text-primary-500">
+                                        <div class="text-md font-semibold text-white dark:text-primary-500">
                                             {{map.default_order + 1 }}
                                         </div>
                                     </ng-container>
